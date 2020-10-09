@@ -1,0 +1,1458 @@
+kubectl get -n kafka bindings
+
+kubectl get -n kafka componentstatuses
+NAME                 AGE
+scheduler            <unknown>
+controller-manager   <unknown>
+etcd-0               <unknown>
+
+kubectl get -n kafka configmaps
+
+kubectl get -n kafka endpoints
+
+kubectl get -n kafka events
+LAST SEEN   TYPE      REASON             OBJECT                                                 MESSAGE
+<unknown>   Warning   FailedScheduling   pod/my-cluster-entity-operator-9d996575b-9jxlt         0/3 nodes are available: 3 Insufficient cpu.
+<unknown>   Warning   FailedScheduling   pod/my-cluster-entity-operator-9d996575b-9jxlt         skip schedule deleting pod: kafka/my-cluster-entity-operator-9d996575b-9jxlt
+53m         Normal    Killing            pod/my-cluster-kafka-0                                 Stopping container kafka
+53m         Normal    Killing            pod/my-cluster-kafka-0                                 Stopping container tls-sidecar
+53m         Normal    Killing            pod/my-cluster-kafka-1                                 Stopping container kafka
+53m         Normal    Killing            pod/my-cluster-kafka-1                                 Stopping container tls-sidecar
+53m         Normal    Killing            pod/my-cluster-kafka-2                                 Stopping container kafka
+53m         Normal    Killing            pod/my-cluster-kafka-2                                 Stopping container tls-sidecar
+53m         Normal    Killing            pod/my-cluster-zookeeper-0                             Stopping container zookeeper
+53m         Normal    Killing            pod/my-cluster-zookeeper-1                             Stopping container zookeeper
+53m         Normal    Killing            pod/my-cluster-zookeeper-2                             Stopping container zookeeper
+48m         Normal    Killing            pod/strimzi-cluster-operator-v0.18.0-5c7bf866f-kk4b7   Stopping container strimzi-cluster-operator
+
+kubectl get -n kafka limitranges
+NAME      CREATED AT
+default   2020-09-10T02:08:49Z
+
+kubectl get -n kafka namespaces
+NAME                 STATUS   AGE
+cert-manager         Active   45d
+cpaas-system         Active   45d
+default              Active   45d
+fzz                  Active   32d
+haoli                Active   23d
+haoli-test           Active   23d
+hchan                Active   22d
+joe                  Active   44d
+jwx-mongo            Active   7h11m
+jwxiong              Active   10d
+jwxiong-mongo        Active   6h49m
+kafka                Active   39d
+kube-node-lease      Active   45d
+kube-public          Active   45d
+kube-system          Active   45d
+local-path-storage   Active   38d
+minio                Active   4h6m
+operators            Active   17d
+pg                   Active   22d
+redis                Active   22d
+rook-ceph            Active   45d
+tke                  Active   45d
+yqhou                Active   35d
+zlc                  Active   39d
+zlc-global           Active   14d
+zxl                  Active   29d
+zxl-mongodb          Active   10d
+
+kubectl get -n kafka nodes
+NAME           STATUS   ROLES    AGE   VERSION
+10.0.128.237   Ready    master   45d   v1.16.9
+10.0.128.64    Ready    master   45d   v1.16.9
+10.0.129.171   Ready    master   45d   v1.16.9
+
+kubectl get -n kafka persistentvolumeclaims
+
+kubectl get -n kafka persistentvolumes
+NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                                                                         STORAGECLASS   REASON   AGE
+alertmanager-pv-0                          5Gi        RWO            Retain           Bound    cpaas-system/alertmanager-kube-prometheus-db-alertmanager-kube-prometheus-0                           45d
+kube-prometheus-grafana                    5Gi        RWO            Retain           Bound    cpaas-system/kube-prometheus-grafana                                                                  45d
+prometheus-pv-0                            30Gi       RWO            Retain           Bound    cpaas-system/prometheus-kube-prometheus-0-db-prometheus-kube-prometheus-0-0                           45d
+pvc-006d55b3-6788-4e57-a448-be502e49a624   6Gi        RWO            Delete           Bound    zlc/datadir-cluster1-pxc-1                                                    local-path              10d
+pvc-067ea7aa-9a9e-43ce-bef5-e61fbc90ac6a   2Gi        RWO            Delete           Bound    zlc/proxydata-cluster1-proxysql-1                                             local-path              10d
+pvc-0723fbfd-3d7a-4d46-ba01-0cb407c8c383   1Gi        RWO            Delete           Bound    redis/redis-master-redis-master-1                                             local-path              9d
+pvc-0c6138b4-52db-4eeb-bc7e-3ac58a3b3549   10Gi       RWO            Delete           Bound    yqhou/persistence-sample205-rabbitmq-server-0                                 intceph                 21d
+pvc-13097386-4fb9-4171-b88e-3eb43eaa4a2c   6Gi        RWO            Delete           Bound    haoli/datadir-cluster1-pxc-1                                                  local-path              11d
+pvc-1bae0845-69a3-479e-811f-07a1f4fec7ef   6Gi        RWO            Delete           Bound    zlc/cluster1-xb-cron-cluster1-20201001095913-1u4ap                            local-path              52m
+pvc-1c069311-6a4f-4290-bb25-303730316b66   1Gi        RWO            Delete           Bound    yqhou/ppp                                                                     intceph                 21d
+pvc-24d3affd-821f-485a-9ce8-24e166af86f2   2Gi        RWO            Delete           Bound    haoli/proxydata-doc-test-proxysql-2                                           local-path              16d
+pvc-27cbea90-5c2d-4584-b2c8-80bd6b75201f   6Gi        RWO            Delete           Bound    zlc/datadir-test1-pxc-2                                                       local-path              9d
+pvc-2e43af44-7595-4503-9211-7e1e29a3df0d   2Gi        RWO            Delete           Bound    haoli/proxydata-doc-test-proxysql-0                                           local-path              16d
+pvc-3187ddda-9c4e-484c-9487-44e3eccd4659   6Gi        RWO            Delete           Bound    zlc/cluster1-xb-cron-cluster1-20201009095911-1u4ap                            local-path              11m
+pvc-3658a9dc-293b-4a0b-bd8e-eb9a4f9e5e48   6Gi        RWO            Delete           Bound    zlc/cluster1-xb-cron-cluster1-20201008095911-1u4ap                            local-path              69m
+pvc-39b14d8b-ad85-43f8-a252-d7398750cd6a   6Gi        RWO            Delete           Bound    zlc/datadir-cluster1-pxc-2                                                    local-path              10d
+pvc-3c812793-f6f4-41aa-8101-f9d0fe5294bb   6Gi        RWO            Delete           Bound    haoli/datadir-doc-test-pxc-1                                                  local-path              16d
+pvc-3d9b08ce-5246-4090-95ed-f5091f9dd26f   6Gi        RWO            Delete           Bound    tke/datadir-cluster1-pxc-0                                                    local-path              16d
+pvc-3ff3e145-7ecb-4e0f-9ada-d4bf7691fbee   2Gi        RWO            Delete           Bound    tke/proxydata-cluster1-proxysql-1                                             local-path              16d
+pvc-4b9506a8-a34b-4289-a0fd-f98a692fe230   3Gi        RWO            Delete           Bound    operators/mongod-data-my-cluster-name-rs0-1                                   local-path              6h52m
+pvc-51fc019b-f897-472d-b6cb-ec179d5e99fc   1Gi        RWO            Delete           Bound    redis/redis-master-redis-master-2                                             local-path              9d
+pvc-55f45d54-0fdd-4854-897f-55a1899ea70c   6Gi        RWO            Delete           Bound    zlc/cluster1-xb-cron-cluster1-20201007095921-1u4ap                            local-path              53m
+pvc-612498f7-0baa-42c1-b678-a447979aeab2   1Gi        RWO            Delete           Bound    operators/pgdata-acid-minimal-cluster-0                                       local-path              16d
+pvc-6288ade6-0db3-4cf8-8fdb-d34e41ffb07c   6Gi        RWO            Delete           Bound    zlc/cluster1-xb-cron-cluster1-20200929095909-1u4ap                            local-path              10d
+pvc-6dfed2c0-f361-4e0c-a16e-fe47aa0bdd25   2Gi        RWO            Delete           Bound    default/local-path-pvc                                                        local-path              38d
+pvc-6f701171-b812-4ef9-ac61-a5102510728e   2Gi        RWO            Delete           Bound    tke/proxydata-cluster1-proxysql-2                                             local-path              16d
+pvc-6fd3a563-3da1-404e-85a6-1c3d51ca1bf1   6Gi        RWO            Delete           Bound    zlc/cluster1-xb-cron-cluster1-20201006062501-1u4ap                            local-path              69m
+pvc-6ffe25f5-8c82-4e60-a092-e3fe326f1afe   1Gi        RWO            Delete           Bound    redis/redis-slave-redis-slave-2                                               local-path              9d
+pvc-703f2996-cd08-43fb-ad8a-92c46d19162b   6Gi        RWO            Delete           Bound    zlc/cluster1-xb-cron-cluster1-20201006062208-1u4ap                            local-path              2d18h
+pvc-71126311-433f-407c-a497-8783cc386dc1   2Gi        RWO            Delete           Bound    zlc/proxydata-cluster1-proxysql-0                                             local-path              10d
+pvc-722bcd14-d5d9-4c1a-8066-ec4c72a5f64d   2Gi        RWO            Delete           Bound    zlc/proxydata-cluster1-proxysql-2                                             local-path              10d
+pvc-78edc89f-7a7d-40cd-b7cf-10aa1bd33be5   6Gi        RWO            Delete           Bound    zlc/cluster1-xb-cron-cluster1-20201002095925-1u4ap                            local-path              69m
+pvc-7cd42ee7-e1f3-4f43-a39f-733efe0cb65a   6Gi        RWO            Delete           Bound    zlc/cluster1-xb-cron-cluster1-20201003095906-1u4ap                            local-path              53m
+pvc-7f495580-ad1e-493b-9770-4c35816a7f98   6Gi        RWO            Delete           Bound    zlc/datadir-test1-pxc-1                                                       local-path              9d
+pvc-85634fec-3c2a-46d6-9458-500ad4a856d8   6Gi        RWO            Delete           Bound    haoli/datadir-cluster1-pxc-0                                                  local-path              11d
+pvc-8aa1be2d-2bdb-408d-ad98-d42c2d06cac3   10Gi       RWO            Delete           Bound    yqhou/persistence-sample206-rabbitmq-server-0                                 local-path              19d
+pvc-8ab8b535-4c88-4fe5-a8bc-8938a7ee8d01   1Gi        RWO            Delete           Bound    redis/redis-master-redis-master-0                                             local-path              9d
+pvc-8b7aa418-09fb-4d0b-b922-d4bb7a3fc976   6Gi        RWO            Delete           Bound    haoli/datadir-doc-test-pxc-2                                                  local-path              16d
+pvc-8cdeca03-2cf0-4c0a-95e9-78dc5c101b40   2Gi        RWO            Delete           Bound    zlc/proxydata-test1-proxysql-2                                                local-path              9d
+pvc-8de4f281-a440-4544-be58-42163e57fe22   10Gi       RWO            Delete           Bound    yqhou/persistence-sample208-rabbitmq-server-0                                 local-path              19d
+pvc-90363922-9061-4813-a413-626523368810   10Gi       RWO            Delete           Bound    yqhou/persistence-sample00-rabbitmq-server-0                                  local-path              28d
+pvc-97683a3e-73f3-4693-b001-d8d573beaa8c   2Gi        RWO            Delete           Bound    zlc/proxydata-test1-proxysql-1                                                local-path              9d
+pvc-9fd04c12-a688-4d49-90ea-f4308f87470c   3Gi        RWO            Delete           Bound    operators/mongod-data-my-cluster-name-rs0-0                                   local-path              6h53m
+pvc-9fe1dbab-b9be-4e15-a963-6ada6355f912   1Gi        RWO            Delete           Bound    redis/redis-slave-redis-slave-0                                               local-path              9d
+pvc-a76f124a-2f65-43d7-b4c1-d1d366fe8ec0   6Gi        RWO            Delete           Bound    zlc/cluster1-xb-cron-cluster1-20200928095905-1u4ap                            local-path              11d
+pvc-a951580d-84f5-49d2-a7e1-e787fedeb1fb   3Gi        RWO            Delete           Bound    jwxiong-mongo/mongod-data-my-cluster-name-rs0-0                               local-path              6h49m
+pvc-a96416c6-69b0-48bd-b81d-6f20ec5e348f   1Gi        RWO            Delete           Bound    operators/pgdata-acid-minimal-cluster-1                                       local-path              16d
+pvc-aac5fc0d-0fe6-4363-9d93-23304e98767e   500Gi      RWO            Delete           Bound    minio/minio                                                                   local-path              4h3m
+pvc-aca0cbf6-959c-4754-8688-b4481ac5634e   3Gi        RWO            Delete           Bound    zxl-mongodb/mongod-data-m1-rs0-0                                              local-path              169m
+pvc-b1b1f6e1-feb5-412f-a67d-ab8170f8911f   3Gi        RWO            Delete           Bound    zxl-mongodb/mongod-data-m1-rs0-1                                              local-path              169m
+pvc-b428fc96-19c3-4354-960d-cd072a3b3f0a   2Gi        RWO            Delete           Bound    haoli/proxydata-cluster1-proxysql-1                                           local-path              11d
+pvc-b5a78c84-151f-49b5-b277-ff19690a3731   2Gi        RWO            Delete           Bound    zlc/proxydata-test1-proxysql-0                                                local-path              9d
+pvc-bb0d08f0-e935-41fa-84ab-d37f689f0f5b   6Gi        RWO            Delete           Bound    zlc/cluster1-xb-cron-cluster1-20201006095908-1u4ap                            local-path              2d18h
+pvc-ca4e5f1d-3214-4ffd-8fc3-a14892601589   6Gi        RWO            Delete           Bound    haoli/datadir-doc-test-pxc-0                                                  local-path              16d
+pvc-ce193c44-5b83-4a17-9022-54e45ef97c5f   3Gi        RWO            Delete           Bound    jwxiong-mongo/mongod-data-my-cluster-name-rs0-1                               local-path              6h49m
+pvc-ced3f062-24e7-4459-aab1-411f0ba31db2   2Gi        RWO            Delete           Bound    haoli/proxydata-cluster1-proxysql-0                                           local-path              11d
+pvc-d3b665a1-91b1-42c6-970d-6dfdcc80982f   1Gi        RWO            Delete           Bound    redis/redis-slave-redis-slave-1                                               local-path              9d
+pvc-d649978f-813b-4c76-bf3b-f7e52e8cc7d7   2Gi        RWO            Delete           Bound    tke/proxydata-cluster1-proxysql-0                                             local-path              16d
+pvc-d7bbee5a-a4dd-4fa4-9ed5-69188189a64c   6Gi        RWO            Delete           Bound    zlc/datadir-cluster1-pxc-0                                                    local-path              11d
+pvc-d9675092-d604-448b-9a47-d59668882ae9   6Gi        RWO            Delete           Bound    tke/datadir-cluster1-pxc-2                                                    local-path              16d
+pvc-db4bfdc7-256a-404e-9b60-59565c7699f0   2Gi        RWO            Delete           Bound    haoli/proxydata-doc-test-proxysql-1                                           local-path              16d
+pvc-df53e943-5ed4-474b-a384-639f8cf3e321   3Gi        RWO            Delete           Bound    zxl-mongodb/mongod-data-m1-rs0-2                                              local-path              151m
+pvc-e969d9de-390f-4185-95b7-fe09dc3b677f   6Gi        RWO            Delete           Bound    zlc/cluster1-xb-cron-cluster1-20200930095913-1u4ap                            local-path              69m
+pvc-f49f2c07-2bf6-4d7d-a590-298c61c90c68   6Gi        RWO            Delete           Bound    tke/datadir-cluster1-pxc-1                                                    local-path              16d
+pvc-fa60d484-471f-435d-b425-01bc12b97558   6Gi        RWO            Delete           Bound    zlc/datadir-test1-pxc-0                                                       local-path              9d
+pvc-faddd6cf-565d-4404-86ff-fb6122231f7a   10Gi       RWO            Delete           Bound    haoli/persistence-sample-rabbitmq-server-0                                    local-path              15d
+
+kubectl get -n kafka pods
+
+kubectl get -n kafka podtemplates
+
+kubectl get -n kafka replicationcontrollers
+
+kubectl get -n kafka resourcequotas
+NAME      CREATED AT
+default   2020-09-10T02:08:49Z
+
+kubectl get -n kafka secrets
+NAME                  TYPE                                  DATA   AGE
+default-token-h7xnk   kubernetes.io/service-account-token   3      39d
+
+kubectl get -n kafka serviceaccounts
+NAME      SECRETS   AGE
+default   1         39d
+
+kubectl get -n kafka services
+
+kubectl get -n kafka productions
+NAME                 INDEX   TITLE                GROUP        HOMEPAGE
+container-platform   0       Container Platform   production   /console-acp/
+
+kubectl get -n kafka postgresqls
+
+kubectl get -n kafka mutatingwebhookconfigurations
+NAME                                     CREATED AT
+captain-mutating-webhook-configuration   2020-08-25T09:34:42Z
+cert-manager-webhook                     2020-08-25T09:34:52Z
+courier                                  2020-08-25T09:38:07Z
+meepo                                    2020-08-25T09:35:42Z
+
+kubectl get -n kafka validatingwebhookconfigurations
+NAME                                       CREATED AT
+auth-controller2                           2020-08-25T09:35:42Z
+captain-validating-webhook-configuration   2020-08-25T09:34:42Z
+cert-manager-webhook                       2020-08-25T09:34:52Z
+courier                                    2020-08-25T09:38:07Z
+meepo                                      2020-08-25T09:35:42Z
+validating-redis-webhook                   2020-10-09T06:38:21Z
+
+kubectl get -n kafka alerttemplates
+
+kubectl get -n kafka archivelogs
+
+kubectl get -n kafka audits
+
+kubectl get -n kafka events
+LAST SEEN   TYPE      REASON             OBJECT                                                 MESSAGE
+<unknown>   Warning   FailedScheduling   pod/my-cluster-entity-operator-9d996575b-9jxlt         0/3 nodes are available: 3 Insufficient cpu.
+<unknown>   Warning   FailedScheduling   pod/my-cluster-entity-operator-9d996575b-9jxlt         skip schedule deleting pod: kafka/my-cluster-entity-operator-9d996575b-9jxlt
+53m         Normal    Killing            pod/my-cluster-kafka-0                                 Stopping container kafka
+53m         Normal    Killing            pod/my-cluster-kafka-0                                 Stopping container tls-sidecar
+53m         Normal    Killing            pod/my-cluster-kafka-1                                 Stopping container kafka
+53m         Normal    Killing            pod/my-cluster-kafka-1                                 Stopping container tls-sidecar
+53m         Normal    Killing            pod/my-cluster-kafka-2                                 Stopping container kafka
+53m         Normal    Killing            pod/my-cluster-kafka-2                                 Stopping container tls-sidecar
+53m         Normal    Killing            pod/my-cluster-zookeeper-0                             Stopping container zookeeper
+53m         Normal    Killing            pod/my-cluster-zookeeper-1                             Stopping container zookeeper
+53m         Normal    Killing            pod/my-cluster-zookeeper-2                             Stopping container zookeeper
+48m         Normal    Killing            pod/strimzi-cluster-operator-v0.18.0-5c7bf866f-kk4b7   Stopping container strimzi-cluster-operator
+
+kubectl get -n kafka logpolicies
+
+kubectl get -n kafka logs
+
+kubectl get -n kafka notificationmessages
+
+kubectl get -n kafka notificationreceivers
+
+kubectl get -n kafka notifications
+
+kubectl get -n kafka notificationsenders
+
+kubectl get -n kafka notificationservers
+
+kubectl get -n kafka notificationtemplates
+
+kubectl get -n kafka grafanadashboards
+
+kubectl get -n kafka alaudafeaturegates
+
+kubectl get -n kafka clusteralaudafeaturegates
+
+kubectl get -n kafka productconfigs
+NAME    STATUS   VERSION        PRODUCT-KIND
+redis            v2.1           RedisInstaller
+tdsql            v10.3.14.6.0   TDSQLDeploy
+
+kubectl get -n kafka customresourcedefinitions
+NAME                                             CREATED AT
+accounts.tdsql.alauda.io                         2020-08-28T07:21:36Z
+acp.product.alauda.io                            2020-08-25T09:36:43Z
+alaudafeaturegates.alauda.io                     2020-08-25T09:34:51Z
+alaudaloadbalancer2.crd.alauda.io                2020-08-25T09:34:51Z
+alaudaproducts.portal.alauda.io                  2020-08-25T09:35:33Z
+alertmanagers.monitoring.coreos.com              2020-08-25T09:34:49Z
+alerttemplates.aiops.alauda.io                   2020-08-25T09:37:53Z
+applicationhistories.app.k8s.io                  2020-08-25T09:34:51Z
+applications.app.k8s.io                          2020-08-25T09:34:51Z
+appreleases.operator.alauda.io                   2020-08-25T09:34:41Z
+archivelogs.aiops.alauda.io                      2020-08-25T09:37:53Z
+audits.aiops.alauda.io                           2020-08-25T09:35:33Z
+authcodes.dex.coreos.com                         2020-08-25T09:36:40Z
+authrequests.dex.coreos.com                      2020-08-25T09:36:40Z
+catalogsources.operators.coreos.com              2020-09-22T08:20:01Z
+certificaterequests.certmanager.k8s.io           2020-08-25T09:34:49Z
+certificates.certmanager.k8s.io                  2020-08-25T09:34:49Z
+challenges.certmanager.k8s.io                    2020-08-25T09:34:49Z
+chartrepos.app.alauda.io                         2020-08-25T09:34:42Z
+charts.app.alauda.io                             2020-08-25T09:34:42Z
+clusteraccounts.tdsql.alauda.io                  2020-08-28T07:21:36Z
+clusteralaudafeaturegates.alauda.io              2020-08-25T09:34:51Z
+clusterfeds.infrastructure.alauda.io             2020-08-25T09:35:34Z
+clusterissuers.certmanager.k8s.io                2020-08-25T09:34:49Z
+clusternetworkpolicies.crd.alauda.io             2020-08-25T09:35:02Z
+clusters.clusterregistry.k8s.io                  2020-08-25T09:35:34Z
+clusterserviceversions.operators.coreos.com      2020-09-22T08:20:02Z
+commonconfigs.operator.alauda.io                 2020-08-25T09:35:30Z
+connectors.dex.coreos.com                        2020-08-25T09:36:40Z
+cronhpas.tkestack.io                             2020-08-25T09:35:02Z
+domains.crd.alauda.io                            2020-08-25T09:35:34Z
+etcdbackups.etcd.database.coreos.com             2020-09-08T03:11:58Z
+etcdclusters.etcd.database.coreos.com            2020-09-08T03:11:58Z
+etcdrestores.etcd.database.coreos.com            2020-09-08T03:11:58Z
+events.aiops.alauda.io                           2020-08-25T09:37:53Z
+features.infrastructure.alauda.io                2020-08-25T09:34:51Z
+frontends.crd.alauda.io                          2020-08-25T09:34:51Z
+functionresources.auth.alauda.io                 2020-08-25T09:35:34Z
+grafanadashboards.ait.alauda.io                  2020-08-25T09:34:45Z
+groupbindings.auth.alauda.io                     2020-08-25T09:35:33Z
+groups.auth.alauda.io                            2020-08-25T09:35:33Z
+helmrequests.app.alauda.io                       2020-08-25T09:34:41Z
+imoocpods.k8s.imooc.com                          2020-09-27T13:04:01Z
+installplans.operators.coreos.com                2020-09-22T08:20:02Z
+instancebindings.tdsql.alauda.io                 2020-08-28T07:21:36Z
+instances.tdsql.alauda.io                        2020-08-28T07:21:36Z
+issuers.certmanager.k8s.io                       2020-08-25T09:34:49Z
+kafkabridges.kafka.strimzi.io                    2020-09-18T11:39:55Z
+kafkaconnectors.kafka.strimzi.io                 2020-09-18T11:39:55Z
+kafkaconnects.kafka.strimzi.io                   2020-09-18T11:39:55Z
+kafkaconnects2is.kafka.strimzi.io                2020-09-18T11:39:55Z
+kafkamirrormaker2s.kafka.strimzi.io              2020-09-18T11:39:56Z
+kafkamirrormakers.kafka.strimzi.io               2020-09-18T11:39:56Z
+kafkarebalances.kafka.strimzi.io                 2020-09-18T11:39:56Z
+kafkas.kafka.strimzi.io                          2020-09-11T02:44:14Z
+kafkatopics.kafka.strimzi.io                     2020-08-31T03:35:06Z
+kafkausers.kafka.strimzi.io                      2020-08-31T03:35:06Z
+logpolicies.aiops.alauda.io                      2020-08-25T09:37:53Z
+logs.aiops.alauda.io                             2020-08-25T09:37:53Z
+namespaceoverviews.k8s.io                        2020-08-25T09:34:51Z
+notificationmessages.aiops.alauda.io             2020-08-25T09:37:53Z
+notificationreceivers.aiops.alauda.io            2020-08-25T09:37:53Z
+notifications.aiops.alauda.io                    2020-08-25T09:37:53Z
+notificationsenders.aiops.alauda.io              2020-08-25T09:37:53Z
+notificationservers.aiops.alauda.io              2020-08-25T09:37:53Z
+notificationtemplates.aiops.alauda.io            2020-08-25T09:37:53Z
+oauth2clients.dex.coreos.com                     2020-08-25T09:36:40Z
+offlinesessionses.dex.coreos.com                 2020-08-25T09:36:40Z
+operatorgroups.operators.coreos.com              2020-09-22T08:20:02Z
+orders.certmanager.k8s.io                        2020-08-25T09:34:49Z
+passwords.dex.coreos.com                         2020-08-25T09:35:25Z
+perconaservermongodbbackups.psmdb.percona.com    2020-09-29T06:41:35Z
+perconaservermongodbrestores.psmdb.percona.com   2020-09-29T06:41:35Z
+perconaservermongodbs.psmdb.percona.com          2020-09-29T06:41:35Z
+perconaxtradbbackups.pxc.percona.com             2020-09-01T06:13:35Z
+perconaxtradbclusterbackups.pxc.percona.com      2020-09-01T06:13:36Z
+perconaxtradbclusterrestores.pxc.percona.com     2020-09-01T06:13:36Z
+perconaxtradbclusters.pxc.percona.com            2020-09-21T02:17:03Z
+podmonitors.monitoring.coreos.com                2020-08-25T09:34:49Z
+postgresqls.acid.zalan.do                        2020-08-26T08:17:10Z
+productbases.product.alauda.io                   2020-08-25T09:35:34Z
+productconfigs.alauda.io                         2020-09-29T07:23:32Z
+productions.ace3.alauda.io                       2020-08-25T09:35:33Z
+products.middleware.alauda.io                    2020-08-28T07:53:14Z
+projectbindings.auth.alauda.io                   2020-08-25T09:35:34Z
+projectquotas.auth.alauda.io                     2020-08-25T09:34:51Z
+projects.auth.alauda.io                          2020-08-25T09:35:33Z
+prometheuses.monitoring.coreos.com               2020-08-25T09:34:49Z
+prometheusrules.monitoring.coreos.com            2020-08-25T09:34:45Z
+rabbitmqclusters.rabbitmq.com                    2020-09-04T08:16:30Z
+redis.redis.opstreelabs.in                       2020-08-26T09:56:45Z
+redisfailovers.databases.spotahome.com           2020-09-30T06:59:08Z
+redisinstallers.product.alauda.io                2020-10-09T06:38:20Z
+refreshtokens.dex.coreos.com                     2020-08-25T09:36:40Z
+releases.app.alauda.io                           2020-08-26T08:23:41Z
+rels.operator.alauda.io                          2020-08-25T09:34:41Z
+reports.metering.alauda.io                       2020-08-25T09:37:53Z
+requests.tdsql.alauda.io                         2020-08-28T07:21:36Z
+roletemplates.auth.alauda.io                     2020-08-25T09:35:34Z
+rules.crd.alauda.io                              2020-08-25T09:34:51Z
+servicemonitors.monitoring.coreos.com            2020-08-25T09:34:49Z
+signingkeies.dex.coreos.com                      2020-08-25T09:36:40Z
+subscriptions.operators.coreos.com               2020-09-22T08:20:02Z
+tdsqldeploys.product.alauda.io                   2020-09-29T07:25:10Z
+thanosrulers.monitoring.coreos.com               2020-08-25T09:34:49Z
+tracejobreports.tracer.alauda.io                 2020-08-25T09:34:51Z
+tracejobs.tracer.alauda.io                       2020-08-25T09:34:51Z
+userbindings.auth.alauda.io                      2020-08-25T09:34:51Z
+users.auth.alauda.io                             2020-08-25T09:35:25Z
+views.auth.alauda.io                             2020-08-25T09:35:33Z
+
+kubectl get -n kafka apiservices
+NAME                                   SERVICE                                         AVAILABLE   AGE
+v1-1-0.psmdb.percona.com               Local                                           True        5d20h
+v1-1-0.pxc.percona.com                 Local                                           True        3h50m
+v1-2-0.psmdb.percona.com               Local                                           True        3h50m
+v1-2-0.pxc.percona.com                 Local                                           True        3h50m
+v1-3-0.psmdb.percona.com               Local                                           True        3h24m
+v1-3-0.pxc.percona.com                 Local                                           True        3h24m
+v1-4-0.psmdb.percona.com               Local                                           True        3h50m
+v1-4-0.pxc.percona.com                 Local                                           True        3h50m
+v1-5-0.pxc.percona.com                 Local                                           True        18d
+v1.                                    Local                                           True        45d
+v1.ace3.alauda.io                      Local                                           True        13d
+v1.acid.zalan.do                       Local                                           True        13d
+v1.admissionregistration.k8s.io        Local                                           True        45d
+v1.alauda.io                           Local                                           True        9d
+v1.apiextensions.k8s.io                Local                                           True        45d
+v1.apps                                Local                                           True        45d
+v1.auth.alauda.io                      Local                                           True        3h50m
+v1.authentication.k8s.io               Local                                           True        45d
+v1.authorization.k8s.io                Local                                           True        45d
+v1.autoscaling                         Local                                           True        45d
+v1.batch                               Local                                           True        45d
+v1.business.tkestack.io                cpaas-system/alauda-business-api                True        45d
+v1.coordination.k8s.io                 Local                                           True        45d
+v1.crd.alauda.io                       Local                                           True        3h24m
+v1.databases.spotahome.com             Local                                           True        3h50m
+v1.dex.coreos.com                      Local                                           True        3h24m
+v1.k8s.io                              Local                                           True        14d
+v1.monitoring.coreos.com               Local                                           True        29d
+v1.networking.k8s.io                   Local                                           True        45d
+v1.operators.coreos.com                Local                                           True        3h24m
+v1.packages.operators.coreos.com       cpaas-system/packageserver-service              True        17d
+v1.platform.tkestack.io                cpaas-system/alauda-platform-api                True        45d
+v1.product.alauda.io                   Local                                           True        3h24m
+v1.psmdb.percona.com                   Local                                           True        3h24m
+v1.pxc.percona.com                     Local                                           True        3h24m
+v1.rbac.authorization.k8s.io           Local                                           True        45d
+v1.scheduling.k8s.io                   Local                                           True        45d
+v1.storage.k8s.io                      Local                                           True        45d
+v1.tkestack.io                         Local                                           True        9d
+v1alpha1.aiops.alauda.io               Local                                           True        3h24m
+v1alpha1.alauda.io                     Local                                           True        3h50m
+v1alpha1.app.alauda.io                 Local                                           True        3h50m
+v1alpha1.certmanager.k8s.io            Local                                           True        3h24m
+v1alpha1.clusterregistry.k8s.io        Local                                           True        3h24m
+v1alpha1.infrastructure.alauda.io      Local                                           True        3h50m
+v1alpha1.k8s.imooc.com                 Local                                           True        3h24m
+v1alpha1.kafka.strimzi.io              Local                                           True        3h24m
+v1alpha1.middleware.alauda.io          Local                                           True        13d
+v1alpha1.operator.alauda.io            Local                                           True        3h50m
+v1alpha1.operators.coreos.com          Local                                           True        3h50m
+v1alpha1.portal.alauda.io              Local                                           True        16h
+v1alpha1.product.alauda.io             Local                                           True        3h50m
+v1alpha1.psmdb.percona.com             Local                                           True        3h24m
+v1alpha1.pxc.percona.com               Local                                           True        3h24m
+v1alpha1.redis.opstreelabs.in          Local                                           True        9d
+v1alpha1.tdsql.alauda.io               Local                                           True        13d
+v1alpha2.operators.coreos.com          Local                                           True        3h24m
+v1beta1.admissionregistration.k8s.io   Local                                           True        45d
+v1beta1.aiops.alauda.io                Local                                           True        13d
+v1beta1.ait.alauda.io                  Local                                           True        13d
+v1beta1.apiextensions.k8s.io           Local                                           True        45d
+v1beta1.app.alauda.io                  Local                                           True        3h24m
+v1beta1.app.k8s.io                     Local                                           True        3h24m
+v1beta1.auth.alauda.io                 Local                                           True        13d
+v1beta1.authentication.k8s.io          Local                                           True        45d
+v1beta1.authorization.k8s.io           Local                                           True        45d
+v1beta1.batch                          Local                                           True        45d
+v1beta1.certificates.k8s.io            Local                                           True        45d
+v1beta1.coordination.k8s.io            Local                                           True        45d
+v1beta1.custom.metrics.k8s.io          cpaas-system/cpaas-monitor-prometheus-adapter   True        45d
+v1beta1.events.k8s.io                  Local                                           True        45d
+v1beta1.extensions                     Local                                           True        45d
+v1beta1.kafka.strimzi.io               Local                                           True        3h50m
+v1beta1.metering.alauda.io             Local                                           True        3h24m
+v1beta1.metrics.k8s.io                 cpaas-system/cpaas-monitor-prometheus-adapter   True        45d
+v1beta1.networking.k8s.io              Local                                           True        45d
+v1beta1.node.k8s.io                    Local                                           True        45d
+v1beta1.policy                         Local                                           True        45d
+v1beta1.rabbitmq.com                   Local                                           True        3h24m
+v1beta1.rbac.authorization.k8s.io      Local                                           True        45d
+v1beta1.scheduling.k8s.io              Local                                           True        45d
+v1beta1.storage.k8s.io                 Local                                           True        45d
+v1beta1.tracer.alauda.io               Local                                           True        3h50m
+v1beta1.webhook.certmanager.k8s.io     cert-manager/cert-manager-webhook               True        45d
+v1beta2.etcd.database.coreos.com       Local                                           True        31d
+v2.crd.alauda.io                       Local                                           True        13d
+v2beta1.autoscaling                    Local                                           True        45d
+v2beta2.autoscaling                    Local                                           True        45d
+
+kubectl get -n kafka chartrepos
+
+kubectl get -n kafka charts
+
+kubectl get -n kafka helmrequests
+
+kubectl get -n kafka releases
+
+kubectl get -n kafka applicationhistories
+
+kubectl get -n kafka applications
+
+kubectl get -n kafka controllerrevisions
+
+kubectl get -n kafka daemonsets
+
+kubectl get -n kafka deployments
+
+kubectl get -n kafka replicasets
+
+kubectl get -n kafka statefulsets
+
+kubectl get -n kafka functionresources
+NAME                                  AGE
+acp-alertsquery                       45d
+acp-app                               45d
+acp-apphelm                           45d
+acp-appmarket                         45d
+acp-autoscalers                       45d
+acp-configmap                         45d
+acp-federatedapplications             45d
+acp-federatednamespaces               45d
+acp-federatedresourcequotas           45d
+acp-k8sresource                       45d
+acp-limitranges                       45d
+acp-loadbalance-use                   45d
+acp-namespaceoverviews                45d
+acp-namespaces                        45d
+acp-networkdiagnose                   45d
+acp-networkpolicies                   45d
+acp-openshiftroutes                   45d
+acp-podsecuritypolicies               45d
+acp-podsexec                          45d
+acp-podslog                           45d
+acp-resourcequotas                    45d
+acp-rootexec                          45d
+acp-rules                             45d
+acp-subnet                            45d
+aiops-alerts                          45d
+aiops-alerttemplate                   45d
+aiops-audits                          45d
+aiops-events                          45d
+aiops-logs                            45d
+aiops-notifications                   45d
+aiops-notificationsmanage             45d
+aml-amljenkinsbindings                45d
+aml-amlpipelineconfigs                45d
+aml-amlpipelines                      45d
+aml-amlpipelinetemplates              45d
+aml-amlprojectbindings                45d
+aml-amlsecrets                        45d
+aml-dataviewers                       45d
+aml-k8sresource                       45d
+aml-modeldeployments                  45d
+aml-notebooks                         45d
+aml-pytorchjobs                       45d
+aml-tensorflowtrainings               45d
+aml-tfjobs                            45d
+asm-asmk8sresource                    45d
+asm-asmloadbalancers                  45d
+asm-authorizationpolicy               45d
+asm-canarydeliveries                  45d
+asm-canarytemplates                   45d
+asm-casemonitors                      45d
+asm-clusterconfig                     45d
+asm-connectionpools                   45d
+asm-errorchecks                       45d
+asm-gateways                          45d
+asm-istioauthentication               45d
+asm-istioconfig                       45d
+asm-istionetworking                   45d
+asm-istiorbac                         45d
+asm-istiosecurity                     45d
+asm-microservices                     45d
+asm-outlierdetections                 45d
+asm-policies                          45d
+asm-servicemeshs                      45d
+asm-virtualservices                   45d
+asm-whitelists                        45d
+devops-clusterpipelinetasktemplates   45d
+devops-clusterpipelinetemplates       45d
+devops-clusterpipelinetemplatesyncs   45d
+devops-devopstools                    45d
+devops-pipelineconfigs                45d
+devops-pipelines                      45d
+devops-pipelinetasktemplates          45d
+devops-pipelinetemplates              45d
+devops-pipelinetemplatesyncs          45d
+devops-secret                         45d
+devops-toolbindings                   45d
+devops-toolresource                   45d
+infrastructure-clusterfeds            45d
+infrastructure-clusters               45d
+infrastructure-domains                45d
+infrastructure-loadbalance            45d
+infrastructure-nodesmanage            45d
+infrastructure-persistentvolumes      45d
+infrastructure-storageclasses         45d
+platform-manage-commonconfigs         45d
+platform-manage-featuregates          45d
+platform-manage-idpmanage             45d
+platform-manage-meters                45d
+platform-manage-portal                45d
+platform-manage-productlist           45d
+platform-manage-projectmanage         45d
+platform-manage-rolesmanage           45d
+platform-manage-userbindings          45d
+platform-manage-usersmanage           45d
+tdsql-accounts                        15d
+tdsql-instancebindings                15d
+tdsql-instances                       15d
+views-acp-manageview                  45d
+views-acp-userview                    45d
+views-aml-manageview                  45d
+views-aml-userview                    45d
+views-asm-manageview                  45d
+views-asm-userview                    45d
+views-devops-manageview               45d
+views-devops-userview                 45d
+views-maintenanceview                 45d
+views-platformview                    45d
+views-projectview                     45d
+
+kubectl get -n kafka groupbindings
+NAME                                                                AGE
+361a6c6fe83acc597cc0e82fa2d266d9-992811368a2d05f316d2408329db0f7a   15d
+61e2c054559da82ee780ca2b4bc6b3a5-992811368a2d05f316d2408329db0f7a   15d
+75c16c87a082637c28b3ac1049e841d2-992811368a2d05f316d2408329db0f7a   30d
+8afe307d054f1e96ce2e3d10aa374162-992811368a2d05f316d2408329db0f7a   45d
+d6ff19b49aa4c403815395083c5d9a66-992811368a2d05f316d2408329db0f7a   15d
+f0f05a8a9c1ea55dc5e3c39e05f94223-992811368a2d05f316d2408329db0f7a   15d
+
+kubectl get -n kafka groups
+NAME                               AGE
+992811368a2d05f316d2408329db0f7a   45d
+
+kubectl get -n kafka projectbindings
+NAME                  AGE
+cpaas-system-global   37d
+haoli-global          23d
+haoli-region          23d
+hchan-global          22d
+joe-global            44d
+joe-region            44d
+jwxiong-global        10d
+jwxiong-region        9d
+pg-global             22d
+redis-global          22d
+yqhou-global          35d
+zlc-global            39d
+zlc-region            21d
+zxl-global            29d
+zxl-region            29d
+
+kubectl get -n kafka projectquotas
+NAME           AGE
+cpaas-system   37d
+haoli          23d
+hchan          22d
+joe            44d
+jwxiong        10d
+pg             22d
+redis          22d
+yqhou          35d
+zlc            39d
+zxl            29d
+
+kubectl get -n kafka projects
+NAME           AGE
+cpaas-system   37d
+haoli          23d
+hchan          22d
+joe            44d
+jwxiong        10d
+pg             22d
+redis          22d
+yqhou          35d
+zlc            39d
+zxl            29d
+
+kubectl get -n kafka roletemplates
+NAME                         AGE
+a123                         31d
+acp-namespace-admin          45d
+acp-namespace-developer      45d
+acp-platform-admin           45d
+acp-platform-auditor         45d
+acp-project-admin            45d
+database-administrator       30d
+f                            15d
+namespace-admin-system       15d
+namespace-developer-system   15d
+project-admin-system         15d
+
+kubectl get -n kafka userbindings
+NAME                               AGE
+1c9de58325334177f9a9f5c51b60f425   45d
+373e300ce512556303b7dee857c6f242   30d
+46704624fbdf912741cbf7942f4325dd   15d
+6e01ac2af9a1882c5ad4d6c411f2c097   15d
+ea6da821af033a217638f032c2946f88   15d
+
+kubectl get -n kafka users
+NAME                               AGE
+361a6c6fe83acc597cc0e82fa2d266d9   15d
+61e2c054559da82ee780ca2b4bc6b3a5   15d
+75c16c87a082637c28b3ac1049e841d2   30d
+8afe307d054f1e96ce2e3d10aa374162   45d
+d6ff19b49aa4c403815395083c5d9a66   15d
+f0f05a8a9c1ea55dc5e3c39e05f94223   15d
+
+kubectl get -n kafka views
+NAME                AGE
+acp-manageview      45d
+acp-userview        45d
+aml-manageview      45d
+aml-userview        45d
+asm-userview        45d
+devops-manageview   45d
+devops-userview     45d
+platformview        45d
+projectview         45d
+sam-manageview      45d
+
+kubectl get -n kafka tokenreviews
+
+kubectl get -n kafka localsubjectaccessreviews
+
+kubectl get -n kafka selfsubjectaccessreviews
+
+kubectl get -n kafka selfsubjectrulesreviews
+
+kubectl get -n kafka subjectaccessreviews
+
+kubectl get -n kafka horizontalpodautoscalers
+
+kubectl get -n kafka cronjobs
+
+kubectl get -n kafka jobs
+
+kubectl get -n kafka configmaps
+
+kubectl get -n kafka namespaces
+NAME                 STATUS   AGE
+cert-manager         Active   45d
+cpaas-system         Active   45d
+default              Active   45d
+fzz                  Active   32d
+haoli                Active   23d
+haoli-test           Active   23d
+hchan                Active   22d
+joe                  Active   44d
+jwx-mongo            Active   7h11m
+jwxiong              Active   10d
+jwxiong-mongo        Active   6h49m
+kafka                Active   39d
+kube-node-lease      Active   45d
+kube-public          Active   45d
+kube-system          Active   45d
+local-path-storage   Active   38d
+minio                Active   4h6m
+operators            Active   17d
+pg                   Active   22d
+redis                Active   22d
+rook-ceph            Active   45d
+tke                  Active   45d
+yqhou                Active   35d
+zlc                  Active   39d
+zlc-global           Active   14d
+zxl                  Active   29d
+zxl-mongodb          Active   10d
+
+kubectl get -n kafka nsemigrations
+
+kubectl get -n kafka platforms
+NAME               CREATED AT
+platform-default   2020-08-25T09:35:52Z
+
+kubectl get -n kafka portal
+NAME   CREATED AT
+       0001-01-01T00:00:00Z
+
+kubectl get -n kafka projects
+NAME           AGE
+cpaas-system   37d
+haoli          23d
+hchan          22d
+joe            44d
+jwxiong        10d
+pg             22d
+redis          22d
+yqhou          35d
+zlc            39d
+zxl            29d
+
+kubectl get -n kafka certificatesigningrequests
+
+kubectl get -n kafka certificaterequests
+
+kubectl get -n kafka certificates
+
+kubectl get -n kafka challenges
+
+kubectl get -n kafka clusterissuers
+
+kubectl get -n kafka issuers
+
+kubectl get -n kafka orders
+
+kubectl get -n kafka clusters
+NAME     TYPE        VERSION   STATUS    AGE
+global   Baremetal   1.16.9    Running   45d
+region   Baremetal   1.16.9    Running   45d
+
+kubectl get -n kafka leases
+
+kubectl get -n kafka alaudaloadbalancer2
+
+kubectl get -n kafka clusternetworkpolicies
+
+kubectl get -n kafka domains
+
+kubectl get -n kafka frontends
+
+kubectl get -n kafka rules
+
+kubectl get -n kafka redisfailovers
+
+kubectl get -n kafka authcodes
+
+kubectl get -n kafka authrequests
+
+kubectl get -n kafka connectors
+
+kubectl get -n kafka oauth2clients
+
+kubectl get -n kafka offlinesessionses
+
+kubectl get -n kafka passwords
+
+kubectl get -n kafka refreshtokens
+
+kubectl get -n kafka signingkeies
+
+kubectl get -n kafka etcdbackups
+
+kubectl get -n kafka etcdclusters
+
+kubectl get -n kafka etcdrestores
+
+kubectl get -n kafka events
+LAST SEEN   TYPE      REASON             OBJECT                                                 MESSAGE
+<unknown>   Warning   FailedScheduling   pod/my-cluster-entity-operator-9d996575b-9jxlt         0/3 nodes are available: 3 Insufficient cpu.
+<unknown>   Warning   FailedScheduling   pod/my-cluster-entity-operator-9d996575b-9jxlt         skip schedule deleting pod: kafka/my-cluster-entity-operator-9d996575b-9jxlt
+53m         Normal    Killing            pod/my-cluster-kafka-0                                 Stopping container kafka
+53m         Normal    Killing            pod/my-cluster-kafka-0                                 Stopping container tls-sidecar
+53m         Normal    Killing            pod/my-cluster-kafka-1                                 Stopping container kafka
+53m         Normal    Killing            pod/my-cluster-kafka-1                                 Stopping container tls-sidecar
+53m         Normal    Killing            pod/my-cluster-kafka-2                                 Stopping container kafka
+53m         Normal    Killing            pod/my-cluster-kafka-2                                 Stopping container tls-sidecar
+53m         Normal    Killing            pod/my-cluster-zookeeper-0                             Stopping container zookeeper
+53m         Normal    Killing            pod/my-cluster-zookeeper-1                             Stopping container zookeeper
+53m         Normal    Killing            pod/my-cluster-zookeeper-2                             Stopping container zookeeper
+48m         Normal    Killing            pod/strimzi-cluster-operator-v0.18.0-5c7bf866f-kk4b7   Stopping container strimzi-cluster-operator
+
+kubectl get -n kafka ingresses
+
+kubectl get -n kafka clusterfeds
+
+kubectl get -n kafka features
+NAME            AGE
+log             45d
+prometheus      45d
+resourceratio   45d
+
+kubectl get -n kafka imoocpods
+
+kubectl get -n kafka namespaceoverviews
+NAME    AGE
+kafka   29d
+
+kubectl get -n kafka kafkabridges
+
+kubectl get -n kafka kafkaconnectors
+
+kubectl get -n kafka kafkaconnects
+
+kubectl get -n kafka kafkaconnects2is
+
+kubectl get -n kafka kafkamirrormaker2s
+
+kubectl get -n kafka kafkamirrormakers
+
+kubectl get -n kafka kafkarebalances
+
+kubectl get -n kafka kafkas
+
+kubectl get -n kafka kafkatopics
+
+kubectl get -n kafka kafkausers
+
+kubectl get -n kafka reports
+
+kubectl get -n kafka nodes
+NAME           STATUS   ROLES    AGE   VERSION
+10.0.128.237   Ready    master   45d   v1.16.9
+10.0.128.64    Ready    master   45d   v1.16.9
+10.0.129.171   Ready    master   45d   v1.16.9
+
+kubectl get -n kafka pods
+
+kubectl get -n kafka products
+NAME            AGE
+elasticsearch   42d
+kafka           42d
+mongodb         42d
+mysql           42d
+postgresql      42d
+redis           42d
+redis-tencent   42d
+tdmq            42d
+tdsql           42d
+
+kubectl get -n kafka alertmanagers
+
+kubectl get -n kafka podmonitors
+
+kubectl get -n kafka prometheuses
+
+kubectl get -n kafka prometheusrules
+
+kubectl get -n kafka servicemonitors
+NAME            AGE
+kafka-monitor   29d
+
+kubectl get -n kafka thanosrulers
+
+kubectl get -n kafka ingresses
+
+kubectl get -n kafka networkpolicies
+NAME                    POD-SELECTOR   AGE
+deny-other-namespaces   <none>         12d
+
+kubectl get -n kafka runtimeclasses
+
+kubectl get -n kafka appreleases
+
+kubectl get -n kafka commonconfigs
+NAME       AGE
+platform   45d
+
+kubectl get -n kafka rels
+
+kubectl get -n kafka catalogsources
+
+kubectl get -n kafka clusterserviceversions
+NAME                                     DISPLAY            VERSION   REPLACES   PHASE
+percona-server-mongodb-operator.v1.4.0   MongoDB Operator   1.4.0                Succeeded
+
+kubectl get -n kafka installplans
+
+kubectl get -n kafka operatorgroups
+NAME          AGE
+kafka-zm2bf   17d
+
+kubectl get -n kafka subscriptions
+
+kubectl get -n kafka packagemanifests
+NAME                              CATALOG   AGE
+rabbitmq-cluster-operator         平台自研      17d
+postgres-operator                 平台自研      17d
+percona-server-mongodb-operator   平台自研      17d
+percona-xtradb-cluster-operator   平台自研      17d
+devops-tool-operator              平台自研      17d
+redis-operator                    平台自研      17d
+consul-operator                   平台自研      17d
+strimzi-kafka-operator            平台自研      17d
+jaeger-operator                   平台自研      17d
+kong-operator                     平台自研      17d
+
+kubectl get -n kafka clusteraddontypes
+NAME              CREATED AT
+cronhpa           0001-01-01T00:00:00Z
+prometheus        0001-01-01T00:00:00Z
+lbcf              0001-01-01T00:00:00Z
+persistentevent   0001-01-01T00:00:00Z
+tappcontroller    0001-01-01T00:00:00Z
+csioperator       0001-01-01T00:00:00Z
+volumedecorator   0001-01-01T00:00:00Z
+ipam              0001-01-01T00:00:00Z
+helm              0001-01-01T00:00:00Z
+logcollector      0001-01-01T00:00:00Z
+
+kubectl get -n kafka clustercredentials
+NAME          CREATED AT
+cc-global     2020-08-25T09:30:33Z
+cc-tvgrmfnv   2020-08-25T10:04:12Z
+
+kubectl get -n kafka clusters
+NAME     TYPE        VERSION   STATUS    AGE
+global   Baremetal   1.16.9    Running   45d
+region   Baremetal   1.16.9    Running   45d
+
+kubectl get -n kafka configmaps
+
+kubectl get -n kafka cronhpas
+
+kubectl get -n kafka csioperators
+
+kubectl get -n kafka helms
+
+kubectl get -n kafka ipams
+
+kubectl get -n kafka lbcfs
+
+kubectl get -n kafka logcollectors
+
+kubectl get -n kafka machines
+NAME          TYPE        IP             STATUS    AGE
+mc-fzpd9pkb   Baremetal   10.0.128.175   Running   45d
+
+kubectl get -n kafka persistentevents
+
+kubectl get -n kafka prometheuses
+
+kubectl get -n kafka registries
+
+kubectl get -n kafka tappcontrollers
+
+kubectl get -n kafka volumedecorators
+
+kubectl get -n kafka poddisruptionbudgets
+
+kubectl get -n kafka podsecuritypolicies
+NAME                                  PRIV    CAPS   SELINUX    RUNASUSER   FSGROUP     SUPGROUP    READONLYROOTFS   VOLUMES
+20-user-restricted                    true    *      RunAsAny   RunAsAny    RunAsAny    RunAsAny    false            *
+80-system-privileged                  true    *      RunAsAny   RunAsAny    RunAsAny    RunAsAny    false            *
+kube-prometheus                       false          RunAsAny   RunAsAny    MustRunAs   MustRunAs   false            configMap,emptyDir,projected,secret,downwardAPI,persistentVolumeClaim
+kube-prometheus-alertmanager          false          RunAsAny   RunAsAny    MustRunAs   MustRunAs   false            configMap,emptyDir,projected,secret,downwardAPI,persistentVolumeClaim
+kube-prometheus-exporter-kube-state   false          RunAsAny   RunAsAny    MustRunAs   MustRunAs   false            configMap,emptyDir,projected,secret,downwardAPI,persistentVolumeClaim
+kube-prometheus-exporter-node         false          RunAsAny   RunAsAny    MustRunAs   MustRunAs   false            configMap,emptyDir,projected,secret,downwardAPI,persistentVolumeClaim,hostPath
+kube-prometheus-grafana               false          RunAsAny   RunAsAny    MustRunAs   MustRunAs   false            configMap,emptyDir,projected,secret,downwardAPI,persistentVolumeClaim,hostPath
+prometheus-operator                   false          RunAsAny   RunAsAny    MustRunAs   MustRunAs   false            configMap,emptyDir,projected,secret,downwardAPI,persistentVolumeClaim
+
+kubectl get -n kafka alaudaproducts
+NAME               AGE
+console-acp        45d
+console-platform   45d
+
+kubectl get -n kafka acp
+NAME   AGE
+acp    45d
+
+kubectl get -n kafka productbases
+
+kubectl get -n kafka redisinstallers
+
+kubectl get -n kafka tdsqldeploys
+NAME                AGE
+tdsqldeploy-home1   28m
+
+kubectl get -n kafka perconaservermongodbbackups
+
+kubectl get -n kafka perconaservermongodbrestores
+
+kubectl get -n kafka perconaservermongodbs
+
+kubectl get -n kafka perconaxtradbbackups
+
+kubectl get -n kafka perconaxtradbclusterbackups
+
+kubectl get -n kafka perconaxtradbclusterrestores
+
+kubectl get -n kafka perconaxtradbclusters
+
+kubectl get -n kafka rabbitmqclusters
+
+kubectl get -n kafka clusterrolebindings
+NAME                                                                 AGE
+acp-platform-admin-1c9de58325334177f9a9f5c51b60f425                  45d
+cephfs-provisioner                                                   44d
+cert-manager-cainjector                                              45d
+cert-manager-controller-certificates                                 45d
+cert-manager-controller-challenges                                   45d
+cert-manager-controller-clusterissuers                               45d
+cert-manager-controller-ingress-shim                                 45d
+cert-manager-controller-issuers                                      45d
+cert-manager-controller-orders                                       45d
+cert-manager-leaderelection                                          45d
+cert-manager-webhook:auth-delegator                                  45d
+cluster-admin                                                        45d
+default-admin-user-binding                                           45d
+default-sa:cluster-admin                                             45d
+ext-acp-namespace-admin-6e01ac2af9a1882c5ad4d6c411f2c097             15d
+ext-acp-namespace-developer-ea6da821af033a217638f032c2946f88         15d
+ext-acp-project-admin-46704624fbdf912741cbf7942f4325dd               15d
+ext-custom-database-administrator-373e300ce512556303b7dee857c6f242   30d
+flannel                                                              45d
+galaxy                                                               45d
+kube-prometheus                                                      45d
+kube-prometheus-exporter-kube-state                                  45d
+kubeadm:kubelet-bootstrap                                            45d
+kubeadm:node-autoapprove-bootstrap                                   45d
+kubeadm:node-autoapprove-certificate-rotation                        45d
+kubeadm:node-proxier                                                 45d
+kubernetes-event-exporter                                            45d
+local-path-provisioner-bind                                          38d
+logging                                                              45d
+olm-operator-binding-olm                                             17d
+packageserver-service-system:auth-delegator                          17d
+percona-server-mongodb-operator.v1.4.0-4kq7c-percona-servehczvb      6h55m
+prometheus-adapter-hpa-controller                                    45d
+prometheus-adapter-hpa-controller-external-metrics                   45d
+prometheus-adapter-hpa-controller-metrics                            45d
+prometheus-adapter-resource-reader                                   45d
+prometheus-adapter:system:auth-delegator                             45d
+prometheus-operator                                                  45d
+psp-kube-prometheus                                                  45d
+psp-kube-prometheus-alertmanager                                     45d
+psp-kube-prometheus-exporter-kube-state                              45d
+psp-kube-prometheus-exporter-node                                    45d
+psp-kube-prometheus-grafana                                          45d
+psp-prometheus-operator                                              45d
+psp:user-restricted                                                  45d
+rabbitmq-cluster-operator.v0.8.0-lsqtc-rabbitmq-cluster-op9gk8q      16d
+redis-installer                                                      3h32m
+redis-operator.v0.3.0-zjlk8-redis-operator-fllr4                     9d
+redisoperator                                                        16d
+sentry-sa:cluster-admin                                              45d
+system:basic-user                                                    45d
+system:controller:attachdetach-controller                            45d
+system:controller:certificate-controller                             45d
+system:controller:clusterrole-aggregation-controller                 45d
+system:controller:cronjob-controller                                 45d
+system:controller:daemon-set-controller                              45d
+system:controller:deployment-controller                              45d
+system:controller:disruption-controller                              45d
+system:controller:endpoint-controller                                45d
+system:controller:expand-controller                                  45d
+system:controller:generic-garbage-collector                          45d
+system:controller:horizontal-pod-autoscaler                          45d
+system:controller:job-controller                                     45d
+system:controller:namespace-controller                               45d
+system:controller:node-controller                                    45d
+system:controller:persistent-volume-binder                           45d
+system:controller:pod-garbage-collector                              45d
+system:controller:pv-protection-controller                           45d
+system:controller:pvc-protection-controller                          45d
+system:controller:replicaset-controller                              45d
+system:controller:replication-controller                             45d
+system:controller:resourcequota-controller                           45d
+system:controller:route-controller                                   45d
+system:controller:service-account-controller                         45d
+system:controller:service-controller                                 45d
+system:controller:statefulset-controller                             45d
+system:controller:ttl-controller                                     45d
+system:coredns                                                       45d
+system:discovery                                                     45d
+system:kube-controller-manager                                       45d
+system:kube-dns                                                      45d
+system:kube-scheduler                                                45d
+system:node                                                          45d
+system:node-proxier                                                  45d
+system:public-info-viewer                                            45d
+system:volume-scheduler                                              45d
+tdsql-default-cluster-admin                                          10d
+tdsql-operator                                                       42d
+tiller-cluster-rule                                                  45d
+
+kubectl get -n kafka clusterroles
+NAME                                                                   AGE
+acp-kube-public-b-namespace-admin                                      45d
+acp-kube-public-b-namespace-developer                                  45d
+acp-kube-public-b-project-admin                                        45d
+acp-namespace-admin                                                    45d
+acp-namespace-developer                                                45d
+acp-platform-admin                                                     45d
+acp-platform-auditor                                                   45d
+acp-pns-namespace-admin                                                45d
+acp-pns-namespace-developer                                            45d
+acp-pns-project-admin                                                  45d
+acp-project-admin                                                      45d
+acp-sys-b-namespace-admin                                              45d
+acp-sys-b-namespace-developer                                          45d
+acp-sys-b-project-admin                                                45d
+acp-sys-namespace-admin                                                45d
+acp-sys-namespace-developer                                            45d
+acp-sys-project-admin                                                  45d
+admin                                                                  45d
+aggregate-olm-edit                                                     17d
+aggregate-olm-view                                                     17d
+cephfs-provisioner                                                     44d
+cert-manager-cainjector                                                45d
+cert-manager-controller-certificates                                   45d
+cert-manager-controller-challenges                                     45d
+cert-manager-controller-clusterissuers                                 45d
+cert-manager-controller-ingress-shim                                   45d
+cert-manager-controller-issuers                                        45d
+cert-manager-controller-orders                                         45d
+cert-manager-edit                                                      45d
+cert-manager-leaderelection                                            45d
+cert-manager-view                                                      45d
+cert-manager-webhook:webhook-requester                                 45d
+cluster-admin                                                          45d
+custom-a123                                                            31d
+custom-database-administrator                                          30d
+custom-f                                                               15d
+custom-kube-public-b-a123                                              31d
+custom-kube-public-b-database-administrator                            30d
+custom-kube-public-b-f                                                 15d
+custom-pns-a123                                                        31d
+custom-pns-database-administrator                                      30d
+custom-pns-f                                                           15d
+custom-sys-a123                                                        31d
+custom-sys-b-a123                                                      31d
+custom-sys-b-database-administrator                                    30d
+custom-sys-b-f                                                         15d
+custom-sys-database-administrator                                      30d
+custom-sys-f                                                           15d
+edit                                                                   45d
+etcdbackups.etcd.database.coreos.com-v1beta2-admin                     31d
+etcdbackups.etcd.database.coreos.com-v1beta2-crdview                   31d
+etcdbackups.etcd.database.coreos.com-v1beta2-edit                      31d
+etcdbackups.etcd.database.coreos.com-v1beta2-view                      31d
+etcdclusters.etcd.database.coreos.com-v1beta2-admin                    31d
+etcdclusters.etcd.database.coreos.com-v1beta2-crdview                  31d
+etcdclusters.etcd.database.coreos.com-v1beta2-edit                     31d
+etcdclusters.etcd.database.coreos.com-v1beta2-view                     31d
+etcdrestores.etcd.database.coreos.com-v1beta2-admin                    31d
+etcdrestores.etcd.database.coreos.com-v1beta2-crdview                  31d
+etcdrestores.etcd.database.coreos.com-v1beta2-edit                     31d
+etcdrestores.etcd.database.coreos.com-v1beta2-view                     31d
+ext-acp-namespace-admin                                                45d
+ext-acp-namespace-developer                                            45d
+ext-acp-project-admin                                                  45d
+ext-custom-a123                                                        31d
+ext-custom-database-administrator                                      30d
+ext-custom-f                                                           15d
+flannel                                                                45d
+global-operators-admin                                                 17d
+global-operators-edit                                                  17d
+global-operators-view                                                  17d
+haoli-mkbgb-admin                                                      16d
+haoli-mkbgb-edit                                                       16d
+haoli-mkbgb-view                                                       16d
+joe-sxq74-admin                                                        16d
+joe-sxq74-edit                                                         16d
+joe-sxq74-view                                                         16d
+kafka-zm2bf-admin                                                      17d
+kafka-zm2bf-edit                                                       17d
+kafka-zm2bf-view                                                       17d
+kafkabridges.kafka.strimzi.io-v1alpha1-admin                           20d
+kafkabridges.kafka.strimzi.io-v1alpha1-crdview                         20d
+kafkabridges.kafka.strimzi.io-v1alpha1-edit                            20d
+kafkabridges.kafka.strimzi.io-v1alpha1-view                            20d
+kafkaconnectors.kafka.strimzi.io-v1alpha1-admin                        20d
+kafkaconnectors.kafka.strimzi.io-v1alpha1-crdview                      20d
+kafkaconnectors.kafka.strimzi.io-v1alpha1-edit                         20d
+kafkaconnectors.kafka.strimzi.io-v1alpha1-view                         20d
+kafkaconnects.kafka.strimzi.io-v1beta1-admin                           20d
+kafkaconnects.kafka.strimzi.io-v1beta1-crdview                         20d
+kafkaconnects.kafka.strimzi.io-v1beta1-edit                            20d
+kafkaconnects.kafka.strimzi.io-v1beta1-view                            20d
+kafkaconnects2is.kafka.strimzi.io-v1beta1-admin                        20d
+kafkaconnects2is.kafka.strimzi.io-v1beta1-crdview                      20d
+kafkaconnects2is.kafka.strimzi.io-v1beta1-edit                         20d
+kafkaconnects2is.kafka.strimzi.io-v1beta1-view                         20d
+kafkamirrormaker2s.kafka.strimzi.io-v1alpha1-admin                     20d
+kafkamirrormaker2s.kafka.strimzi.io-v1alpha1-crdview                   20d
+kafkamirrormaker2s.kafka.strimzi.io-v1alpha1-edit                      20d
+kafkamirrormaker2s.kafka.strimzi.io-v1alpha1-view                      20d
+kafkamirrormakers.kafka.strimzi.io-v1beta1-admin                       20d
+kafkamirrormakers.kafka.strimzi.io-v1beta1-crdview                     20d
+kafkamirrormakers.kafka.strimzi.io-v1beta1-edit                        20d
+kafkamirrormakers.kafka.strimzi.io-v1beta1-view                        20d
+kafkarebalances.kafka.strimzi.io-v1alpha1-admin                        20d
+kafkarebalances.kafka.strimzi.io-v1alpha1-crdview                      20d
+kafkarebalances.kafka.strimzi.io-v1alpha1-edit                         20d
+kafkarebalances.kafka.strimzi.io-v1alpha1-view                         20d
+kafkas.kafka.strimzi.io-v1beta1-admin                                  23d
+kafkas.kafka.strimzi.io-v1beta1-crdview                                23d
+kafkas.kafka.strimzi.io-v1beta1-edit                                   23d
+kafkas.kafka.strimzi.io-v1beta1-view                                   23d
+kafkatopics.kafka.strimzi.io-v1beta1-admin                             39d
+kafkatopics.kafka.strimzi.io-v1beta1-crdview                           39d
+kafkatopics.kafka.strimzi.io-v1beta1-edit                              39d
+kafkatopics.kafka.strimzi.io-v1beta1-view                              39d
+kafkausers.kafka.strimzi.io-v1beta1-admin                              39d
+kafkausers.kafka.strimzi.io-v1beta1-crdview                            39d
+kafkausers.kafka.strimzi.io-v1beta1-edit                               39d
+kafkausers.kafka.strimzi.io-v1beta1-view                               39d
+kube-prometheus                                                        45d
+kube-prometheus-exporter-kube-state                                    45d
+kubernetes-event-exporter                                              45d
+local-path-provisioner-role                                            38d
+logging                                                                45d
+olm-operators-admin                                                    17d
+olm-operators-edit                                                     17d
+olm-operators-view                                                     17d
+packagemanifests-v1-admin                                              17d
+packagemanifests-v1-edit                                               17d
+packagemanifests-v1-view                                               17d
+percona-server-mongodb-operator.v1.4.0-4kq7c                           6h55m
+perconaservermongodbbackups.psmdb.percona.com-v1-admin                 10d
+perconaservermongodbbackups.psmdb.percona.com-v1-crdview               10d
+perconaservermongodbbackups.psmdb.percona.com-v1-edit                  10d
+perconaservermongodbbackups.psmdb.percona.com-v1-view                  10d
+perconaservermongodbrestores.psmdb.percona.com-v1-admin                10d
+perconaservermongodbrestores.psmdb.percona.com-v1-crdview              10d
+perconaservermongodbrestores.psmdb.percona.com-v1-edit                 10d
+perconaservermongodbrestores.psmdb.percona.com-v1-view                 10d
+perconaservermongodbs.psmdb.percona.com-v1-4-0-admin                   10d
+perconaservermongodbs.psmdb.percona.com-v1-4-0-crdview                 10d
+perconaservermongodbs.psmdb.percona.com-v1-4-0-edit                    10d
+perconaservermongodbs.psmdb.percona.com-v1-4-0-view                    10d
+perconaxtradbbackups.pxc.percona.com-v1alpha1-admin                    38d
+perconaxtradbbackups.pxc.percona.com-v1alpha1-crdview                  38d
+perconaxtradbbackups.pxc.percona.com-v1alpha1-edit                     38d
+perconaxtradbbackups.pxc.percona.com-v1alpha1-view                     38d
+perconaxtradbclusterbackups.pxc.percona.com-v1-admin                   38d
+perconaxtradbclusterbackups.pxc.percona.com-v1-crdview                 38d
+perconaxtradbclusterbackups.pxc.percona.com-v1-edit                    38d
+perconaxtradbclusterbackups.pxc.percona.com-v1-view                    38d
+perconaxtradbclusterrestores.pxc.percona.com-v1-admin                  38d
+perconaxtradbclusterrestores.pxc.percona.com-v1-crdview                38d
+perconaxtradbclusterrestores.pxc.percona.com-v1-edit                   38d
+perconaxtradbclusterrestores.pxc.percona.com-v1-view                   38d
+perconaxtradbclusters.pxc.percona.com-v1-5-0-admin                     18d
+perconaxtradbclusters.pxc.percona.com-v1-5-0-crdview                   18d
+perconaxtradbclusters.pxc.percona.com-v1-5-0-edit                      18d
+perconaxtradbclusters.pxc.percona.com-v1-5-0-view                      18d
+postgresqls.acid.zalan.do-v1-admin                                     44d
+postgresqls.acid.zalan.do-v1-crdview                                   44d
+postgresqls.acid.zalan.do-v1-edit                                      44d
+postgresqls.acid.zalan.do-v1-view                                      44d
+prometheus-adapter-metrics                                             45d
+prometheus-adapter-resource-reader                                     45d
+prometheus-adapter-server-resources                                    45d
+prometheus-operator                                                    45d
+psp-kube-prometheus                                                    45d
+psp-kube-prometheus-alertmanager                                       45d
+psp-kube-prometheus-exporter-kube-state                                45d
+psp-kube-prometheus-exporter-node                                      45d
+psp-kube-prometheus-grafana                                            45d
+psp-prometheus-operator                                                45d
+psp:system-privileged                                                  45d
+psp:user-restricted                                                    45d
+rabbitmq-cluster-operator.v0.8.0-lsqtc                                 16d
+rabbitmqclusters.rabbitmq.com-v1beta1-admin                            35d
+rabbitmqclusters.rabbitmq.com-v1beta1-crdview                          35d
+rabbitmqclusters.rabbitmq.com-v1beta1-edit                             35d
+rabbitmqclusters.rabbitmq.com-v1beta1-view                             35d
+redis-ctcpq-admin                                                      10d
+redis-ctcpq-edit                                                       10d
+redis-ctcpq-view                                                       10d
+redis-installer                                                        3h32m
+redis-operator.v0.3.0-zjlk8                                            9d
+redis.redis.opstreelabs.in-v1alpha1-admin                              9d
+redis.redis.opstreelabs.in-v1alpha1-crdview                            9d
+redis.redis.opstreelabs.in-v1alpha1-edit                               9d
+redis.redis.opstreelabs.in-v1alpha1-view                               9d
+redisfailovers.databases.spotahome.com-v1-admin                        9d
+redisfailovers.databases.spotahome.com-v1-crdview                      9d
+redisfailovers.databases.spotahome.com-v1-edit                         9d
+redisfailovers.databases.spotahome.com-v1-view                         9d
+strimzi-entity-operator                                                23d
+strimzi-kafka-broker                                                   23d
+system:aggregate-to-admin                                              45d
+system:aggregate-to-edit                                               45d
+system:aggregate-to-view                                               45d
+system:auth-delegator                                                  45d
+system:basic-user                                                      45d
+system:certificates.k8s.io:certificatesigningrequests:nodeclient       45d
+system:certificates.k8s.io:certificatesigningrequests:selfnodeclient   45d
+system:controller:attachdetach-controller                              45d
+system:controller:certificate-controller                               45d
+system:controller:clusterrole-aggregation-controller                   45d
+system:controller:cronjob-controller                                   45d
+system:controller:daemon-set-controller                                45d
+system:controller:deployment-controller                                45d
+system:controller:disruption-controller                                45d
+system:controller:endpoint-controller                                  45d
+system:controller:expand-controller                                    45d
+system:controller:generic-garbage-collector                            45d
+system:controller:horizontal-pod-autoscaler                            45d
+system:controller:job-controller                                       45d
+system:controller:namespace-controller                                 45d
+system:controller:node-controller                                      45d
+system:controller:operator-lifecycle-manager                           17d
+system:controller:persistent-volume-binder                             45d
+system:controller:pod-garbage-collector                                45d
+system:controller:pv-protection-controller                             45d
+system:controller:pvc-protection-controller                            45d
+system:controller:replicaset-controller                                45d
+system:controller:replication-controller                               45d
+system:controller:resourcequota-controller                             45d
+system:controller:route-controller                                     45d
+system:controller:service-account-controller                           45d
+system:controller:service-controller                                   45d
+system:controller:statefulset-controller                               45d
+system:controller:ttl-controller                                       45d
+system:coredns                                                         45d
+system:csi-external-attacher                                           45d
+system:csi-external-provisioner                                        45d
+system:discovery                                                       45d
+system:heapster                                                        45d
+system:kube-aggregator                                                 45d
+system:kube-controller-manager                                         45d
+system:kube-dns                                                        45d
+system:kube-scheduler                                                  45d
+system:kubelet-api-admin                                               45d
+system:node                                                            45d
+system:node-bootstrapper                                               45d
+system:node-problem-detector                                           45d
+system:node-proxier                                                    45d
+system:persistent-volume-provisioner                                   45d
+system:public-info-viewer                                              45d
+system:volume-scheduler                                                45d
+tdsql-operator                                                         42d
+tke-9lfmr-admin                                                        16d
+tke-9lfmr-edit                                                         16d
+tke-9lfmr-view                                                         16d
+view                                                                   45d
+zlc-j5t7x-admin                                                        11d
+zlc-j5t7x-edit                                                         11d
+zlc-j5t7x-view                                                         11d
+zxl-mongodb-6ktql-admin                                                10d
+zxl-mongodb-6ktql-edit                                                 10d
+zxl-mongodb-6ktql-view                                                 10d
+
+kubectl get -n kafka rolebindings
+
+kubectl get -n kafka roles
+
+kubectl get -n kafka redis
+
+kubectl get -n kafka priorityclasses
+NAME                      VALUE        GLOBAL-DEFAULT   AGE
+system-cluster-critical   2000000000   false            45d
+system-node-critical      2000001000   false            45d
+
+kubectl get -n kafka csidrivers
+
+kubectl get -n kafka csinodes
+
+kubectl get -n kafka storageclasses
+NAME                   PROVISIONER             AGE
+intceph                ceph.com/cephfs         25d
+local-path (default)   rancher.io/local-path   38d
+
+kubectl get -n kafka volumeattachments
+
+kubectl get -n kafka accounts
+
+kubectl get -n kafka clusteraccounts
+NAME                  AGE
+zlc-zlc               41d
+zlc-zz                37d
+zlcdis-chaos1ee       18d
+zlcdis-d              14d
+zlcdis-generate123    36d
+zlcdis-haoli          14d
+zlcdis-haoli123       36d
+zlcdis-iamyou         24d
+zlcdis-kkls           14d
+zlcdis-label-test     24d
+zlcdis-lihao          18d
+zlcdis-lihao-scope    25d
+zlcdis-lihao12        25d
+zlcdis-lihao12312     29d
+zlcdis-lihao123124    36d
+zlcdis-liwei          17d
+zlcdis-lorem1231      29d
+zlcdis-new-account    17d
+zlcdis-new-account2   14d
+zlcdis-scope-foo      25d
+zlcdis-scope-test     25d
+zlcdis-scope-test2    25d
+zlcdis-secrettest     29d
+zlcdis-test-123124    14d
+zlcdis-test-label     24d
+zlcdis-test-scope     24d
+zlcdis-test123        37d
+zlcdis-zlc            14d
+zlclvs-fdl            14d
+zlclvs-rrr            14d
+zlclvs-zlc            14d
+
+kubectl get -n kafka instancebindings
+
+kubectl get -n kafka instances
+NAME        AGE
+example     17d
+lvs-debug   17d
+zlc         41d
+zlcdis      41d
+zlclvs      39d
+
+kubectl get -n kafka requests
+NAME                   AGE
+zlcdis-1598610965544   41d
+zlcdis-1598839332362   39d
+zlcdis-1598839369960   39d
+
+kubectl get -n kafka cronhpas
+
+kubectl get -n kafka tracejobreports
+
+kubectl get -n kafka tracejobs
+NAME           AGE
+built-in-job   45d
+
+kubectl get -n kafka mutations
+
+kubectl get -n kafka validations
+
