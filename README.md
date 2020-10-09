@@ -86,6 +86,85 @@ strimzi kafka operator 部署的资源如下：
 
 
 
+```bash
+huzhi@huzhideMacBook-Pro strimzi-0.18.0 % kubectl create ns kafka
+namespace/kafka created
+
+huzhi@huzhideMacBook-Pro strimzi-0.18.0 % sed -i '' 's/namespace: .*/namespace: kafka/' install/cluster-operator/*RoleBinding*.yaml
+huzhi@huzhideMacBook-Pro strimzi-0.18.0 %
+huzhi@huzhideMacBook-Pro strimzi-0.18.0 % git status
+On branch master
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+	modified:   README.md
+	modified:   install/cluster-operator/020-RoleBinding-strimzi-cluster-operator.yaml
+	modified:   install/cluster-operator/021-ClusterRoleBinding-strimzi-cluster-operator.yaml
+	modified:   install/cluster-operator/030-ClusterRoleBinding-strimzi-cluster-operator-kafka-broker-delegation.yaml
+	modified:   install/cluster-operator/031-RoleBinding-strimzi-cluster-operator-entity-operator-delegation.yaml
+	modified:   install/cluster-operator/032-RoleBinding-strimzi-cluster-operator-topic-operator-delegation.yaml
+
+no changes added to commit (use "git add" and/or "git commit -a")
+huzhi@huzhideMacBook-Pro strimzi-0.18.0 %
+
+huzhi@huzhideMacBook-Pro strimzi-0.18.0 % kubectl create ns my-kafka-project
+namespace/my-kafka-project created
+huzhi@huzhideMacBook-Pro strimzi-0.18.0 %
+
+huzhi@huzhideMacBook-Pro strimzi-0.18.0 % git diff install/cluster-operator/050-Deployment-strimzi-cluster-operator.yaml
+diff --git a/install/cluster-operator/050-Deployment-strimzi-cluster-operator.yaml b/install/cluster-operator/050-Deployment-strimzi-cluster-operator.yaml
+index 526c542..c439dde 100644
+--- a/install/cluster-operator/050-Deployment-strimzi-cluster-operator.yaml
++++ b/install/cluster-operator/050-Deployment-strimzi-cluster-operator.yaml
+@@ -27,9 +27,7 @@ spec:
+         - /opt/strimzi/bin/cluster_operator_run.sh
+         env:
+         - name: STRIMZI_NAMESPACE
+-          valueFrom:
+-            fieldRef:
+-              fieldPath: metadata.namespace
++          value: my-kafka-project
+         - name: STRIMZI_FULL_RECONCILIATION_INTERVAL_MS
+           value: "120000"
+         - name: STRIMZI_OPERATION_TIMEOUT_MS
+huzhi@huzhideMacBook-Pro strimzi-0.18.0 %
+
+huzhi@huzhideMacBook-Pro strimzi-0.18.0 % kubectl apply -f install/cluster-operator/ -n kafka
+serviceaccount/strimzi-cluster-operator created
+clusterrole.rbac.authorization.k8s.io/strimzi-cluster-operator-namespaced created
+rolebinding.rbac.authorization.k8s.io/strimzi-cluster-operator created
+clusterrole.rbac.authorization.k8s.io/strimzi-cluster-operator-global created
+clusterrolebinding.rbac.authorization.k8s.io/strimzi-cluster-operator created
+clusterrole.rbac.authorization.k8s.io/strimzi-kafka-broker created
+clusterrolebinding.rbac.authorization.k8s.io/strimzi-cluster-operator-kafka-broker-delegation created
+clusterrole.rbac.authorization.k8s.io/strimzi-entity-operator created
+rolebinding.rbac.authorization.k8s.io/strimzi-cluster-operator-entity-operator-delegation created
+clusterrole.rbac.authorization.k8s.io/strimzi-topic-operator created
+rolebinding.rbac.authorization.k8s.io/strimzi-cluster-operator-topic-operator-delegation created
+Warning: apiextensions.k8s.io/v1beta1 CustomResourceDefinition is deprecated in v1.16+, unavailable in v1.22+; use apiextensions.k8s.io/v1 CustomResourceDefinition
+customresourcedefinition.apiextensions.k8s.io/kafkas.kafka.strimzi.io created
+customresourcedefinition.apiextensions.k8s.io/kafkaconnects.kafka.strimzi.io created
+customresourcedefinition.apiextensions.k8s.io/kafkaconnects2is.kafka.strimzi.io created
+customresourcedefinition.apiextensions.k8s.io/kafkatopics.kafka.strimzi.io created
+customresourcedefinition.apiextensions.k8s.io/kafkausers.kafka.strimzi.io created
+customresourcedefinition.apiextensions.k8s.io/kafkamirrormakers.kafka.strimzi.io created
+customresourcedefinition.apiextensions.k8s.io/kafkabridges.kafka.strimzi.io created
+customresourcedefinition.apiextensions.k8s.io/kafkaconnectors.kafka.strimzi.io created
+customresourcedefinition.apiextensions.k8s.io/kafkamirrormaker2s.kafka.strimzi.io created
+customresourcedefinition.apiextensions.k8s.io/kafkarebalances.kafka.strimzi.io created
+deployment.apps/strimzi-cluster-operator created
+huzhi@huzhideMacBook-Pro strimzi-0.18.0 %
+
+
+```
+
+
+
+
+
+
+
 
 
 
