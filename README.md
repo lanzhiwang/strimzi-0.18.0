@@ -81,43 +81,34 @@ strimzi kafka operator 部署的资源如下：
 * strimzi-user-operator
 
 
-
-
-
-
+## 在本地安装 strimzi
 
 ```bash
+#
+$ kind create cluster
+$ kind delete cluster
+
+#
 huzhi@huzhideMacBook-Pro strimzi-0.18.0 % kubectl create ns kafka
 namespace/kafka created
 
+#
 huzhi@huzhideMacBook-Pro strimzi-0.18.0 % sed -i '' 's/namespace: .*/namespace: kafka/' install/cluster-operator/*RoleBinding*.yaml
-huzhi@huzhideMacBook-Pro strimzi-0.18.0 %
-huzhi@huzhideMacBook-Pro strimzi-0.18.0 % git status
-On branch master
-Changes not staged for commit:
-  (use "git add <file>..." to update what will be committed)
-  (use "git checkout -- <file>..." to discard changes in working directory)
 
-	modified:   README.md
-	modified:   install/cluster-operator/020-RoleBinding-strimzi-cluster-operator.yaml
-	modified:   install/cluster-operator/021-ClusterRoleBinding-strimzi-cluster-operator.yaml
-	modified:   install/cluster-operator/030-ClusterRoleBinding-strimzi-cluster-operator-kafka-broker-delegation.yaml
-	modified:   install/cluster-operator/031-RoleBinding-strimzi-cluster-operator-entity-operator-delegation.yaml
-	modified:   install/cluster-operator/032-RoleBinding-strimzi-cluster-operator-topic-operator-delegation.yaml
+install/cluster-operator/020-RoleBinding-strimzi-cluster-operator.yaml
+install/cluster-operator/021-ClusterRoleBinding-strimzi-cluster-operator.yaml
+install/cluster-operator/030-ClusterRoleBinding-strimzi-cluster-operator-kafka-broker-delegation.yaml
+install/cluster-operator/031-RoleBinding-strimzi-cluster-operator-entity-operator-delegation.yaml
+install/cluster-operator/032-RoleBinding-strimzi-cluster-operator-topic-operator-delegation.yaml
 
-no changes added to commit (use "git add" and/or "git commit -a")
-huzhi@huzhideMacBook-Pro strimzi-0.18.0 %
-
+#
 huzhi@huzhideMacBook-Pro strimzi-0.18.0 % kubectl create ns my-kafka-project
 namespace/my-kafka-project created
 huzhi@huzhideMacBook-Pro strimzi-0.18.0 %
 
-huzhi@huzhideMacBook-Pro strimzi-0.18.0 % git diff install/cluster-operator/050-Deployment-strimzi-cluster-operator.yaml
-diff --git a/install/cluster-operator/050-Deployment-strimzi-cluster-operator.yaml b/install/cluster-operator/050-Deployment-strimzi-cluster-operator.yaml
-index 526c542..c439dde 100644
---- a/install/cluster-operator/050-Deployment-strimzi-cluster-operator.yaml
-+++ b/install/cluster-operator/050-Deployment-strimzi-cluster-operator.yaml
-@@ -27,9 +27,7 @@ spec:
+#
+$ vim install/cluster-operator/050-Deployment-strimzi-cluster-operator.yaml
+
          - /opt/strimzi/bin/cluster_operator_run.sh
          env:
          - name: STRIMZI_NAMESPACE
@@ -128,8 +119,16 @@ index 526c542..c439dde 100644
          - name: STRIMZI_FULL_RECONCILIATION_INTERVAL_MS
            value: "120000"
          - name: STRIMZI_OPERATION_TIMEOUT_MS
-huzhi@huzhideMacBook-Pro strimzi-0.18.0 %
 
+# 准备如下镜像：
+strimzi/operator:0.18.0
+strimzi/kafka:0.18.0-kafka-2.5.0
+strimzi/kafka:0.18.0-kafka-2.4.0
+strimzi/kafka:0.18.0-kafka-2.4.1
+strimzi/kafka-bridge:0.16.0
+strimzi/jmxtrans:0.18.0
+
+#
 huzhi@huzhideMacBook-Pro strimzi-0.18.0 % kubectl apply -f install/cluster-operator/ -n kafka
 serviceaccount/strimzi-cluster-operator created
 clusterrole.rbac.authorization.k8s.io/strimzi-cluster-operator-namespaced created
