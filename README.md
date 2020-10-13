@@ -272,8 +272,7 @@ kafkausers.kafka.strimzi.io-v1beta1-view                               42d
 strimzi-entity-operator                                                26d
 strimzi-kafka-broker                                                   26d
 
-
-
+########################################################
 
 [root@mw-init ~]# kubectl create namespace kafka
 namespace/kafka created
@@ -296,6 +295,66 @@ kafka-7dpb8-admin                                                      3m32s
 kafka-7dpb8-edit                                                       3m32s
 kafka-7dpb8-view                                                       3m32s
 strimzi-cluster-operator.v0.18.0-6jbmk                                 3m27s
+
+
+kubectl get -n kafka componentstatuses
+
+kubectl get -n kafka events
+
+kubectl get -n kafka pods
+NAME                                               READY   STATUS    RESTARTS   AGE
+strimzi-cluster-operator-v0.18.0-99fc5c9f5-zsrx8   1/1     Running   0          43m
+
+kubectl get -n kafka secrets
+NAME                                   TYPE                                  DATA   AGE
+default-token-r5ztg                    kubernetes.io/service-account-token   3      44m
+strimzi-cluster-operator-token-8r97s   kubernetes.io/service-account-token   3      43m
+
+kubectl get -n kafka serviceaccounts
+NAME                       SECRETS   AGE
+default                    1         44m
+strimzi-cluster-operator   1         43m
+
+
+kubectl get -n kafka productions
+
+kubectl get -n kafka mutatingwebhookconfigurations
+
+kubectl get -n kafka validatingwebhookconfigurations
+
+kubectl get -n kafka deployments
+NAME                               READY   UP-TO-DATE   AVAILABLE   AGE
+strimzi-cluster-operator-v0.18.0   1/1     1            1           43m
+
+kubectl get -n kafka replicasets
+NAME                                         DESIRED   CURRENT   READY   AGE
+strimzi-cluster-operator-v0.18.0-99fc5c9f5   1         1         1       43m
+
+kubectl get -n kafka clusterserviceversions
+NAME                               DISPLAY          VERSION   REPLACES   PHASE
+strimzi-cluster-operator.v0.18.0   Kafka Operator   0.18.0               Succeeded
+
+kubectl get -n kafka installplans
+NAME            CSV                                APPROVAL    APPROVED
+install-c47dn   strimzi-cluster-operator.v0.18.0   Automatic   true
+
+kubectl get -n kafka operatorgroups
+NAME          AGE
+kafka-7dpb8   43m
+
+kubectl get -n kafka subscriptions
+NAME                     PACKAGE                  SOURCE     CHANNEL
+strimzi-kafka-operator   strimzi-kafka-operator   platform   stable
+
+kubectl get -n kafka rolebindings
+NAME                                                              AGE
+strimzi-cluster-operator.v0.18.0-5d4db-strimzi-cluster-opeczh7s   43m
+
+kubectl get -n kafka roles
+NAME                                     AGE
+strimzi-cluster-operator.v0.18.0-5d4db   43m
+
+
 
 
 
