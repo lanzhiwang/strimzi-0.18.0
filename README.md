@@ -170,7 +170,6 @@ huzhi@huzhideMacBook-Pro strimzi-0.18.0 %
 
 ```bash
 kubectl get -n kafka customresourcedefinitions
-
 kafkabridges.kafka.strimzi.io                    2020-09-18T11:39:55Z
 kafkaconnectors.kafka.strimzi.io                 2020-09-18T11:39:55Z
 kafkaconnects.kafka.strimzi.io                   2020-09-18T11:39:55Z
@@ -183,9 +182,85 @@ kafkatopics.kafka.strimzi.io                     2020-08-31T03:35:06Z
 kafkausers.kafka.strimzi.io                      2020-08-31T03:35:06Z
 
 
+kubectl get -n kafka apiservices
+NAME                                   SERVICE                                         AVAILABLE   AGE
+v1alpha1.kafka.strimzi.io              Local                                           True        2d8h
+v1beta1.kafka.strimzi.io               Local                                           True        3d19h
+
+kubectl get -n kafka kafkabridges
+
+kubectl get -n kafka kafkaconnectors
+
+kubectl get -n kafka kafkaconnects
+
+kubectl get -n kafka kafkaconnects2is
+
+kubectl get -n kafka kafkamirrormaker2s
+
+kubectl get -n kafka kafkamirrormakers
+
+kubectl get -n kafka kafkarebalances
+
+kubectl get -n kafka kafkas
+
+kubectl get -n kafka kafkatopics
+
+kubectl get -n kafka kafkausers
+
+kubectl get -n kafka products
+NAME            AGE
+kafka           45d
 
 
+kubectl get -n kafka packagemanifests
+NAME                              CATALOG   AGE
+strimzi-kafka-operator            平台自研      20d
 
+
+kubectl get -n kafka clusterroles
+NAME                                                                   AGE
+kafkabridges.kafka.strimzi.io-v1alpha1-admin                           24d
+kafkabridges.kafka.strimzi.io-v1alpha1-crdview                         24d
+kafkabridges.kafka.strimzi.io-v1alpha1-edit                            24d
+kafkabridges.kafka.strimzi.io-v1alpha1-view                            24d
+kafkaconnectors.kafka.strimzi.io-v1alpha1-admin                        24d
+kafkaconnectors.kafka.strimzi.io-v1alpha1-crdview                      24d
+kafkaconnectors.kafka.strimzi.io-v1alpha1-edit                         24d
+kafkaconnectors.kafka.strimzi.io-v1alpha1-view                         24d
+kafkaconnects.kafka.strimzi.io-v1beta1-admin                           24d
+kafkaconnects.kafka.strimzi.io-v1beta1-crdview                         24d
+kafkaconnects.kafka.strimzi.io-v1beta1-edit                            24d
+kafkaconnects.kafka.strimzi.io-v1beta1-view                            24d
+kafkaconnects2is.kafka.strimzi.io-v1beta1-admin                        24d
+kafkaconnects2is.kafka.strimzi.io-v1beta1-crdview                      24d
+kafkaconnects2is.kafka.strimzi.io-v1beta1-edit                         24d
+kafkaconnects2is.kafka.strimzi.io-v1beta1-view                         24d
+kafkamirrormaker2s.kafka.strimzi.io-v1alpha1-admin                     24d
+kafkamirrormaker2s.kafka.strimzi.io-v1alpha1-crdview                   24d
+kafkamirrormaker2s.kafka.strimzi.io-v1alpha1-edit                      24d
+kafkamirrormaker2s.kafka.strimzi.io-v1alpha1-view                      24d
+kafkamirrormakers.kafka.strimzi.io-v1beta1-admin                       24d
+kafkamirrormakers.kafka.strimzi.io-v1beta1-crdview                     24d
+kafkamirrormakers.kafka.strimzi.io-v1beta1-edit                        24d
+kafkamirrormakers.kafka.strimzi.io-v1beta1-view                        24d
+kafkarebalances.kafka.strimzi.io-v1alpha1-admin                        24d
+kafkarebalances.kafka.strimzi.io-v1alpha1-crdview                      24d
+kafkarebalances.kafka.strimzi.io-v1alpha1-edit                         24d
+kafkarebalances.kafka.strimzi.io-v1alpha1-view                         24d
+kafkas.kafka.strimzi.io-v1beta1-admin                                  26d
+kafkas.kafka.strimzi.io-v1beta1-crdview                                26d
+kafkas.kafka.strimzi.io-v1beta1-edit                                   26d
+kafkas.kafka.strimzi.io-v1beta1-view                                   26d
+kafkatopics.kafka.strimzi.io-v1beta1-admin                             42d
+kafkatopics.kafka.strimzi.io-v1beta1-crdview                           42d
+kafkatopics.kafka.strimzi.io-v1beta1-edit                              42d
+kafkatopics.kafka.strimzi.io-v1beta1-view                              42d
+kafkausers.kafka.strimzi.io-v1beta1-admin                              42d
+kafkausers.kafka.strimzi.io-v1beta1-crdview                            42d
+kafkausers.kafka.strimzi.io-v1beta1-edit                               42d
+kafkausers.kafka.strimzi.io-v1beta1-view                               42d
+strimzi-entity-operator                                                26d
+strimzi-kafka-broker                                                   26d
 
 
 ```
