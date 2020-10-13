@@ -13,19 +13,19 @@ kubectl get -n kafka endpoints
 kubectl get -n kafka events
 LAST SEEN   TYPE     REASON                OBJECT                                                   MESSAGE
 <unknown>   Normal   Scheduled             pod/strimzi-cluster-operator-v0.18.0-99fc5c9f5-zsrx8     Successfully assigned kafka/strimzi-cluster-operator-v0.18.0-99fc5c9f5-zsrx8 to 10.0.128.237
-3m14s       Normal   Pulled                pod/strimzi-cluster-operator-v0.18.0-99fc5c9f5-zsrx8     Container image "10.0.129.0:60080/3rdparty/strimzi/operator@sha256:2857eec4b4c5eca0fbe342fa37497dcc9eee6fdbc06db53910c92136176ed34d" already present on machine
-3m14s       Normal   Created               pod/strimzi-cluster-operator-v0.18.0-99fc5c9f5-zsrx8     Created container strimzi-cluster-operator
-3m14s       Normal   Started               pod/strimzi-cluster-operator-v0.18.0-99fc5c9f5-zsrx8     Started container strimzi-cluster-operator
-3m15s       Normal   SuccessfulCreate      replicaset/strimzi-cluster-operator-v0.18.0-99fc5c9f5    Created pod: strimzi-cluster-operator-v0.18.0-99fc5c9f5-zsrx8
-3m15s       Normal   ScalingReplicaSet     deployment/strimzi-cluster-operator-v0.18.0              Scaled up replica set strimzi-cluster-operator-v0.18.0-99fc5c9f5 to 1
-3m19s       Normal   RequirementsUnknown   clusterserviceversion/strimzi-cluster-operator.v0.18.0   requirements not yet checked
-3m19s       Normal   RequirementsNotMet    clusterserviceversion/strimzi-cluster-operator.v0.18.0   one or more requirements couldn't be found
-3m15s       Normal   AllRequirementsMet    clusterserviceversion/strimzi-cluster-operator.v0.18.0   all requirements found, attempting install
-3m15s       Normal   InstallSucceeded      clusterserviceversion/strimzi-cluster-operator.v0.18.0   waiting for install components to report healthy
-3m15s       Normal   InstallWaiting        clusterserviceversion/strimzi-cluster-operator.v0.18.0   installing: waiting for deployment strimzi-cluster-operator-v0.18.0 to become ready: Waiting for deployment spec update to be observed...
-3m15s       Normal   InstallWaiting        clusterserviceversion/strimzi-cluster-operator.v0.18.0   installing: waiting for deployment strimzi-cluster-operator-v0.18.0 to become ready: Waiting for rollout to finish: 0 out of 1 new replicas have been updated...
-3m14s       Normal   InstallWaiting        clusterserviceversion/strimzi-cluster-operator.v0.18.0   installing: waiting for deployment strimzi-cluster-operator-v0.18.0 to become ready: Waiting for rollout to finish: 0 of 1 updated replicas are available...
-2m47s       Normal   InstallSucceeded      clusterserviceversion/strimzi-cluster-operator.v0.18.0   install strategy completed with no errors
+43m         Normal   Pulled                pod/strimzi-cluster-operator-v0.18.0-99fc5c9f5-zsrx8     Container image "10.0.129.0:60080/3rdparty/strimzi/operator@sha256:2857eec4b4c5eca0fbe342fa37497dcc9eee6fdbc06db53910c92136176ed34d" already present on machine
+43m         Normal   Created               pod/strimzi-cluster-operator-v0.18.0-99fc5c9f5-zsrx8     Created container strimzi-cluster-operator
+43m         Normal   Started               pod/strimzi-cluster-operator-v0.18.0-99fc5c9f5-zsrx8     Started container strimzi-cluster-operator
+43m         Normal   SuccessfulCreate      replicaset/strimzi-cluster-operator-v0.18.0-99fc5c9f5    Created pod: strimzi-cluster-operator-v0.18.0-99fc5c9f5-zsrx8
+43m         Normal   ScalingReplicaSet     deployment/strimzi-cluster-operator-v0.18.0              Scaled up replica set strimzi-cluster-operator-v0.18.0-99fc5c9f5 to 1
+43m         Normal   RequirementsUnknown   clusterserviceversion/strimzi-cluster-operator.v0.18.0   requirements not yet checked
+43m         Normal   RequirementsNotMet    clusterserviceversion/strimzi-cluster-operator.v0.18.0   one or more requirements couldn't be found
+43m         Normal   AllRequirementsMet    clusterserviceversion/strimzi-cluster-operator.v0.18.0   all requirements found, attempting install
+43m         Normal   InstallSucceeded      clusterserviceversion/strimzi-cluster-operator.v0.18.0   waiting for install components to report healthy
+43m         Normal   InstallWaiting        clusterserviceversion/strimzi-cluster-operator.v0.18.0   installing: waiting for deployment strimzi-cluster-operator-v0.18.0 to become ready: Waiting for deployment spec update to be observed...
+43m         Normal   InstallWaiting        clusterserviceversion/strimzi-cluster-operator.v0.18.0   installing: waiting for deployment strimzi-cluster-operator-v0.18.0 to become ready: Waiting for rollout to finish: 0 out of 1 new replicas have been updated...
+43m         Normal   InstallWaiting        clusterserviceversion/strimzi-cluster-operator.v0.18.0   installing: waiting for deployment strimzi-cluster-operator-v0.18.0 to become ready: Waiting for rollout to finish: 0 of 1 updated replicas are available...
+43m         Normal   InstallSucceeded      clusterserviceversion/strimzi-cluster-operator.v0.18.0   install strategy completed with no errors
 
 kubectl get -n kafka limitranges
 
@@ -39,15 +39,15 @@ haoli                Active   26d
 haoli-test           Active   26d
 hchan                Active   25d
 joe                  Active   47d
-jwx-mongo            Active   3d23h
-jwxiong              Active   13d
+jwx-mongo            Active   4d
+jwxiong              Active   14d
 jwxiong-mongo        Active   3d23h
-kafka                Active   4m2s
+kafka                Active   44m
 kube-node-lease      Active   48d
 kube-public          Active   48d
 kube-system          Active   48d
 local-path-storage   Active   41d
-minio                Active   3d20h
+minio                Active   3d21h
 mysql                Active   17h
 operators            Active   20d
 pg                   Active   25d
@@ -73,19 +73,19 @@ NAME                                       CAPACITY   ACCESS MODES   RECLAIM POL
 alertmanager-pv-0                          5Gi        RWO            Retain           Bound    cpaas-system/alertmanager-kube-prometheus-db-alertmanager-kube-prometheus-0                           48d
 kube-prometheus-grafana                    5Gi        RWO            Retain           Bound    cpaas-system/kube-prometheus-grafana                                                                  48d
 prometheus-pv-0                            30Gi       RWO            Retain           Bound    cpaas-system/prometheus-kube-prometheus-0-db-prometheus-kube-prometheus-0-0                           48d
-pvc-016e5951-2d43-4f55-9e8c-92a79ecf406a   3Gi        RWO            Delete           Bound    zxl-mongodb/mongod-data-m1-rs0-1                                              local-path              23h
-pvc-0934c852-319d-4b3e-894f-71ea12f56483   1Gi        RWO            Delete           Bound    redis/redis-cluster-demo-slave-redis-cluster-demo-slave-1                     local-path              2d16h
+pvc-016e5951-2d43-4f55-9e8c-92a79ecf406a   3Gi        RWO            Delete           Bound    zxl-mongodb/mongod-data-m1-rs0-1                                              local-path              24h
+pvc-0934c852-319d-4b3e-894f-71ea12f56483   1Gi        RWO            Delete           Bound    redis/redis-cluster-demo-slave-redis-cluster-demo-slave-1                     local-path              2d17h
 pvc-0c6138b4-52db-4eeb-bc7e-3ac58a3b3549   10Gi       RWO            Delete           Bound    yqhou/persistence-sample205-rabbitmq-server-0                                 intceph                 24d
-pvc-0c615c9b-2ad3-4bc0-b46a-7891d35fe441   1Gi        RWO            Delete           Bound    redis/redis-cluster-demo-slave-redis-cluster-demo-slave-2                     local-path              2d16h
+pvc-0c615c9b-2ad3-4bc0-b46a-7891d35fe441   1Gi        RWO            Delete           Bound    redis/redis-cluster-demo-slave-redis-cluster-demo-slave-2                     local-path              2d17h
 pvc-13097386-4fb9-4171-b88e-3eb43eaa4a2c   6Gi        RWO            Delete           Bound    haoli/datadir-cluster1-pxc-1                                                  local-path              14d
 pvc-1c069311-6a4f-4290-bb25-303730316b66   1Gi        RWO            Delete           Bound    yqhou/ppp                                                                     intceph                 24d
 pvc-24d3affd-821f-485a-9ce8-24e166af86f2   2Gi        RWO            Delete           Bound    haoli/proxydata-doc-test-proxysql-2                                           local-path              19d
 pvc-2e43af44-7595-4503-9211-7e1e29a3df0d   2Gi        RWO            Delete           Bound    haoli/proxydata-doc-test-proxysql-0                                           local-path              19d
 pvc-3c812793-f6f4-41aa-8101-f9d0fe5294bb   6Gi        RWO            Delete           Bound    haoli/datadir-doc-test-pxc-1                                                  local-path              19d
-pvc-3c99d0b3-ef6d-4f15-8e89-0ed0b67565ba   1Gi        RWO            Delete           Bound    jwxiong/mongod-data-jw-mongo-rs0-1                                            local-path              2d23h
+pvc-3c99d0b3-ef6d-4f15-8e89-0ed0b67565ba   1Gi        RWO            Delete           Bound    jwxiong/mongod-data-jw-mongo-rs0-1                                            local-path              3d
 pvc-3d9b08ce-5246-4090-95ed-f5091f9dd26f   6Gi        RWO            Delete           Bound    tke/datadir-cluster1-pxc-0                                                    local-path              19d
 pvc-3ff3e145-7ecb-4e0f-9ada-d4bf7691fbee   2Gi        RWO            Delete           Bound    tke/proxydata-cluster1-proxysql-1                                             local-path              19d
-pvc-4180f73e-e289-47d1-b7d8-8b93241e26e3   3Gi        RWO            Delete           Bound    zxl-mongodb/mongod-data-m1-rs0-0                                              local-path              23h
+pvc-4180f73e-e289-47d1-b7d8-8b93241e26e3   3Gi        RWO            Delete           Bound    zxl-mongodb/mongod-data-m1-rs0-0                                              local-path              24h
 pvc-49e69e8f-b37e-4ca8-80da-c3b9ac2fcb70   6Gi        RWO            Delete           Bound    mysql/datadir-cluster1-pxc-1                                                  intceph                 16h
 pvc-4b9506a8-a34b-4289-a0fd-f98a692fe230   3Gi        RWO            Delete           Bound    operators/mongod-data-my-cluster-name-rs0-1                                   local-path              3d23h
 pvc-5eefaa28-fa70-4d44-82d8-c98041703e31   2Gi        RWO            Delete           Bound    mysql/proxydata-cluster1-proxysql-1                                           intceph                 16h
@@ -94,11 +94,11 @@ pvc-6dfed2c0-f361-4e0c-a16e-fe47aa0bdd25   2Gi        RWO            Delete     
 pvc-6f701171-b812-4ef9-ac61-a5102510728e   2Gi        RWO            Delete           Bound    tke/proxydata-cluster1-proxysql-2                                             local-path              19d
 pvc-71f7e4a1-0644-4f1b-9b0c-146afaf566ec   6Gi        RWO            Delete           Bound    mysql/datadir-cluster1-pxc-2                                                  intceph                 16h
 pvc-7ab83215-c7d5-46b2-ba77-238712228188   6Gi        RWO            Delete           Bound    mysql/datadir-cluster1-pxc-0                                                  intceph                 16h
-pvc-7fc36370-b625-4c57-a110-d209169ad06e   3Gi        RWO            Delete           Bound    zxl-mongodb/mongod-data-m1-rs0-2                                              local-path              23h
+pvc-7fc36370-b625-4c57-a110-d209169ad06e   3Gi        RWO            Delete           Bound    zxl-mongodb/mongod-data-m1-rs0-2                                              local-path              24h
 pvc-817290d9-190c-43c4-8ca1-723f76c91554   1Gi        RWO            Delete           Bound    jwxiong/mongod-data-jw-mongo-rs0-2                                            local-path              2d23h
 pvc-85634fec-3c2a-46d6-9458-500ad4a856d8   6Gi        RWO            Delete           Bound    haoli/datadir-cluster1-pxc-0                                                  local-path              14d
 pvc-8b7aa418-09fb-4d0b-b922-d4bb7a3fc976   6Gi        RWO            Delete           Bound    haoli/datadir-doc-test-pxc-2                                                  local-path              19d
-pvc-8d077b76-b087-4b7d-99e4-b9129d2b599b   1Gi        RWO            Delete           Bound    redis/redis-cluster-demo-slave-redis-cluster-demo-slave-0                     local-path              2d16h
+pvc-8d077b76-b087-4b7d-99e4-b9129d2b599b   1Gi        RWO            Delete           Bound    redis/redis-cluster-demo-slave-redis-cluster-demo-slave-0                     local-path              2d17h
 pvc-9fd04c12-a688-4d49-90ea-f4308f87470c   3Gi        RWO            Delete           Bound    operators/mongod-data-my-cluster-name-rs0-0                                   local-path              3d23h
 pvc-a951580d-84f5-49d2-a7e1-e787fedeb1fb   3Gi        RWO            Delete           Bound    jwxiong-mongo/mongod-data-my-cluster-name-rs0-0                               local-path              3d23h
 pvc-a96416c6-69b0-48bd-b81d-6f20ec5e348f   1Gi        RWO            Delete           Bound    operators/pgdata-acid-minimal-cluster-1                                       local-path              19d
@@ -107,21 +107,21 @@ pvc-b428fc96-19c3-4354-960d-cd072a3b3f0a   2Gi        RWO            Delete     
 pvc-ca4e5f1d-3214-4ffd-8fc3-a14892601589   6Gi        RWO            Delete           Bound    haoli/datadir-doc-test-pxc-0                                                  local-path              19d
 pvc-ce193c44-5b83-4a17-9022-54e45ef97c5f   3Gi        RWO            Delete           Bound    jwxiong-mongo/mongod-data-my-cluster-name-rs0-1                               local-path              3d23h
 pvc-ced3f062-24e7-4459-aab1-411f0ba31db2   2Gi        RWO            Delete           Bound    haoli/proxydata-cluster1-proxysql-0                                           local-path              14d
-pvc-d17aa3e7-43d3-4aa3-895f-d0e5d46edddd   1Gi        RWO            Delete           Bound    redis/redis-cluster-demo-master-redis-cluster-demo-master-2                   local-path              2d16h
-pvc-d5aa1001-4467-4ffd-97dd-4283787a286f   1Gi        RWO            Delete           Bound    redis/redis-cluster-demo-master-redis-cluster-demo-master-1                   local-path              2d16h
+pvc-d17aa3e7-43d3-4aa3-895f-d0e5d46edddd   1Gi        RWO            Delete           Bound    redis/redis-cluster-demo-master-redis-cluster-demo-master-2                   local-path              2d17h
+pvc-d5aa1001-4467-4ffd-97dd-4283787a286f   1Gi        RWO            Delete           Bound    redis/redis-cluster-demo-master-redis-cluster-demo-master-1                   local-path              2d17h
 pvc-d649978f-813b-4c76-bf3b-f7e52e8cc7d7   2Gi        RWO            Delete           Bound    tke/proxydata-cluster1-proxysql-0                                             local-path              19d
 pvc-d9675092-d604-448b-9a47-d59668882ae9   6Gi        RWO            Delete           Bound    tke/datadir-cluster1-pxc-2                                                    local-path              19d
 pvc-db4bfdc7-256a-404e-9b60-59565c7699f0   2Gi        RWO            Delete           Bound    haoli/proxydata-doc-test-proxysql-1                                           local-path              19d
-pvc-e6b643d6-2316-4008-93e7-e3062b163836   1Gi        RWO            Delete           Bound    jwxiong/mongod-data-jw-mongo-rs0-0                                            local-path              2d23h
+pvc-e6b643d6-2316-4008-93e7-e3062b163836   1Gi        RWO            Delete           Bound    jwxiong/mongod-data-jw-mongo-rs0-0                                            local-path              3d
 pvc-e9be1665-dbbd-46bc-9449-3f6ad6f5c4f1   2Gi        RWO            Delete           Bound    mysql/proxydata-cluster1-proxysql-0                                           intceph                 16h
 pvc-f49f2c07-2bf6-4d7d-a590-298c61c90c68   6Gi        RWO            Delete           Bound    tke/datadir-cluster1-pxc-1                                                    local-path              19d
 pvc-faddd6cf-565d-4404-86ff-fb6122231f7a   10Gi       RWO            Delete           Bound    haoli/persistence-sample-rabbitmq-server-0                                    local-path              19d
 pvc-fb5b21a9-76ed-4fcd-81c5-e7cbbc72c6a0   2Gi        RWO            Delete           Bound    mysql/proxydata-cluster1-proxysql-2                                           intceph                 16h
-pvc-ff4c877e-fb34-4c9a-9a0e-d31c72db98e6   1Gi        RWO            Delete           Bound    redis/redis-cluster-demo-master-redis-cluster-demo-master-0                   local-path              2d16h
+pvc-ff4c877e-fb34-4c9a-9a0e-d31c72db98e6   1Gi        RWO            Delete           Bound    redis/redis-cluster-demo-master-redis-cluster-demo-master-0                   local-path              2d17h
 
 kubectl get -n kafka pods
 NAME                                               READY   STATUS    RESTARTS   AGE
-strimzi-cluster-operator-v0.18.0-99fc5c9f5-zsrx8   1/1     Running   0          3m16s
+strimzi-cluster-operator-v0.18.0-99fc5c9f5-zsrx8   1/1     Running   0          43m
 
 kubectl get -n kafka podtemplates
 
@@ -131,13 +131,13 @@ kubectl get -n kafka resourcequotas
 
 kubectl get -n kafka secrets
 NAME                                   TYPE                                  DATA   AGE
-default-token-r5ztg                    kubernetes.io/service-account-token   3      4m3s
-strimzi-cluster-operator-token-8r97s   kubernetes.io/service-account-token   3      3m16s
+default-token-r5ztg                    kubernetes.io/service-account-token   3      44m
+strimzi-cluster-operator-token-8r97s   kubernetes.io/service-account-token   3      43m
 
 kubectl get -n kafka serviceaccounts
 NAME                       SECRETS   AGE
-default                    1         4m3s
-strimzi-cluster-operator   1         3m16s
+default                    1         44m
+strimzi-cluster-operator   1         43m
 
 kubectl get -n kafka services
 
@@ -174,26 +174,26 @@ kubectl get -n kafka audits
 kubectl get -n kafka events
 LAST SEEN   TYPE     REASON                OBJECT                                                   MESSAGE
 <unknown>   Normal   Scheduled             pod/strimzi-cluster-operator-v0.18.0-99fc5c9f5-zsrx8     Successfully assigned kafka/strimzi-cluster-operator-v0.18.0-99fc5c9f5-zsrx8 to 10.0.128.237
-3m16s       Normal   Pulled                pod/strimzi-cluster-operator-v0.18.0-99fc5c9f5-zsrx8     Container image "10.0.129.0:60080/3rdparty/strimzi/operator@sha256:2857eec4b4c5eca0fbe342fa37497dcc9eee6fdbc06db53910c92136176ed34d" already present on machine
-3m16s       Normal   Created               pod/strimzi-cluster-operator-v0.18.0-99fc5c9f5-zsrx8     Created container strimzi-cluster-operator
-3m16s       Normal   Started               pod/strimzi-cluster-operator-v0.18.0-99fc5c9f5-zsrx8     Started container strimzi-cluster-operator
-3m17s       Normal   SuccessfulCreate      replicaset/strimzi-cluster-operator-v0.18.0-99fc5c9f5    Created pod: strimzi-cluster-operator-v0.18.0-99fc5c9f5-zsrx8
-3m17s       Normal   ScalingReplicaSet     deployment/strimzi-cluster-operator-v0.18.0              Scaled up replica set strimzi-cluster-operator-v0.18.0-99fc5c9f5 to 1
-3m21s       Normal   RequirementsUnknown   clusterserviceversion/strimzi-cluster-operator.v0.18.0   requirements not yet checked
-3m21s       Normal   RequirementsNotMet    clusterserviceversion/strimzi-cluster-operator.v0.18.0   one or more requirements couldn't be found
-3m17s       Normal   AllRequirementsMet    clusterserviceversion/strimzi-cluster-operator.v0.18.0   all requirements found, attempting install
-3m17s       Normal   InstallSucceeded      clusterserviceversion/strimzi-cluster-operator.v0.18.0   waiting for install components to report healthy
-3m17s       Normal   InstallWaiting        clusterserviceversion/strimzi-cluster-operator.v0.18.0   installing: waiting for deployment strimzi-cluster-operator-v0.18.0 to become ready: Waiting for deployment spec update to be observed...
-3m17s       Normal   InstallWaiting        clusterserviceversion/strimzi-cluster-operator.v0.18.0   installing: waiting for deployment strimzi-cluster-operator-v0.18.0 to become ready: Waiting for rollout to finish: 0 out of 1 new replicas have been updated...
-3m16s       Normal   InstallWaiting        clusterserviceversion/strimzi-cluster-operator.v0.18.0   installing: waiting for deployment strimzi-cluster-operator-v0.18.0 to become ready: Waiting for rollout to finish: 0 of 1 updated replicas are available...
-2m49s       Normal   InstallSucceeded      clusterserviceversion/strimzi-cluster-operator.v0.18.0   install strategy completed with no errors
+43m         Normal   Pulled                pod/strimzi-cluster-operator-v0.18.0-99fc5c9f5-zsrx8     Container image "10.0.129.0:60080/3rdparty/strimzi/operator@sha256:2857eec4b4c5eca0fbe342fa37497dcc9eee6fdbc06db53910c92136176ed34d" already present on machine
+43m         Normal   Created               pod/strimzi-cluster-operator-v0.18.0-99fc5c9f5-zsrx8     Created container strimzi-cluster-operator
+43m         Normal   Started               pod/strimzi-cluster-operator-v0.18.0-99fc5c9f5-zsrx8     Started container strimzi-cluster-operator
+43m         Normal   SuccessfulCreate      replicaset/strimzi-cluster-operator-v0.18.0-99fc5c9f5    Created pod: strimzi-cluster-operator-v0.18.0-99fc5c9f5-zsrx8
+43m         Normal   ScalingReplicaSet     deployment/strimzi-cluster-operator-v0.18.0              Scaled up replica set strimzi-cluster-operator-v0.18.0-99fc5c9f5 to 1
+43m         Normal   RequirementsUnknown   clusterserviceversion/strimzi-cluster-operator.v0.18.0   requirements not yet checked
+43m         Normal   RequirementsNotMet    clusterserviceversion/strimzi-cluster-operator.v0.18.0   one or more requirements couldn't be found
+43m         Normal   AllRequirementsMet    clusterserviceversion/strimzi-cluster-operator.v0.18.0   all requirements found, attempting install
+43m         Normal   InstallSucceeded      clusterserviceversion/strimzi-cluster-operator.v0.18.0   waiting for install components to report healthy
+43m         Normal   InstallWaiting        clusterserviceversion/strimzi-cluster-operator.v0.18.0   installing: waiting for deployment strimzi-cluster-operator-v0.18.0 to become ready: Waiting for deployment spec update to be observed...
+43m         Normal   InstallWaiting        clusterserviceversion/strimzi-cluster-operator.v0.18.0   installing: waiting for deployment strimzi-cluster-operator-v0.18.0 to become ready: Waiting for rollout to finish: 0 out of 1 new replicas have been updated...
+43m         Normal   InstallWaiting        clusterserviceversion/strimzi-cluster-operator.v0.18.0   installing: waiting for deployment strimzi-cluster-operator-v0.18.0 to become ready: Waiting for rollout to finish: 0 of 1 updated replicas are available...
+43m         Normal   InstallSucceeded      clusterserviceversion/strimzi-cluster-operator.v0.18.0   install strategy completed with no errors
 
 kubectl get -n kafka logpolicies
 NAME             AGE
-log-kubernetes   2d23h
-log-platform     2d23h
-log-system       2d23h
-log-workload     2d23h
+log-kubernetes   3d
+log-platform     3d
+log-system       3d
+log-workload     3d
 
 kubectl get -n kafka logs
 
@@ -335,15 +335,15 @@ views.auth.alauda.io                             2020-08-25T09:35:33Z
 
 kubectl get -n kafka apiservices
 NAME                                   SERVICE                                         AVAILABLE   AGE
-v1-1-0.psmdb.percona.com               Local                                           True        2d9h
-v1-1-0.pxc.percona.com                 Local                                           True        18h
+v1-1-0.psmdb.percona.com               Local                                           True        2d10h
+v1-1-0.pxc.percona.com                 Local                                           True        19h
 v1-2-0.psmdb.percona.com               Local                                           True        3d20h
-v1-2-0.pxc.percona.com                 Local                                           True        18h
-v1-3-0.psmdb.percona.com               Local                                           True        3d19h
-v1-3-0.pxc.percona.com                 Local                                           True        18h
+v1-2-0.pxc.percona.com                 Local                                           True        19h
+v1-3-0.psmdb.percona.com               Local                                           True        3d20h
+v1-3-0.pxc.percona.com                 Local                                           True        19h
 v1-4-0.psmdb.percona.com               Local                                           True        3d20h
-v1-4-0.pxc.percona.com                 Local                                           True        18h
-v1-5-0.pxc.percona.com                 Local                                           True        18h
+v1-4-0.pxc.percona.com                 Local                                           True        19h
+v1-5-0.pxc.percona.com                 Local                                           True        19h
 v1.                                    Local                                           True        48d
 v1.ace3.alauda.io                      Local                                           True        17d
 v1.acid.zalan.do                       Local                                           True        17d
@@ -358,46 +358,46 @@ v1.autoscaling                         Local                                    
 v1.batch                               Local                                           True        48d
 v1.business.tkestack.io                cpaas-system/alauda-business-api                True        48d
 v1.coordination.k8s.io                 Local                                           True        48d
-v1.crd.alauda.io                       Local                                           True        3d19h
+v1.crd.alauda.io                       Local                                           True        3d20h
 v1.databases.spotahome.com             Local                                           True        3d20h
-v1.dex.coreos.com                      Local                                           True        3d19h
+v1.dex.coreos.com                      Local                                           True        3d20h
 v1.k8s.io                              Local                                           True        18d
 v1.monitoring.coreos.com               Local                                           True        33d
 v1.networking.k8s.io                   Local                                           True        48d
-v1.operators.coreos.com                Local                                           True        3d19h
+v1.operators.coreos.com                Local                                           True        3d20h
 v1.packages.operators.coreos.com       cpaas-system/packageserver-service              True        20d
 v1.platform.tkestack.io                cpaas-system/alauda-platform-api                True        48d
-v1.product.alauda.io                   Local                                           True        3d19h
-v1.psmdb.percona.com                   Local                                           True        3d19h
-v1.pxc.percona.com                     Local                                           True        18h
+v1.product.alauda.io                   Local                                           True        3d20h
+v1.psmdb.percona.com                   Local                                           True        3d20h
+v1.pxc.percona.com                     Local                                           True        19h
 v1.rbac.authorization.k8s.io           Local                                           True        48d
 v1.scheduling.k8s.io                   Local                                           True        48d
 v1.storage.k8s.io                      Local                                           True        48d
 v1.tkestack.io                         Local                                           True        12d
-v1alpha1.aiops.alauda.io               Local                                           True        3d19h
+v1alpha1.aiops.alauda.io               Local                                           True        3d20h
 v1alpha1.alauda.io                     Local                                           True        3d20h
 v1alpha1.app.alauda.io                 Local                                           True        3d20h
-v1alpha1.certmanager.k8s.io            Local                                           True        3d19h
-v1alpha1.clusterregistry.k8s.io        Local                                           True        3d19h
+v1alpha1.certmanager.k8s.io            Local                                           True        3d20h
+v1alpha1.clusterregistry.k8s.io        Local                                           True        3d20h
 v1alpha1.infrastructure.alauda.io      Local                                           True        3d20h
-v1alpha1.k8s.imooc.com                 Local                                           True        3d19h
-v1alpha1.kafka.strimzi.io              Local                                           True        2d9h
+v1alpha1.k8s.imooc.com                 Local                                           True        3d20h
+v1alpha1.kafka.strimzi.io              Local                                           True        2d10h
 v1alpha1.middleware.alauda.io          Local                                           True        17d
 v1alpha1.operator.alauda.io            Local                                           True        3d20h
-v1alpha1.operators.coreos.com          Local                                           True        2d9h
+v1alpha1.operators.coreos.com          Local                                           True        2d10h
 v1alpha1.portal.alauda.io              Local                                           True        4d9h
 v1alpha1.product.alauda.io             Local                                           True        3d20h
-v1alpha1.psmdb.percona.com             Local                                           True        3d19h
-v1alpha1.pxc.percona.com               Local                                           True        3d19h
+v1alpha1.psmdb.percona.com             Local                                           True        3d20h
+v1alpha1.pxc.percona.com               Local                                           True        3d20h
 v1alpha1.redis.opstreelabs.in          Local                                           True        12d
 v1alpha1.tdsql.alauda.io               Local                                           True        17d
-v1alpha2.operators.coreos.com          Local                                           True        3d19h
+v1alpha2.operators.coreos.com          Local                                           True        3d20h
 v1beta1.admissionregistration.k8s.io   Local                                           True        48d
 v1beta1.aiops.alauda.io                Local                                           True        17d
 v1beta1.ait.alauda.io                  Local                                           True        17d
 v1beta1.apiextensions.k8s.io           Local                                           True        48d
-v1beta1.app.alauda.io                  Local                                           True        3d19h
-v1beta1.app.k8s.io                     Local                                           True        3d19h
+v1beta1.app.alauda.io                  Local                                           True        3d20h
+v1beta1.app.k8s.io                     Local                                           True        3d20h
 v1beta1.auth.alauda.io                 Local                                           True        17d
 v1beta1.authentication.k8s.io          Local                                           True        48d
 v1beta1.authorization.k8s.io           Local                                           True        48d
@@ -408,12 +408,12 @@ v1beta1.custom.metrics.k8s.io          cpaas-system/cpaas-monitor-prometheus-ada
 v1beta1.events.k8s.io                  Local                                           True        48d
 v1beta1.extensions                     Local                                           True        48d
 v1beta1.kafka.strimzi.io               Local                                           True        3d20h
-v1beta1.metering.alauda.io             Local                                           True        3d19h
+v1beta1.metering.alauda.io             Local                                           True        3d20h
 v1beta1.metrics.k8s.io                 cpaas-system/cpaas-monitor-prometheus-adapter   True        48d
 v1beta1.networking.k8s.io              Local                                           True        48d
 v1beta1.node.k8s.io                    Local                                           True        48d
 v1beta1.policy                         Local                                           True        48d
-v1beta1.rabbitmq.com                   Local                                           True        3d19h
+v1beta1.rabbitmq.com                   Local                                           True        3d20h
 v1beta1.rbac.authorization.k8s.io      Local                                           True        48d
 v1beta1.scheduling.k8s.io              Local                                           True        48d
 v1beta1.storage.k8s.io                 Local                                           True        48d
@@ -442,11 +442,11 @@ kubectl get -n kafka daemonsets
 
 kubectl get -n kafka deployments
 NAME                               READY   UP-TO-DATE   AVAILABLE   AGE
-strimzi-cluster-operator-v0.18.0   1/1     1            1           3m18s
+strimzi-cluster-operator-v0.18.0   1/1     1            1           43m
 
 kubectl get -n kafka replicasets
 NAME                                         DESIRED   CURRENT   READY   AGE
-strimzi-cluster-operator-v0.18.0-99fc5c9f5   1         1         1       3m18s
+strimzi-cluster-operator-v0.18.0-99fc5c9f5   1         1         1       43m
 
 kubectl get -n kafka statefulsets
 
@@ -546,9 +546,9 @@ platform-manage-projectmanage         48d
 platform-manage-rolesmanage           48d
 platform-manage-userbindings          48d
 platform-manage-usersmanage           48d
-tdsql-accounts                        18d
-tdsql-instancebindings                18d
-tdsql-instances                       18d
+tdsql-accounts                        19d
+tdsql-instancebindings                19d
+tdsql-instances                       19d
 views-acp-manageview                  48d
 views-acp-userview                    48d
 views-aml-manageview                  48d
@@ -582,7 +582,7 @@ haoli-region          26d
 hchan-global          25d
 joe-global            47d
 joe-region            47d
-jwxiong-global        13d
+jwxiong-global        14d
 jwxiong-region        13d
 pg-global             25d
 redis-global          25d
@@ -598,7 +598,7 @@ cpaas-system   40d
 haoli          26d
 hchan          25d
 joe            47d
-jwxiong        13d
+jwxiong        14d
 pg             25d
 redis          25d
 yqhou          38d
@@ -611,7 +611,7 @@ cpaas-system   40d
 haoli          26d
 hchan          25d
 joe            47d
-jwxiong        13d
+jwxiong        14d
 pg             25d
 redis          25d
 yqhou          38d
@@ -628,9 +628,9 @@ acp-platform-auditor         48d
 acp-project-admin            48d
 database-administrator       33d
 f                            18d
-namespace-admin-system       18d
-namespace-developer-system   18d
-project-admin-system         18d
+namespace-admin-system       19d
+namespace-developer-system   19d
+project-admin-system         19d
 
 kubectl get -n kafka userbindings
 NAME                               AGE
@@ -690,15 +690,15 @@ haoli                Active   26d
 haoli-test           Active   26d
 hchan                Active   25d
 joe                  Active   47d
-jwx-mongo            Active   3d23h
-jwxiong              Active   13d
+jwx-mongo            Active   4d
+jwxiong              Active   14d
 jwxiong-mongo        Active   3d23h
-kafka                Active   4m7s
+kafka                Active   44m
 kube-node-lease      Active   48d
 kube-public          Active   48d
 kube-system          Active   48d
 local-path-storage   Active   41d
-minio                Active   3d20h
+minio                Active   3d21h
 mysql                Active   17h
 operators            Active   20d
 pg                   Active   25d
@@ -727,7 +727,7 @@ cpaas-system   40d
 haoli          26d
 hchan          25d
 joe            47d
-jwxiong        13d
+jwxiong        14d
 pg             25d
 redis          25d
 yqhou          38d
@@ -792,19 +792,19 @@ kubectl get -n kafka etcdrestores
 kubectl get -n kafka events
 LAST SEEN   TYPE     REASON                OBJECT                                                   MESSAGE
 <unknown>   Normal   Scheduled             pod/strimzi-cluster-operator-v0.18.0-99fc5c9f5-zsrx8     Successfully assigned kafka/strimzi-cluster-operator-v0.18.0-99fc5c9f5-zsrx8 to 10.0.128.237
-3m21s       Normal   Pulled                pod/strimzi-cluster-operator-v0.18.0-99fc5c9f5-zsrx8     Container image "10.0.129.0:60080/3rdparty/strimzi/operator@sha256:2857eec4b4c5eca0fbe342fa37497dcc9eee6fdbc06db53910c92136176ed34d" already present on machine
-3m21s       Normal   Created               pod/strimzi-cluster-operator-v0.18.0-99fc5c9f5-zsrx8     Created container strimzi-cluster-operator
-3m21s       Normal   Started               pod/strimzi-cluster-operator-v0.18.0-99fc5c9f5-zsrx8     Started container strimzi-cluster-operator
-3m22s       Normal   SuccessfulCreate      replicaset/strimzi-cluster-operator-v0.18.0-99fc5c9f5    Created pod: strimzi-cluster-operator-v0.18.0-99fc5c9f5-zsrx8
-3m22s       Normal   ScalingReplicaSet     deployment/strimzi-cluster-operator-v0.18.0              Scaled up replica set strimzi-cluster-operator-v0.18.0-99fc5c9f5 to 1
-3m26s       Normal   RequirementsUnknown   clusterserviceversion/strimzi-cluster-operator.v0.18.0   requirements not yet checked
-3m26s       Normal   RequirementsNotMet    clusterserviceversion/strimzi-cluster-operator.v0.18.0   one or more requirements couldn't be found
-3m22s       Normal   AllRequirementsMet    clusterserviceversion/strimzi-cluster-operator.v0.18.0   all requirements found, attempting install
-3m22s       Normal   InstallSucceeded      clusterserviceversion/strimzi-cluster-operator.v0.18.0   waiting for install components to report healthy
-3m22s       Normal   InstallWaiting        clusterserviceversion/strimzi-cluster-operator.v0.18.0   installing: waiting for deployment strimzi-cluster-operator-v0.18.0 to become ready: Waiting for deployment spec update to be observed...
-3m22s       Normal   InstallWaiting        clusterserviceversion/strimzi-cluster-operator.v0.18.0   installing: waiting for deployment strimzi-cluster-operator-v0.18.0 to become ready: Waiting for rollout to finish: 0 out of 1 new replicas have been updated...
-3m21s       Normal   InstallWaiting        clusterserviceversion/strimzi-cluster-operator.v0.18.0   installing: waiting for deployment strimzi-cluster-operator-v0.18.0 to become ready: Waiting for rollout to finish: 0 of 1 updated replicas are available...
-2m54s       Normal   InstallSucceeded      clusterserviceversion/strimzi-cluster-operator.v0.18.0   install strategy completed with no errors
+43m         Normal   Pulled                pod/strimzi-cluster-operator-v0.18.0-99fc5c9f5-zsrx8     Container image "10.0.129.0:60080/3rdparty/strimzi/operator@sha256:2857eec4b4c5eca0fbe342fa37497dcc9eee6fdbc06db53910c92136176ed34d" already present on machine
+43m         Normal   Created               pod/strimzi-cluster-operator-v0.18.0-99fc5c9f5-zsrx8     Created container strimzi-cluster-operator
+43m         Normal   Started               pod/strimzi-cluster-operator-v0.18.0-99fc5c9f5-zsrx8     Started container strimzi-cluster-operator
+43m         Normal   SuccessfulCreate      replicaset/strimzi-cluster-operator-v0.18.0-99fc5c9f5    Created pod: strimzi-cluster-operator-v0.18.0-99fc5c9f5-zsrx8
+43m         Normal   ScalingReplicaSet     deployment/strimzi-cluster-operator-v0.18.0              Scaled up replica set strimzi-cluster-operator-v0.18.0-99fc5c9f5 to 1
+43m         Normal   RequirementsUnknown   clusterserviceversion/strimzi-cluster-operator.v0.18.0   requirements not yet checked
+43m         Normal   RequirementsNotMet    clusterserviceversion/strimzi-cluster-operator.v0.18.0   one or more requirements couldn't be found
+43m         Normal   AllRequirementsMet    clusterserviceversion/strimzi-cluster-operator.v0.18.0   all requirements found, attempting install
+43m         Normal   InstallSucceeded      clusterserviceversion/strimzi-cluster-operator.v0.18.0   waiting for install components to report healthy
+43m         Normal   InstallWaiting        clusterserviceversion/strimzi-cluster-operator.v0.18.0   installing: waiting for deployment strimzi-cluster-operator-v0.18.0 to become ready: Waiting for deployment spec update to be observed...
+43m         Normal   InstallWaiting        clusterserviceversion/strimzi-cluster-operator.v0.18.0   installing: waiting for deployment strimzi-cluster-operator-v0.18.0 to become ready: Waiting for rollout to finish: 0 out of 1 new replicas have been updated...
+43m         Normal   InstallWaiting        clusterserviceversion/strimzi-cluster-operator.v0.18.0   installing: waiting for deployment strimzi-cluster-operator-v0.18.0 to become ready: Waiting for rollout to finish: 0 of 1 updated replicas are available...
+43m         Normal   InstallSucceeded      clusterserviceversion/strimzi-cluster-operator.v0.18.0   install strategy completed with no errors
 
 kubectl get -n kafka ingresses
 
@@ -850,7 +850,7 @@ NAME           STATUS   ROLES    AGE   VERSION
 
 kubectl get -n kafka pods
 NAME                                               READY   STATUS    RESTARTS   AGE
-strimzi-cluster-operator-v0.18.0-99fc5c9f5-zsrx8   1/1     Running   0          3m24s
+strimzi-cluster-operator-v0.18.0-99fc5c9f5-zsrx8   1/1     Running   0          43m
 
 kubectl get -n kafka products
 NAME            AGE
@@ -902,7 +902,7 @@ install-c47dn   strimzi-cluster-operator.v0.18.0   Automatic   true
 
 kubectl get -n kafka operatorgroups
 NAME          AGE
-kafka-7dpb8   3m30s
+kafka-7dpb8   43m
 
 kubectl get -n kafka subscriptions
 NAME                     PACKAGE                  SOURCE     CHANNEL
@@ -999,7 +999,7 @@ kubectl get -n kafka redisinstallers
 
 kubectl get -n kafka tdsqldeploys
 NAME                AGE
-tdsqldeploy-home1   3d16h
+tdsqldeploy-home1   3d17h
 
 kubectl get -n kafka perconaservermongodbbackups
 
@@ -1064,11 +1064,11 @@ psp-kube-prometheus-grafana                                          48d
 psp-prometheus-operator                                              48d
 psp:user-restricted                                                  48d
 rabbitmq-cluster-operator.v0.8.0-lsqtc-rabbitmq-cluster-op9gk8q      19d
-redis-installer                                                      3d19h
-redis-operator.v0.3.0-9mmm5-redis-operator-sdngd                     2d16h
+redis-installer                                                      3d20h
+redis-operator.v0.3.0-9mmm5-redis-operator-sdngd                     2d17h
 redisoperator                                                        19d
 sentry-sa:cluster-admin                                              48d
-strimzi-cluster-operator.v0.18.0-6jbmk-strimzi-cluster-open52ng      3m27s
+strimzi-cluster-operator.v0.18.0-6jbmk-strimzi-cluster-open52ng      43m
 system:basic-user                                                    48d
 system:controller:attachdetach-controller                            48d
 system:controller:certificate-controller                             48d
@@ -1188,9 +1188,9 @@ haoli-mkbgb-view                                                       19d
 joe-sxq74-admin                                                        19d
 joe-sxq74-edit                                                         19d
 joe-sxq74-view                                                         19d
-kafka-7dpb8-admin                                                      3m32s
-kafka-7dpb8-edit                                                       3m32s
-kafka-7dpb8-view                                                       3m32s
+kafka-7dpb8-admin                                                      43m
+kafka-7dpb8-edit                                                       43m
+kafka-7dpb8-view                                                       43m
 kafkabridges.kafka.strimzi.io-v1alpha1-admin                           24d
 kafkabridges.kafka.strimzi.io-v1alpha1-crdview                         24d
 kafkabridges.kafka.strimzi.io-v1alpha1-edit                            24d
@@ -1258,18 +1258,18 @@ perconaxtradbbackups.pxc.percona.com-v1alpha1-admin                    41d
 perconaxtradbbackups.pxc.percona.com-v1alpha1-crdview                  41d
 perconaxtradbbackups.pxc.percona.com-v1alpha1-edit                     41d
 perconaxtradbbackups.pxc.percona.com-v1alpha1-view                     41d
-perconaxtradbclusterbackups.pxc.percona.com-v1-admin                   18h
-perconaxtradbclusterbackups.pxc.percona.com-v1-crdview                 18h
-perconaxtradbclusterbackups.pxc.percona.com-v1-edit                    18h
-perconaxtradbclusterbackups.pxc.percona.com-v1-view                    18h
-perconaxtradbclusterrestores.pxc.percona.com-v1-admin                  18h
-perconaxtradbclusterrestores.pxc.percona.com-v1-crdview                18h
-perconaxtradbclusterrestores.pxc.percona.com-v1-edit                   18h
-perconaxtradbclusterrestores.pxc.percona.com-v1-view                   18h
-perconaxtradbclusters.pxc.percona.com-v1-5-0-admin                     18h
-perconaxtradbclusters.pxc.percona.com-v1-5-0-crdview                   18h
-perconaxtradbclusters.pxc.percona.com-v1-5-0-edit                      18h
-perconaxtradbclusters.pxc.percona.com-v1-5-0-view                      18h
+perconaxtradbclusterbackups.pxc.percona.com-v1-admin                   19h
+perconaxtradbclusterbackups.pxc.percona.com-v1-crdview                 19h
+perconaxtradbclusterbackups.pxc.percona.com-v1-edit                    19h
+perconaxtradbclusterbackups.pxc.percona.com-v1-view                    19h
+perconaxtradbclusterrestores.pxc.percona.com-v1-admin                  19h
+perconaxtradbclusterrestores.pxc.percona.com-v1-crdview                19h
+perconaxtradbclusterrestores.pxc.percona.com-v1-edit                   19h
+perconaxtradbclusterrestores.pxc.percona.com-v1-view                   19h
+perconaxtradbclusters.pxc.percona.com-v1-5-0-admin                     19h
+perconaxtradbclusters.pxc.percona.com-v1-5-0-crdview                   19h
+perconaxtradbclusters.pxc.percona.com-v1-5-0-edit                      19h
+perconaxtradbclusters.pxc.percona.com-v1-5-0-view                      19h
 postgresqls.acid.zalan.do-v1-admin                                     47d
 postgresqls.acid.zalan.do-v1-crdview                                   47d
 postgresqls.acid.zalan.do-v1-edit                                      47d
@@ -1294,8 +1294,8 @@ rabbitmqclusters.rabbitmq.com-v1beta1-view                             38d
 redis-ctcpq-admin                                                      13d
 redis-ctcpq-edit                                                       13d
 redis-ctcpq-view                                                       13d
-redis-installer                                                        3d19h
-redis-operator.v0.3.0-9mmm5                                            2d16h
+redis-installer                                                        3d20h
+redis-operator.v0.3.0-9mmm5                                            2d17h
 redis.redis.opstreelabs.in-v1alpha1-admin                              12d
 redis.redis.opstreelabs.in-v1alpha1-crdview                            12d
 redis.redis.opstreelabs.in-v1alpha1-edit                               12d
@@ -1304,7 +1304,7 @@ redisfailovers.databases.spotahome.com-v1-admin                        12d
 redisfailovers.databases.spotahome.com-v1-crdview                      12d
 redisfailovers.databases.spotahome.com-v1-edit                         12d
 redisfailovers.databases.spotahome.com-v1-view                         12d
-strimzi-cluster-operator.v0.18.0-6jbmk                                 3m27s
+strimzi-cluster-operator.v0.18.0-6jbmk                                 43m
 strimzi-entity-operator                                                26d
 strimzi-kafka-broker                                                   26d
 system:aggregate-to-admin                                              48d
@@ -1372,11 +1372,11 @@ zxl-mongodb-6ktql-view                                                 13d
 
 kubectl get -n kafka rolebindings
 NAME                                                              AGE
-strimzi-cluster-operator.v0.18.0-5d4db-strimzi-cluster-opeczh7s   3m27s
+strimzi-cluster-operator.v0.18.0-5d4db-strimzi-cluster-opeczh7s   43m
 
 kubectl get -n kafka roles
 NAME                                     AGE
-strimzi-cluster-operator.v0.18.0-5d4db   3m27s
+strimzi-cluster-operator.v0.18.0-5d4db   43m
 
 kubectl get -n kafka redis
 
@@ -1413,7 +1413,7 @@ zlcdis-label-test     28d
 zlcdis-lihao          21d
 zlcdis-lihao-scope    28d
 zlcdis-lihao12        28d
-zlcdis-lihao12312     32d
+zlcdis-lihao12312     33d
 zlcdis-lihao123124    40d
 zlcdis-liwei          20d
 zlcdis-lorem1231      33d

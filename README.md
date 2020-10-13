@@ -223,42 +223,52 @@ kafkabridges.kafka.strimzi.io-v1alpha1-admin                           24d
 kafkabridges.kafka.strimzi.io-v1alpha1-crdview                         24d
 kafkabridges.kafka.strimzi.io-v1alpha1-edit                            24d
 kafkabridges.kafka.strimzi.io-v1alpha1-view                            24d
+
 kafkaconnectors.kafka.strimzi.io-v1alpha1-admin                        24d
 kafkaconnectors.kafka.strimzi.io-v1alpha1-crdview                      24d
 kafkaconnectors.kafka.strimzi.io-v1alpha1-edit                         24d
 kafkaconnectors.kafka.strimzi.io-v1alpha1-view                         24d
+
 kafkaconnects.kafka.strimzi.io-v1beta1-admin                           24d
 kafkaconnects.kafka.strimzi.io-v1beta1-crdview                         24d
 kafkaconnects.kafka.strimzi.io-v1beta1-edit                            24d
 kafkaconnects.kafka.strimzi.io-v1beta1-view                            24d
+
 kafkaconnects2is.kafka.strimzi.io-v1beta1-admin                        24d
 kafkaconnects2is.kafka.strimzi.io-v1beta1-crdview                      24d
 kafkaconnects2is.kafka.strimzi.io-v1beta1-edit                         24d
 kafkaconnects2is.kafka.strimzi.io-v1beta1-view                         24d
+
 kafkamirrormaker2s.kafka.strimzi.io-v1alpha1-admin                     24d
 kafkamirrormaker2s.kafka.strimzi.io-v1alpha1-crdview                   24d
 kafkamirrormaker2s.kafka.strimzi.io-v1alpha1-edit                      24d
 kafkamirrormaker2s.kafka.strimzi.io-v1alpha1-view                      24d
+
 kafkamirrormakers.kafka.strimzi.io-v1beta1-admin                       24d
 kafkamirrormakers.kafka.strimzi.io-v1beta1-crdview                     24d
 kafkamirrormakers.kafka.strimzi.io-v1beta1-edit                        24d
 kafkamirrormakers.kafka.strimzi.io-v1beta1-view                        24d
+
 kafkarebalances.kafka.strimzi.io-v1alpha1-admin                        24d
 kafkarebalances.kafka.strimzi.io-v1alpha1-crdview                      24d
 kafkarebalances.kafka.strimzi.io-v1alpha1-edit                         24d
 kafkarebalances.kafka.strimzi.io-v1alpha1-view                         24d
+
 kafkas.kafka.strimzi.io-v1beta1-admin                                  26d
 kafkas.kafka.strimzi.io-v1beta1-crdview                                26d
 kafkas.kafka.strimzi.io-v1beta1-edit                                   26d
 kafkas.kafka.strimzi.io-v1beta1-view                                   26d
+
 kafkatopics.kafka.strimzi.io-v1beta1-admin                             42d
 kafkatopics.kafka.strimzi.io-v1beta1-crdview                           42d
 kafkatopics.kafka.strimzi.io-v1beta1-edit                              42d
 kafkatopics.kafka.strimzi.io-v1beta1-view                              42d
+
 kafkausers.kafka.strimzi.io-v1beta1-admin                              42d
 kafkausers.kafka.strimzi.io-v1beta1-crdview                            42d
 kafkausers.kafka.strimzi.io-v1beta1-edit                               42d
 kafkausers.kafka.strimzi.io-v1beta1-view                               42d
+
 strimzi-entity-operator                                                26d
 strimzi-kafka-broker                                                   26d
 
@@ -279,6 +289,14 @@ kafka                Active   5s
 
 
 部署 operator
+
+kubectl get -n kafka clusterroles
+NAME                                                                   AGE
+kafka-7dpb8-admin                                                      3m32s
+kafka-7dpb8-edit                                                       3m32s
+kafka-7dpb8-view                                                       3m32s
+strimzi-cluster-operator.v0.18.0-6jbmk                                 3m27s
+
 
 
 
