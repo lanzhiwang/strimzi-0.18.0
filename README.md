@@ -263,6 +263,27 @@ strimzi-entity-operator                                                26d
 strimzi-kafka-broker                                                   26d
 
 
+
+
+[root@mw-init ~]# kubectl create namespace kafka
+namespace/kafka created
+[root@mw-init ~]#
+[root@mw-init ~]#
+[root@mw-init ~]# kubectl get namespaces | grep kafka
+kafka                Active   3s
+[root@mw-init ~]#
+[root@mw-init ~]#
+[root@mw-init ~]# kubectl get namespaces | grep kafka
+kafka                Active   5s
+[root@mw-init ~]#
+
+
+部署 operator
+
+
+
+
+
 ```
 
 
