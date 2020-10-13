@@ -1,6 +1,6 @@
 ## [3. Deployment configuration](https://strimzi.io/docs/operators/0.18.0/using.html#assembly-deployment-configuration-str)
 
-This chapter describes how to configure different aspects of the supported deployments:
+This chapter describes how to configure different aspects of the supported deployments:  本章介绍如何配置支持的部署的不同方面：
 
 - Kafka clusters
 - Kafka Connect clusters
@@ -13,7 +13,7 @@ This chapter describes how to configure different aspects of the supported deplo
 
 ### [3.1. Kafka cluster configuration](https://strimzi.io/docs/operators/0.18.0/using.html#assembly-deployment-configuration-kafka-str)
 
-The full schema of the `Kafka` resource is described in the [`Kafka` schema reference](https://strimzi.io/docs/operators/0.18.0/using.html#type-Kafka-reference). All labels that are applied to the desired `Kafka` resource will also be applied to the Kubernetes resources making up the Kafka cluster. This provides a convenient mechanism for resources to be labeled as required.
+The full schema of the `Kafka` resource is described in the [`Kafka` schema reference](https://strimzi.io/docs/operators/0.18.0/using.html#type-Kafka-reference). All labels that are applied to the desired `Kafka` resource will also be applied to the Kubernetes resources making up the Kafka cluster. This provides a convenient mechanism for resources to be labeled as required.  Kafka模式参考中描述了Kafka资源的完整模式。 应用于所需Kafka资源的所有标签也将应用于构成Kafka集群的Kubernetes资源。 这提供了一种方便的机制，可以根据需要标记资源。
 
 #### [3.1.1. Sample Kafka YAML configuration](https://strimzi.io/docs/operators/0.18.0/using.html#ref-sample-kafka-resource-config-deployment-configuration-kafka)
 
@@ -131,11 +131,11 @@ spec:
 4. Resource limits specify the maximum resources that can be consumed by a container.
 5. JVM options can [specify the minimum (`-Xms`) and maximum (`-Xmx`) memory allocation for JVM](https://strimzi.io/docs/operators/0.18.0/using.html#ref-jvm-options-deployment-configuration-kafka).
 6. Listeners configure how clients connect to the Kafka cluster via bootstrap addresses. Listeners are [configured as `plain` (without encryption), `tls` or `external`](https://strimzi.io/docs/operators/0.18.0/using.html#assembly-configuring-kafka-broker-listeners-deployment-configuration-kafka).
-7. Listener authentication mechanisms may be configured for each listener, and [specified as mutual TLS or SCRAM-SHA](https://strimzi.io/docs/operators/0.18.0/using.html#assembly-kafka-broker-listener-authentication-deployment-configuration-kafka).
+7. Listener authentication mechanisms may be configured for each listener, and [specified as mutual TLS or SCRAM-SHA](https://strimzi.io/docs/operators/0.18.0/using.html#assembly-kafka-broker-listener-authentication-deployment-configuration-kafka).  可以为每个侦听器配置侦听器身份验证机制，并将其指定为相互TLS或SCRAM-SHA
 8. External listener configuration specifies [how the Kafka cluster is exposed outside Kubernetes, such as through a `route`, `loadbalancer` or `nodeport`](https://strimzi.io/docs/operators/0.18.0/using.html#assembly-kafka-broker-external-listeners-deployment-configuration-kafka).
 9. Optional configuration for a [Kafka listener certificate](https://strimzi.io/docs/operators/0.18.0/using.html#kafka-listener-certificates-str) managed by an external Certificate Authority. The `brokerCertChainAndKey` property specifies a `Secret` that holds a server certificate and a private key. Kafka listener certificates can also be configured for TLS listeners.
 10. Authorization [enables `simple` authorization on the Kafka broker using the `SimpleAclAuthorizer` Kafka plugin](https://strimzi.io/docs/operators/0.18.0/using.html#ref-kafka-authorization-deployment-configuration-kafka).
-11. Config specifies the broker configuration. [Standard Apache Kafka configuration may be provided, restricted to those properties not managed directly by Strimzi](https://strimzi.io/docs/operators/0.18.0/using.html#ref-kafka-broker-configuration-deployment-configuration-kafka).
+11. Config specifies the broker configuration. [Standard Apache Kafka configuration may be provided, restricted to those properties not managed directly by Strimzi](https://strimzi.io/docs/operators/0.18.0/using.html#ref-kafka-broker-configuration-deployment-configuration-kafka).  Config指定代理配置。 可以提供标准的Apache Kafka配置，但仅限于Strimzi不直接管理的那些属性
 12. Storage is [configured as `ephemeral`, `persistent-claim` or `jbod`](https://strimzi.io/docs/operators/0.18.0/using.html#assembly-storage-deployment-configuration-kafka).
 13. Storage size for [persistent volumes may be increased](https://strimzi.io/docs/operators/0.18.0/using.html#proc-resizing-persistent-volumes-deployment-configuration-kafka) and additional [volumes may be added to JBOD storage](https://strimzi.io/docs/operators/0.18.0/using.html#proc-adding-volumes-to-jbod-storage-deployment-configuration-kafka).
 14. Persistent storage has [additional configuration options](https://strimzi.io/docs/operators/0.18.0/using.html#ref-persistent-storage-deployment-configuration-kafka), such as a storage `id` and `class` for dynamic volume provisioning.
@@ -149,7 +149,7 @@ spec:
 
 #### [3.1.2. Data storage considerations](https://strimzi.io/docs/operators/0.18.0/using.html#considerations-for-data-storage-deployment-configuration-kafka)
 
-An efficient data storage infrastructure is essential to the optimal performance of Strimzi.
+An efficient data storage infrastructure is essential to the optimal performance of Strimzi.  高效的数据存储基础架构对于Strimzi的最佳性能至关重要。
 
 Block storage is required. File storage, such as NFS, does not work with Kafka.
 
@@ -159,17 +159,15 @@ For your block storage, you can choose, for example:
 - [Local persistent volumes](https://kubernetes.io/docs/concepts/storage/volumes/#local)
 - Storage Area Network (SAN) volumes accessed by a protocol such as *Fibre Channel* or *iSCSI*
 
-| NOTE | Strimzi does not require Kubernetes raw block volumes. |
-| ---- | ------------------------------------------------------ |
-|      |                                                        |
+> NOTE Strimzi does not require Kubernetes raw block volumes.
 
 ##### [File systems](https://strimzi.io/docs/operators/0.18.0/using.html#file_systems)
 
-It is recommended that you configure your storage system to use the *XFS* file system. Strimzi is also compatible with the *ext4* file system, but this might require additional configuration for best results.
+It is recommended that you configure your storage system to use the *XFS* file system. Strimzi is also compatible with the *ext4* file system, but this might require additional configuration for best results.  建议您将存储系统配置为使用XFS文件系统。 Strimzi也与ext4文件系统兼容，但这可能需要附加配置才能获得最佳效果。
 
 ##### [Apache Kafka and ZooKeeper storage](https://strimzi.io/docs/operators/0.18.0/using.html#apache_kafka_and_zookeeper_storage)
 
-Use separate disks for Apache Kafka and ZooKeeper.
+Use separate disks for Apache Kafka and ZooKeeper.  将单独的磁盘用于Apache Kafka和ZooKeeper。
 
 Three types of data storage are supported:
 
@@ -179,11 +177,9 @@ Three types of data storage are supported:
 
 For more information, see [Kafka and ZooKeeper storage](https://strimzi.io/docs/operators/0.18.0/using.html#assembly-storage-deployment-configuration-kafka).
 
-Solid-state drives (SSDs), though not essential, can improve the performance of Kafka in large clusters where data is sent to and received from multiple topics asynchronously. SSDs are particularly effective with ZooKeeper, which requires fast, low latency data access.
+Solid-state drives (SSDs), though not essential, can improve the performance of Kafka in large clusters where data is sent to and received from multiple topics asynchronously. SSDs are particularly effective with ZooKeeper, which requires fast, low latency data access.  固态驱动器（SSD）尽管不是必需的，但可以在大型集群中提高Kafka的性能，在大型集群中，数据是异步发送到多个主题或从多个主题接收的。 SSD对ZooKeeper尤其有效，它需要快速，低延迟的数据访问。
 
-| NOTE | You do not need to provision replicated storage because Kafka and ZooKeeper both have built-in data replication. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> NOTE You do not need to provision replicated storage because Kafka and ZooKeeper both have built-in data replication.
 
 #### [3.1.3. Kafka and ZooKeeper storage types](https://strimzi.io/docs/operators/0.18.0/using.html#assembly-storage-deployment-configuration-kafka)
 
@@ -193,9 +189,7 @@ As stateful applications, Kafka and ZooKeeper need to store data on disk. Strimz
 - Persistent
 - JBOD storage
 
-| NOTE | JBOD storage is supported only for Kafka, not for ZooKeeper. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> NOTE JBOD storage is supported only for Kafka, not for ZooKeeper.
 
 When configuring a `Kafka` resource, you can specify the type of storage used by the Kafka broker and its corresponding ZooKeeper node. You configure the storage type using the `storage` property in the following resources:
 
@@ -204,9 +198,7 @@ When configuring a `Kafka` resource, you can specify the type of storage used by
 
 The storage type is configured in the `type` field.
 
-| WARNING | The storage type cannot be changed after a Kafka cluster is deployed. |
-| ------- | ------------------------------------------------------------ |
-|         |                                                              |
+> WARNING The storage type cannot be changed after a Kafka cluster is deployed.
 
 Additional resources
 
@@ -219,9 +211,7 @@ Additional resources
 
 Ephemeral storage uses the `emptyDir` volumes to store data. To use ephemeral storage, the `type` field should be set to `ephemeral`.
 
-| IMPORTANT | `emptyDir` volumes are not persistent and the data stored in them will be lost when the Pod is restarted. After the new pod is started, it has to recover all data from other nodes of the cluster. Ephemeral storage is not suitable for use with single node ZooKeeper clusters and for Kafka topics with replication factor 1, because it will lead to data loss. |
-| --------- | ------------------------------------------------------------ |
-|           |                                                              |
+> IMPORTANT `emptyDir` volumes are not persistent and the data stored in them will be lost when the Pod is restarted. After the new pod is started, it has to recover all data from other nodes of the cluster. Ephemeral storage is not suitable for use with single node ZooKeeper clusters and for Kafka topics with replication factor 1, because it will lead to data loss.
 
 An example of Ephemeral storage
 
@@ -277,9 +267,7 @@ To use persistent storage, the `type` has to be set to `persistent-claim`. Persi
 
   Boolean value which specifies if the Persistent Volume Claim has to be deleted when the cluster is undeployed. Default is `false`.
 
-| WARNING | Increasing the size of persistent volumes in an existing Strimzi cluster is only supported in Kubernetes versions that support persistent volume resizing. The persistent volume to be resized must use a storage class that supports volume expansion. For other versions of Kubernetes and storage classes which do not support volume expansion, you must decide the necessary storage size before deploying the cluster. Decreasing the size of existing persistent volumes is not possible. |
-| ------- | ------------------------------------------------------------ |
-|         |                                                              |
+> WARNING Increasing the size of persistent volumes in an existing Strimzi cluster is only supported in Kubernetes versions that support persistent volume resizing. The persistent volume to be resized must use a storage class that supports volume expansion. For other versions of Kubernetes and storage classes which do not support volume expansion, you must decide the necessary storage size before deploying the cluster. Decreasing the size of existing persistent volumes is not possible.
 
 Example fragment of persistent storage configuration with 1000Gi `size`
 
@@ -386,15 +374,13 @@ The persistent volume will be used by the Kafka brokers as log directories mount
 
 You can provision increased storage capacity by increasing the size of the persistent volumes used by an existing Strimzi cluster. Resizing persistent volumes is supported in clusters that use either a single persistent volume or multiple persistent volumes in a JBOD storage configuration.
 
-| NOTE | You can increase but not decrease the size of persistent volumes. Decreasing the size of persistent volumes is not currently supported in Kubernetes. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> NOTE You can increase but not decrease the size of persistent volumes. Decreasing the size of persistent volumes is not currently supported in Kubernetes.
 
 Prerequisites
 
 - A Kubernetes cluster with support for volume resizing.
 - The Cluster Operator is running.
-- A Kafka cluster using persistent volumes created using a storage class that supports volume expansion.
+- A Kafka cluster using persistent volumes created using a storage class that supports volume expansion扩张.
 
 Procedure
 
@@ -485,11 +471,9 @@ The JBOD volumes will be used by the Kafka brokers as log directories mounted in
 
 ##### [Adding volumes to JBOD storage](https://strimzi.io/docs/operators/0.18.0/using.html#proc-adding-volumes-to-jbod-storage-deployment-configuration-kafka)
 
-This procedure describes how to add volumes to a Kafka cluster configured to use JBOD storage. It cannot be applied to Kafka clusters configured to use any other storage type.
+This procedure describes how to add volumes to a Kafka cluster configured to use JBOD storage. It cannot be applied to Kafka clusters configured to use any other storage type.  此过程描述了如何将卷添加到配置为使用JBOD存储的Kafka群集中。 它不能应用于配置为使用任何其他存储类型的Kafka群集。
 
-| NOTE | When adding a new volume under an `id` which was already used in the past and removed, you have to make sure that the previously used `PersistentVolumeClaims` have been deleted. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> NOTE When adding a new volume under an `id` which was already used in the past and removed, you have to make sure that the previously used `PersistentVolumeClaims` have been deleted.
 
 Prerequisites
 
@@ -547,9 +531,7 @@ For more information about reassigning topics, see [Partition reassignment](http
 
 This procedure describes how to remove volumes from Kafka cluster configured to use JBOD storage. It cannot be applied to Kafka clusters configured to use any other storage type. The JBOD storage always has to contain at least one volume.
 
-| IMPORTANT | To avoid data loss, you have to move all partitions before removing the volumes. |
-| --------- | ------------------------------------------------------------ |
-|           |                                                              |
+> IMPORTANT To avoid data loss, you have to move all partitions before removing the volumes.
 
 Prerequisites
 
@@ -764,7 +746,7 @@ OAuth 2.0
 
 If you are using OAuth 2.0 token-based authentication, you can configure the listeners to connect to your authorization server. For more information, see [Using OAuth 2.0 token-based authentication](https://strimzi.io/docs/operators/0.18.0/using.html#assembly-oauth-authentication_str).
 
-Listener certificates
+Listener certificates. 侦听器证书
 
 You can provide your own server certificates, called *Kafka listener certificates*, for TLS listeners or external listeners which have TLS encryption enabled. For more information, see [Kafka listener certificates](https://strimzi.io/docs/operators/0.18.0/using.html#kafka-listener-certificates-str).
 
@@ -881,9 +863,7 @@ Mutual TLS authentication is always used for the communication between Kafka bro
 
 Mutual authentication or two-way authentication is when both the server and the client present certificates. Strimzi can configure Kafka to use TLS (Transport Layer Security) to provide encrypted communication between Kafka brokers and clients either with or without mutual authentication. When you configure mutual authentication, the broker authenticates the client and the client authenticates the broker.
 
-| NOTE | TLS authentication is more commonly one-way, with one party authenticating the identity of another. For example, when HTTPS is used between a web browser and a web server, the server obtains proof of the identity of the browser. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> NOTE TLS authentication is more commonly one-way, with one party authenticating the identity of another. For example, when HTTPS is used between a web browser and a web server, the server obtains proof of the identity of the browser. 
 
 [When to use mutual TLS authentication for clients](https://strimzi.io/docs/operators/0.18.0/using.html#when_to_use_mutual_tls_authentication_for_clients)
 
