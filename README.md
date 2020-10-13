@@ -166,6 +166,36 @@ huzhi@huzhideMacBook-Pro strimzi-0.18.0 %
 
 
 
+部署的资源整理
+
+```bash
+kubectl get -n kafka customresourcedefinitions
+
+kafkabridges.kafka.strimzi.io                    2020-09-18T11:39:55Z
+kafkaconnectors.kafka.strimzi.io                 2020-09-18T11:39:55Z
+kafkaconnects.kafka.strimzi.io                   2020-09-18T11:39:55Z
+kafkaconnects2is.kafka.strimzi.io                2020-09-18T11:39:55Z
+kafkamirrormaker2s.kafka.strimzi.io              2020-09-18T11:39:56Z
+kafkamirrormakers.kafka.strimzi.io               2020-09-18T11:39:56Z
+kafkarebalances.kafka.strimzi.io                 2020-09-18T11:39:56Z
+kafkas.kafka.strimzi.io                          2020-09-11T02:44:14Z
+kafkatopics.kafka.strimzi.io                     2020-08-31T03:35:06Z
+kafkausers.kafka.strimzi.io                      2020-08-31T03:35:06Z
+
+
+
+
+
+
+
+```
+
+
+
+
+
+
+
 
 
 
