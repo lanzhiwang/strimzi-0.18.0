@@ -4,30 +4,6 @@ You can deploy [Cruise Control](https://github.com/linkedin/cruise-control) and 
 
 Example YAML files for deploying Cruise Control and setting optimization goals are provided in `examples/cruise-control/`.  在 /examples/cruise-control/ 中提供了用于部署 Cruise Control 和设置优化目标的示例 YAML 文件。
 
-
-
-
-
-
-
-1. ```shell
-   kubectl -n kafka annotate kafkarebalance my-rebalance strimzi.io/rebalance=refresh
-   ```
-
-2. 
-
-
-
-
-
-
-
-
-
-
-
-
-
 ### [8.1. Why use Cruise Control?](https://strimzi.io/docs/operators/0.18.0/using.html#con-cruise-control-overview-str)
 
 Cruise Control reduces the time and effort involved in running an efficient and balanced Kafka cluster.  巡航控制减少了运行高效且平衡的Kafka集群所需的时间和精力。

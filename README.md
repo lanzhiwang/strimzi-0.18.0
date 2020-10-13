@@ -358,6 +358,209 @@ strimzi-cluster-operator.v0.18.0-5d4db   43m
 
 
 
+部署 kafka 集群和 topic
+
+kubectl get -n kafka configmaps
+NAME                                      DATA   AGE
+my-cluster-cruise-control-config          1      21s
+my-cluster-entity-topic-operator-config   1      45s
+my-cluster-entity-user-operator-config    1      45s
+my-cluster-kafka-config                   2      71s
+my-cluster-zookeeper-config               2      2m58s
+
+kubectl get -n kafka endpoints
+NAME                          ENDPOINTS                                                          AGE
+my-cluster-cruise-control                                                                        21s
+my-cluster-kafka-bootstrap    10.199.0.16:9091,10.199.1.208:9091,10.199.1.209:9091 + 6 more...   71s
+my-cluster-kafka-brokers      10.199.0.16:9999,10.199.1.208:9999,10.199.1.209:9999 + 9 more...   71s
+my-cluster-zookeeper-client   10.199.0.15:2181,10.199.1.206:2181,10.199.1.207:2181               2m58s
+my-cluster-zookeeper-nodes    10.199.0.15:3888,10.199.1.206:3888,10.199.1.207:3888 + 6 more...   2m58s
+
+kubectl get -n kafka events
+
+
+kubectl get -n kafka pods
+NAME                                               READY   STATUS    RESTARTS   AGE
+my-cluster-cruise-control-68795c6bbd-bhpwd         1/2     Running   0          22s
+my-cluster-entity-operator-9d996575b-lxr42         3/3     Running   0          46s
+my-cluster-kafka-0                                 2/2     Running   0          72s
+my-cluster-kafka-1                                 2/2     Running   0          72s
+my-cluster-kafka-2                                 2/2     Running   0          71s
+my-cluster-zookeeper-0                             1/1     Running   0          2m58s
+my-cluster-zookeeper-1                             1/1     Running   0          2m58s
+my-cluster-zookeeper-2                             1/1     Running   0          2m58s
+strimzi-cluster-operator-v0.18.0-99fc5c9f5-zsrx8   1/1     Running   0          73m
+
+
+kubectl get -n kafka secrets
+NAME                                     TYPE                                  DATA   AGE
+default-token-r5ztg                      kubernetes.io/service-account-token   3      73m
+my-cluster-clients-ca                    Opaque                                1      2m59s
+my-cluster-clients-ca-cert               Opaque                                3      2m59s
+my-cluster-cluster-ca                    Opaque                                1      2m59s
+my-cluster-cluster-ca-cert               Opaque                                3      2m59s
+my-cluster-cluster-operator-certs        Opaque                                4      2m59s
+my-cluster-cruise-control-certs          Opaque                                4      22s
+my-cluster-cruise-control-token-lcjlr    kubernetes.io/service-account-token   3      22s
+my-cluster-entity-operator-certs         Opaque                                4      46s
+my-cluster-entity-operator-token-8btdr   kubernetes.io/service-account-token   3      46s
+my-cluster-kafka-brokers                 Opaque                                12     72s
+my-cluster-kafka-token-27bk4             kubernetes.io/service-account-token   3      72s
+my-cluster-zookeeper-nodes               Opaque                                12     2m58s
+my-cluster-zookeeper-token-fbjvm         kubernetes.io/service-account-token   3      2m59s
+strimzi-cluster-operator-token-8r97s     kubernetes.io/service-account-token   3      73m
+
+kubectl get -n kafka serviceaccounts
+NAME                         SECRETS   AGE
+default                      1         73m
+my-cluster-cruise-control    1         22s
+my-cluster-entity-operator   1         46s
+my-cluster-kafka             1         72s
+my-cluster-zookeeper         1         2m59s
+strimzi-cluster-operator     1         73m
+
+kubectl get -n kafka services
+NAME                          TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                               AGE
+my-cluster-cruise-control     ClusterIP   10.102.118.166   <none>        9090/TCP                              22s
+my-cluster-kafka-bootstrap    ClusterIP   10.110.183.128   <none>        9091/TCP,9092/TCP,9093/TCP            72s
+my-cluster-kafka-brokers      ClusterIP   None             <none>        9091/TCP,9092/TCP,9093/TCP,9999/TCP   72s
+my-cluster-zookeeper-client   ClusterIP   10.108.1.215     <none>        2181/TCP                              2m59s
+my-cluster-zookeeper-nodes    ClusterIP   None             <none>        2181/TCP,2888/TCP,3888/TCP            2m59s
+
+
+kubectl get -n kafka controllerrevisions
+NAME                              CONTROLLER                              REVISION   AGE
+my-cluster-kafka-57c8c84f67       statefulset.apps/my-cluster-kafka       1          74s
+my-cluster-zookeeper-7589447968   statefulset.apps/my-cluster-zookeeper   1          3m
+
+
+
+kubectl get -n kafka deployments
+NAME                               READY   UP-TO-DATE   AVAILABLE   AGE
+my-cluster-cruise-control          1/1     1            1           24s
+my-cluster-entity-operator         1/1     1            1           48s
+strimzi-cluster-operator-v0.18.0   1/1     1            1           73m
+
+kubectl get -n kafka replicasets
+NAME                                         DESIRED   CURRENT   READY   AGE
+my-cluster-cruise-control-68795c6bbd         1         1         1       24s
+my-cluster-entity-operator-9d996575b         1         1         1       48s
+strimzi-cluster-operator-v0.18.0-99fc5c9f5   1         1         1       73m
+
+kubectl get -n kafka statefulsets
+NAME                   READY   AGE
+my-cluster-kafka       3/3     75s
+my-cluster-zookeeper   3/3     3m1s
+
+
+
+
+
+
+
+
+
+
+
+kubectl get -n kafka kafkas
+NAME         DESIRED KAFKA REPLICAS   DESIRED ZK REPLICAS
+my-cluster   3                        3
+
+kubectl get -n kafka kafkatopics
+NAME                                           PARTITIONS   REPLICATION FACTOR
+strimzi.cruisecontrol.metrics                  1            1
+strimzi.cruisecontrol.modeltrainingsamples     32           2
+strimzi.cruisecontrol.partitionmetricsamples   32           2
+
+
+
+kubectl get -n kafka pods
+NAME                                               READY   STATUS    RESTARTS   AGE
+my-cluster-cruise-control-68795c6bbd-bhpwd         2/2     Running   0          30s
+my-cluster-entity-operator-9d996575b-lxr42         3/3     Running   0          54s
+my-cluster-kafka-0                                 2/2     Running   0          80s
+my-cluster-kafka-1                                 2/2     Running   0          80s
+my-cluster-kafka-2                                 2/2     Running   0          79s
+my-cluster-zookeeper-0                             1/1     Running   0          3m6s
+my-cluster-zookeeper-1                             1/1     Running   0          3m6s
+my-cluster-zookeeper-2                             1/1     Running   0          3m6s
+strimzi-cluster-operator-v0.18.0-99fc5c9f5-zsrx8   1/1     Running   0          73m
+
+
+
+kubectl get -n kafka networkpolicies
+NAME                                       POD-SELECTOR                                AGE
+my-cluster-network-policy-cruise-control   strimzi.io/name=my-cluster-cruise-control   30s
+my-cluster-network-policy-kafka            strimzi.io/name=my-cluster-kafka            80s
+my-cluster-network-policy-zookeeper        strimzi.io/name=my-cluster-zookeeper        3m7s
+
+
+kubectl get -n kafka clusterserviceversions
+NAME                               DISPLAY          VERSION   REPLACES   PHASE
+strimzi-cluster-operator.v0.18.0   Kafka Operator   0.18.0               Succeeded
+
+kubectl get -n kafka installplans
+NAME            CSV                                APPROVAL    APPROVED
+install-c47dn   strimzi-cluster-operator.v0.18.0   Automatic   true
+
+kubectl get -n kafka operatorgroups
+NAME          AGE
+kafka-7dpb8   73m
+
+kubectl get -n kafka subscriptions
+NAME                     PACKAGE                  SOURCE     CHANNEL
+strimzi-kafka-operator   strimzi-kafka-operator   platform   stable
+
+
+
+
+
+kubectl get -n kafka poddisruptionbudgets
+NAME                   MIN AVAILABLE   MAX UNAVAILABLE   ALLOWED DISRUPTIONS   AGE
+my-cluster-kafka       N/A             1                 1                     7s
+my-cluster-zookeeper   N/A             1                 1                     8s
+
+kubectl get -n kafka podsecuritypolicies
+NAME                                  PRIV    CAPS   SELINUX    RUNASUSER   FSGROUP     SUPGROUP    READONLYROOTFS   VOLUMES
+20-user-restricted                    true    *      RunAsAny   RunAsAny    RunAsAny    RunAsAny    false            *
+80-system-privileged                  true    *      RunAsAny   RunAsAny    RunAsAny    RunAsAny    false            *
+kube-prometheus                       false          RunAsAny   RunAsAny    MustRunAs   MustRunAs   false            configMap,emptyDir,projected,secret,downwardAPI,persistentVolumeClaim
+kube-prometheus-alertmanager          false          RunAsAny   RunAsAny    MustRunAs   MustRunAs   false            configMap,emptyDir,projected,secret,downwardAPI,persistentVolumeClaim
+kube-prometheus-exporter-kube-state   false          RunAsAny   RunAsAny    MustRunAs   MustRunAs   false            configMap,emptyDir,projected,secret,downwardAPI,persistentVolumeClaim
+kube-prometheus-exporter-node         false          RunAsAny   RunAsAny    MustRunAs   MustRunAs   false            configMap,emptyDir,projected,secret,downwardAPI,persistentVolumeClaim,hostPath
+kube-prometheus-grafana               false          RunAsAny   RunAsAny    MustRunAs   MustRunAs   false            configMap,emptyDir,projected,secret,downwardAPI,persistentVolumeClaim,hostPath
+prometheus-operator                   false          RunAsAny   RunAsAny    MustRunAs   MustRunAs   false            configMap,emptyDir,projected,secret,downwardAPI,persistentVolumeClaim
+
+
+
+
+kubectl get -n kafka clusterrolebindings
+NAME                                                                 AGE
+strimzi-cluster-operator.v0.18.0-6jbmk-strimzi-cluster-open52ng      73m
+
+
+
+kubectl get -n kafka clusterroles
+NAME                                                                   AGE
+strimzi-cluster-operator.v0.18.0-6jbmk                                 73m
+
+
+kubectl get -n kafka rolebindings
+NAME                                                              AGE
+strimzi-cluster-operator.v0.18.0-5d4db-strimzi-cluster-opeczh7s   73m
+strimzi-my-cluster-entity-topic-operator                          57s
+strimzi-my-cluster-entity-user-operator                           57s
+
+kubectl get -n kafka roles
+NAME                                     AGE
+strimzi-cluster-operator.v0.18.0-5d4db   73m
+
+
+
+
+
+
+
 
 
 
