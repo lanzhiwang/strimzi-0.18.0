@@ -748,7 +748,7 @@ If you are using OAuth 2.0 token-based authentication, you can configure the lis
 
 Listener certificates. 侦听器证书
 
-You can provide your own server certificates, called *Kafka listener certificates*, for TLS listeners or external listeners which have TLS encryption enabled. For more information, see [Kafka listener certificates](https://strimzi.io/docs/operators/0.18.0/using.html#kafka-listener-certificates-str).
+You can provide your own server certificates, called *Kafka listener certificates*, for TLS listeners or external listeners which have TLS encryption enabled. For more information, see [Kafka listener certificates](https://strimzi.io/docs/operators/0.18.0/using.html#kafka-listener-certificates-str).  您可以为启用了TLS加密的TLS侦听器或外部侦听器提供自己的服务器证书，称为Kafka侦听器证书。 有关更多信息，请参阅Kafka侦听器证书。
 
 ##### [Kafka listeners](https://strimzi.io/docs/operators/0.18.0/using.html#con-kafka-listeners-deployment-configuration-kafka)
 
@@ -823,8 +823,8 @@ Additional resources
 
 The listener `authentication` property is used to specify an authentication mechanism specific to that listener:
 
-- Mutual TLS authentication (only on the listeners with TLS encryption)
-- SCRAM-SHA authentication
+- Mutual TLS authentication (only on the listeners with TLS encryption). 相互TLS身份验证（仅在具有TLS加密的侦听器上）
+- SCRAM-SHA authentication. SCRAM-SHA认证
 
 If no `authentication` property is specified then the listener does not authenticate clients which connect through that listener.
 
@@ -859,11 +859,11 @@ listeners:
 
 ###### [Mutual TLS authentication](https://strimzi.io/docs/operators/0.18.0/using.html#con-mutual-tls-authentication-deployment-configuration-kafka)
 
-Mutual TLS authentication is always used for the communication between Kafka brokers and ZooKeeper pods.
+Mutual TLS authentication is always used for the communication between Kafka brokers and ZooKeeper pods.  相互TLS身份验证始终用于Kafka代理与ZooKeeper之间的通信。
 
-Mutual authentication or two-way authentication is when both the server and the client present certificates. Strimzi can configure Kafka to use TLS (Transport Layer Security) to provide encrypted communication between Kafka brokers and clients either with or without mutual authentication. When you configure mutual authentication, the broker authenticates the client and the client authenticates the broker.
+Mutual authentication or two-way authentication is when both the server and the client present certificates. Strimzi can configure Kafka to use TLS (Transport Layer Security) to provide encrypted communication between Kafka brokers and clients either with or without mutual authentication. When you configure mutual authentication, the broker authenticates the client and the client authenticates the broker.  双向身份验证或双向身份验证是服务器和客户端都提供证书时。 Strimzi可以将Kafka配置为使用TLS（传输层安全性）来提供Kafka代理与客户端之间的加密通信，无论是否进行相互认证。 配置相互身份验证时，代理对客户端进行身份验证，而客户端对代理进行身份验证。
 
-> NOTE TLS authentication is more commonly one-way, with one party authenticating the identity of another. For example, when HTTPS is used between a web browser and a web server, the server obtains proof of the identity of the browser. 
+> NOTE TLS authentication is more commonly one-way, with one party authenticating the identity of another. For example, when HTTPS is used between a web browser and a web server, the server obtains proof of the identity of the browser.  TLS身份验证更常见是一种单向方式，其中一方认证另一方的身份。 例如，当在Web浏览器和Web服务器之间使用HTTPS时，服务器将获得浏览器身份的证明。
 
 [When to use mutual TLS authentication for clients](https://strimzi.io/docs/operators/0.18.0/using.html#when_to_use_mutual_tls_authentication_for_clients)
 
@@ -871,16 +871,16 @@ Mutual TLS authentication is recommended for authenticating Kafka clients when:
 
 - The client supports authentication using mutual TLS authentication
 - It is necessary to use the TLS certificates rather than passwords
-- You can reconfigure and restart client applications periodically so that they do not use expired certificates.
+- You can reconfigure and restart client applications periodically so that they do not use expired certificates.  您可以定期重新配置和重新启动客户端应用程序，以便它们不使用过期的证书。
 
 ###### [SCRAM-SHA authentication](https://strimzi.io/docs/operators/0.18.0/using.html#con-scram-sha-authentication-deployment-configuration-kafka)
 
-SCRAM (Salted Challenge Response Authentication Mechanism) is an authentication protocol that can establish mutual authentication using passwords. Strimzi can configure Kafka to use SASL (Simple Authentication and Security Layer) SCRAM-SHA-512 to provide authentication on both unencrypted and TLS-encrypted client connections. TLS authentication is always used internally between Kafka brokers and ZooKeeper nodes. When used with a TLS client connection, the TLS protocol provides encryption, but is not used for authentication.
+SCRAM (Salted Challenge Response Authentication Mechanism) is an authentication protocol that can establish mutual authentication using passwords. Strimzi can configure Kafka to use SASL (Simple Authentication and Security Layer) SCRAM-SHA-512 to provide authentication on both unencrypted and TLS-encrypted client connections. TLS authentication is always used internally between Kafka brokers and ZooKeeper nodes. When used with a TLS client connection, the TLS protocol provides encryption, but is not used for authentication.  SCRAM 是一种认证协议，可以使用密码建立相互认证。 Strimzi可以将Kafka配置为使用SASL（简单身份验证和安全层）SCRAM-SHA-512在未加密和TLS加密的客户端连接上提供身份验证。 TLS身份验证始终在Kafka代理和ZooKeeper节点之间内部使用。 与TLS客户端连接一起使用时，TLS协议提供加密，但不用于身份验证。
 
 The following properties of SCRAM make it safe to use SCRAM-SHA even on unencrypted connections:
 
-- The passwords are not sent in the clear over the communication channel. Instead the client and the server are each challenged by the other to offer proof that they know the password of the authenticating user.
-- The server and client each generate a new challenge for each authentication exchange. This means that the exchange is resilient against replay attacks.
+- The passwords are not sent in the clear over the communication channel. Instead the client and the server are each challenged by the other to offer proof that they know the password of the authenticating user.  密码不是通过通信通道明文发送的。 取而代之的是，客户端和服务器各自受到对方的挑战，以提供证明他们知道身份验证用户密码的证据。
+- The server and client each generate a new challenge for each authentication exchange. This means that the exchange is resilient against replay attacks.  服务器和客户端各自为每次身份验证交换生成新的挑战。 这意味着交换可以抵抗重放攻击。
 
 [Supported SCRAM credentials](https://strimzi.io/docs/operators/0.18.0/using.html#supported_scram_credentials)
 
@@ -904,7 +904,7 @@ Additional resources
 
 ###### [Customizing advertised addresses on external listeners](https://strimzi.io/docs/operators/0.18.0/using.html#con-kafka-broker-external-listeners-addresses-deployment-configuration-kafka)
 
-By default, Strimzi tries to automatically determine the hostnames and ports that your Kafka cluster advertises to its clients. This is not sufficient in all situations, because the infrastructure on which Strimzi is running might not provide the right hostname or port through which Kafka can be accessed. You can customize the advertised hostname and port in the `overrides` property of the external listener. Strimzi will then automatically configure the advertised address in the Kafka brokers and add it to the broker certificates so it can be used for TLS hostname verification. Overriding the advertised host and ports is available for all types of external listeners.
+By default, Strimzi tries to automatically determine the hostnames and ports that your Kafka cluster advertises to its clients. This is not sufficient in all situations, because the infrastructure on which Strimzi is running might not provide the right hostname or port through which Kafka can be accessed. You can customize the advertised hostname and port in the `overrides` property of the external listener. Strimzi will then automatically configure the advertised address in the Kafka brokers and add it to the broker certificates so it can be used for TLS hostname verification. Overriding the advertised host and ports is available for all types of external listeners.  默认情况下，Strimzi会尝试自动确定您的Kafka群集向其客户端发布的主机名和端口。 这在所有情况下都是不够的，因为运行Strimzi的基础架构可能无法提供可访问Kafka的正确主机名或端口。 您可以在外部侦听器的overrides属性中自定义播发的主机名和端口。 然后，Strimzi将在Kafka代理中自动配置广告地址，并将其添加到代理证书中，以便可用于TLS主机名验证。 覆盖公告的主机和端口可用于所有类型的外部侦听器。
 
 Example of an external listener configured with overrides for advertised addresses
 
@@ -929,7 +929,7 @@ listeners:
 # ...
 ```
 
-Additionally, you can specify the name of the bootstrap service. This name will be added to the broker certificates and can be used for TLS hostname verification. Adding the additional bootstrap address is available for all types of external listeners.
+Additionally, you can specify the name of the bootstrap service. This name will be added to the broker certificates and can be used for TLS hostname verification. Adding the additional bootstrap address is available for all types of external listeners.  此外，您可以指定引导服务的名称。 该名称将添加到代理证书中，并且可用于TLS主机名验证。 添加附加的引导程序地址可用于所有类型的外部侦听器。
 
 Example of an external listener configured with an additional bootstrap address
 
@@ -950,9 +950,7 @@ listeners:
 
 An external listener of type `route` exposes Kafka using OpenShift `Routes` and the HAProxy router.
 
-| NOTE | `route` is only supported on OpenShift |
-| ---- | -------------------------------------- |
-|      |                                        |
+> NOTE `route` is only supported on OpenShift
 
 [Exposing Kafka using OpenShift `Routes`](https://strimzi.io/docs/operators/0.18.0/using.html#con-kafka-broker-external-listeners-routes-deployment-configuration-kafka)
 
@@ -1237,9 +1235,7 @@ spec:
 
 By default, TLS encryption is enabled. To disable it, set the `tls` field to `false`.
 
-| NOTE | TLS hostname verification is not currently supported when exposing Kafka clusters using node ports. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> NOTE TLS hostname verification is not currently supported when exposing Kafka clusters using node ports.
 
 By default, the port numbers used for the bootstrap and broker services are automatically assigned by Kubernetes. However, you can override the assigned node ports by specifying the requested port numbers in the `overrides` property. Strimzi does not perform any validation on the requested ports; you must ensure that they are free and available for use.
 
@@ -1396,9 +1392,7 @@ External listeners of type `ingress` exposes Kafka by using Kubernetes `Ingress`
 
 When exposing Kafka using using Kubernetes `Ingress` and the [NGINX Ingress Controller for Kubernetes](https://github.com/kubernetes/ingress-nginx), a dedicated `Ingress` resource is created for every Kafka broker pod. An additional `Ingress` resource is created to serve as a Kafka bootstrap address. Kafka clients can use these `Ingress` resources to connect to Kafka on port 443.
 
-| NOTE | External listeners using `Ingress` have been currently tested only with the [NGINX Ingress Controller for Kubernetes](https://github.com/kubernetes/ingress-nginx). |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> NOTE External listeners using `Ingress` have been currently tested only with the [NGINX Ingress Controller for Kubernetes](https://github.com/kubernetes/ingress-nginx).
 
 Strimzi uses the TLS passthrough feature of the [NGINX Ingress Controller for Kubernetes](https://github.com/kubernetes/ingress-nginx). Make sure TLS passthrough is enabled in your [NGINX Ingress Controller for Kubernetes](https://github.com/kubernetes/ingress-nginx) deployment. For more information about enabling TLS passthrough see [TLS passthrough documentation](https://kubernetes.github.io/ingress-nginx/user-guide/tls/#ssl-passthrough). Because it is using the TLS passthrough functionality, TLS encryption cannot be disabled when exposing Kafka using `Ingress`.
 
@@ -1591,9 +1585,7 @@ In the example:
 
 The syntax of the `networkPolicyPeers` field is the same as the `from` field in `NetworkPolicy` resources. For more information about the schema, see [NetworkPolicyPeer API reference](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.11/#networkpolicypeer-v1-networking-k8s-io) and the [`KafkaListeners` schema reference](https://strimzi.io/docs/operators/0.18.0/using.html#type-KafkaListeners-reference).
 
-| NOTE | Your configuration of Kubernetes must support ingress NetworkPolicies in order to use network policies in Strimzi. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> NOTE Your configuration of Kubernetes must support ingress NetworkPolicies in order to use network policies in Strimzi.
 
 ###### [Restricting access to Kafka listeners using `networkPolicyPeers`](https://strimzi.io/docs/operators/0.18.0/using.html#proc-restricting-access-to-listeners-using-network-policies-deployment-configuration-kafka)
 
@@ -1754,9 +1746,7 @@ authorization:
 # ...
 ```
 
-| NOTE | The `super.user` configuration option in the `config` property in `Kafka.spec.kafka` is ignored. Designate super users in the `authorization` property instead. For more information, see [Kafka broker configuration](https://strimzi.io/docs/operators/0.18.0/using.html#ref-kafka-broker-configuration-deployment-configuration-kafka). |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> NOTE The `super.user` configuration option in the `config` property in `Kafka.spec.kafka` is ignored. Designate super users in the `authorization` property instead. For more information, see [Kafka broker configuration](https://strimzi.io/docs/operators/0.18.0/using.html#ref-kafka-broker-configuration-deployment-configuration-kafka).
 
 ##### [Configuring authorization in Kafka brokers](https://strimzi.io/docs/operators/0.18.0/using.html#proc-kafka-authorization-deployment-configuration-kafka)
 
