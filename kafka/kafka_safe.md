@@ -91,21 +91,22 @@ Now that you’re interested in learning about security, or even setting it up f
 
 实现使用如下配置：
 
-1. SSL 数据传输加密
-2. SASL PLAINTEXT 认证机制
-3. ACL 授权
+1. SASL PLAINTEXT 认证机制
+2. ACL 授权
+3. SSL 数据传输加密
 
+实现 `SASL PLAINTEXT 认证机制`分为两步：
+1. 事先将用户名和密码的组合存储在 Kafka 代理中。这是通过在启动脚本 `kafka-server-start.sh` 中添加 `jass.conf` 配置文件实现的。
+2. 配置启动 broker 相关参数实现客户端认证。
 
+实现 `ACL 授权` 直接使用脚本 `kafka-acls.sh` 将授权信息写入 Zookeeper 中。
 
-
-
-
+具体过程如下：
 
 假设有三个用户，分别是 admin、reader、writer。其中 admin 集群管理员，reader 负责从 Topic 消费数据，writer 负责从 Topic 生产数据。三个用户的密码分别是 admin-passsword、reader-password、writer-password。
 
-
-
 ```bash
+# 将用户名和密码的组合写入 jass.conf 配置文件中，具体内容如下
 $ cat /path/to/server/jaas/jass.conf
 KafkaServer {
     org.apache.kafka.common.security.plain.PlainLoginModule required
@@ -116,7 +117,8 @@ KafkaServer {
     user_writer="writer-password";
 };
 
-
+# 修改 kafka-server-start.sh 脚本，增加 java.security.auth.login.config 参数
+# 修改后的内容如下
 $ cat kafka-server-start.sh
 #!/bin/bash
 
@@ -153,6 +155,8 @@ $
 # 修改 exec $base_dir/kafka-run-class.sh $EXTRA_ARGS kafka.Kafka "$@" 为
 exec $base_dir/kafka-run-class.sh $EXTRA_ARGS -Djava.security.auth.login.config=/path/to/server/jaas/jass.conf kafka.Kafka "$@"
 
+
+# 配置启动 broker 相关参数
 # 在 server.properties 设置如下配置
 authorizer.class.name=kafka.security.auth.SimpleAclAuthorizer
 listeners=SASL_PLAINTEXT://:9092
@@ -161,102 +165,261 @@ sasl.mechanism.inter.broker.protocol=SASL_PLAINTEXT
 sasl.enabled.mechanisms=PLAIN
 super.users=User:admin
 
-
-
+# 启动 zookeeper 和 kafka broker
 ./bin/zookeeper-server-start.sh -daemon config/zookeeper.properties
 ./bin/kafka-server-start.sh config/server.properties
 
+# 使用脚本 kafka-acls.sh 将授权信息写入 Zookeeper 中
+
+# 授权用户 Write 向 topic 生产数据
+./bin/kafka-acls.sh \
+--authorizer kafka.security.auth.SimpleAclAuthorizer \
+--authorizer-properties zookeeper.connect=localhost:2181 \
+--add \
+--allow-principal User:writer \
+--operation Write \
+--topic test \
+
+# 授权用户 Reader 从 topic 消费数据
+./bin/kafka-acls.sh \
+--authorizer kafka.security.auth.SimpleAclAuthorizer \
+--authorizer-properties zookeeper.connect=localhost:2181 \
+--add \
+--allow-principal User:reader \
+--operation Read \
+--topic test
+
+# 授权用户 Reader 读取消费者组相关信息
+./bin/kafka-acls.sh \
+--authorizer kafka.security.auth.SimpleAclAuthorizer \
+--authorizer-properties zookeeper.connect=localhost:2181 \
+--add \
+--allow-principal User:reader
+--operation Read
+--group test-group
+
+```
+
+kafka 服务端已经配置好相关用户用于认证和授权，现在配置客户端（生产者和消费者）指定相关用户用于认证和授权，具体过程如下：
+
+```bash
 # 生产者
+# 将生产者用户信息写入 producer.conf 文件，具体内容如下
+$ cat /path/to/server/jaas/producer.conf
 KafkaClient {
     org.apache.kafka.common.security.plain.PlainLoginModule required
     username="writer"
     password="writer-password";
 };
 
+# 修改脚本 kafka-console-produce 增加 java.security.auth.login.config 参数
 $ cat bin/kafka-console-producer.sh
 #!/bin/bash
 if [ "x$KAFKA_HEAP_OPTS" = "x" ]; then
     export KAFKA_HEAP_OPTS="-Xmx512M"
 fi
 # exec $(dirname $0)/kafka-run-class.sh kafka.tools.ConsoleProducer "$@"
-exec $(dirname $0)/kafka-run-class.sh -Djava.security.auth.login.config=/path/to/server/jaas/jass.conf kafka.tools.ConsoleProducer "$@"
+exec $(dirname $0)/kafka-run-class.sh -Djava.security.auth.login.config=/path/to/server/jaas/producer.conf kafka.tools.ConsoleProducer "$@"
 $
 
-
-./bin/kafka-console-producer.sh
---producer-property security.protocol=SASL_PLAINTEXT 
+# 启动生产者脚本时使用 security.protocol 和 sasl.mechanism 参数
+./bin/kafka-console-producer.sh \
+--producer-property security.protocol=SASL_PLAINTEXT \ 
 --producer-property sasl.mechanism=PLAIN
 
-./bin/kafka-acls.sh
---bootstrap-server
---authorizer kafka.security.auth.SimpleAclAuthorizer
---authorizer-properties zookeeper.connect=localhost:2181
---add
---allow-principal User:writer
---operation Write
---topic test
 
 # 消费者
+# 将消费者用户信息写入 consumer.conf 文件，具体内容如下
+$ cat /path/to/server/jaas/consumer.conf
 KafkaClient {
     org.apache.kafka.common.security.plain.PlainLoginModule required
     username="reader"
     password="reader-password";
 };
 
+# 修改脚本 kafka-console-consumer 增加 java.security.auth.login.config 参数
 $ cat bin/kafka-console-consumer.sh
 #!/bin/bash
 if [ "x$KAFKA_HEAP_OPTS" = "x" ]; then
     export KAFKA_HEAP_OPTS="-Xmx512M"
 fi
 
-exec $(dirname $0)/kafka-run-class.sh kafka.tools.ConsoleConsumer "$@"
-exec $(dirname $0)/kafka-run-class.sh -Djava.security.auth.login.config=/path/to/server/jaas/jass.conf kafka.tools.ConsoleConsumer "$@"
+# exec $(dirname $0)/kafka-run-class.sh kafka.tools.ConsoleConsumer "$@"
+exec $(dirname $0)/kafka-run-class.sh -Djava.security.auth.login.config=/path/to/server/jaas/consumer.conf kafka.tools.ConsoleConsumer "$@"
 $
 
+# 启动消费者脚本时增加如下参数
 ./bin/kafka-console-consumer.sh
 --consumer-property security.protocol=SASL_PLAINTEXT
 --consumer-property sasl.mechanism=PLAIN
 --consumer-property group.id=test-group
 
-./bin/kafka-acls.sh
---bootstrap-server
---authorizer kafka.security.auth.SimpleAclAuthorizer
---authorizer-properties zookeeper.connect=localhost:2181
---add
---allow-principal User:reader
---operation Read
---topic test
-
-./bin/kafka-acls.sh
---bootstrap-server
---authorizer kafka.security.auth.SimpleAclAuthorizer
---authorizer-properties zookeeper.connect=localhost:2181
---add
---allow-principal User:reader
---operation Read
---group test-group
-
-
 ```
 
+使用 SSL/TLS 协议加密数据传输通道的步骤如下：
 
+1.  为每个 kafka broker 生成私钥和证书
+2. 将生成的证书导入 keystore 中
+3. 生成 CA 私钥和证书（已有的话就不用生成）
+4. 将 CA 证书导入 truststore 中
+5. CA 签发 broker 证书
+6. 将 CA 证书和签发后的 broker 证书导入 keystore 中
+7. 使用 keystore 和 truststore 配置 broker
+8. 使用 keystore 和 truststore 配置客户端（生产者和消费者）
 
+具体过程如下：
 
+```bash
+# ssl 各种文件生成的基本路径
+BASE_DIR=/root/ssl
+# 证书文件生成路径
+CERT_OUTPUT_PATH="${BASE_DIR}/certificates"
+# 基础密码
+PASSWORD=kafka123456
 
+# keystore 相关
+# keystore 文件路径
+KEY_STORE="${CERT_OUTPUT_PATH}/kafka.keystore"
+# keystore key 密码
+KEY_PASSWORD=${PASSWORD}
+# keystore store 密码
+STORE_PASSWORD=${PASSWORD}
 
+# truststore 相关
+# truststore 文件路径
+TRUST_STORE="${CERT_OUTPUT_PATH}/kafka.truststore"
+# truststore key 密码
+TRUST_KEY_PASSWORD=${PASSWORD}
+# truststore store 密码
+TRUST_STORE_PASSWORD=${PASSWORD}
 
+CLUSTER_NAME=test-cluster  # 集群名称，用于标识 broker 在 keystore 中的条目
+# CA 证书文件路径
+CERT_AUTH_FILE="${CERT_OUTPUT_PATH}/ca-cert"
+# 集群证书文件路径
+CLUSTER_CERT_FILE="${CERT_OUTPUT_PATH}/${CLUSTER_NAME}-cert"
+# 证书有效期
+DAYS_VALID=365
+# 证书认证信息
+D_NAME="CN=name, OU=dept, O=company, L=city, ST=province, C=CN"
 
+mkdir -p ${CERT_OUTPUT_PATH}
 
+# 创建集群证书到 keystore，此时创建了 broker 的私钥和证书，并将证书导入 keystore 中
+keytool -genkeypair -alias ${CLUSTER_NAME} -keystore ${KEY_STORE} -validity ${DAYS_VALID} -keyalg RSA -dname "${D_NAME}" -keypass ${KEY_PASSWORD} -storepass ${STORE_PASSWORD}
 
+# [root@mw-init ssl]# pwd
+# /root/ssl
+# [root@mw-init ssl]# tree -a .
+# .
+# ├── certificates
+# │   └── kafka.keystore
+# └── ssl.sh
 
+# 1 directory, 2 files
 
+# 生成 CA 私钥和证书
+openssl req -new -x509 -keyout ${CERT_OUTPUT_PATH}/ca-key -out ${CERT_AUTH_FILE} -days ${DAYS_VALID} -passin pass:"${PASSWORD}" -subj 
 
+# [root@mw-init ssl]# pwd
+# /root/ssl
+# [root@mw-init ssl]# tree -a .
+# .
+# ├── certificates
+# │   ├── ca-cert
+# │   ├── ca-key
+# │   └── kafka.keystore
+# └── ssl.sh
 
+# 1 directory, 4 files
+# [root@mw-init ssl]#
 
+# 将 CA 证书导入 truststore 中
+keytool -importcert -alias CARoot -keystore ${TRUST_STORE} -file ${CERT_AUTH_FILE} -keypass ${TRUST_KEY_PASSWORD} -storepass ${TRUST_STORE_PASSWORD}
 
+# [root@mw-init ssl]# tree -a .
+# .
+# ├── certificates
+# │   ├── ca-cert
+# │   ├── ca-key
+# │   ├── kafka.keystore
+# │   └── kafka.truststore
+# └── ssl.sh
 
+# 1 directory, 5 files
+# [root@mw-init ssl]#
 
+# 生成 broker 证书请求用于签发 broker 证书
+keytool -certreq -alias ${CLUSTER_NAME} -keystore ${KEY_STORE} -file ${CLUSTER_CERT_FILE} -keypass ${KEY_PASSWORD} -storepass ${STORE_PASSWORD}
 
+# [root@mw-init ssl]# tree -a .
+# .
+# ├── certificates
+# │   ├── ca-cert
+# │   ├── ca-key
+# │   ├── kafka.keystore
+# │   ├── kafka.truststore
+# │   └── test-cluster-cert  # broker 证书请求文件
+# └── ssl.sh
 
+# 1 directory, 6 files
+# [root@mw-init ssl]#
 
+# 签发证书
+openssl x509 -req -CA ${CERT_AUTH_FILE} -CAkey ${CERT_OUTPUT_PATH}/ca-key -in ${CLUSTER_CERT_FILE} -out "${CLUSTER_CERT_FILE}-signed" -days ${DAYS_VALID} -CAcreateserial -passin pass:"${PASSWORD}"
+
+# [root@mw-init ssl]# tree -a .
+# .
+# ├── certificates
+# │   ├── ca-cert
+# │   ├── ca-cert.srl
+# │   ├── ca-key
+# │   ├── kafka.keystore
+# │   ├── kafka.truststore
+# │   ├── test-cluster-cert
+# │   └── test-cluster-cert-signed  # 签发后的证书文件
+# └── ssl.sh
+
+# 1 directory, 8 files
+# [root@mw-init ssl]#
+
+# 将 CA 证书导入 keystore 中
+keytool -importcert -alias CARoot -keystore ${KEY_STORE} -file ${CERT_AUTH_FILE} -keypass ${KEY_PASSWORD} -storepass ${STORE_PASSWORD}
+
+# 将签发后的 broker 证书导入 keystore 中
+keytool -importcert -alias ${CLUSTER_NAME} -keystore ${KEY_STORE} -file "${CLUSTER_CERT_FILE}-signed" -keypass ${KEY_PASSWORD} -storepass ${STORE_PASSWORD}
+
+# [root@mw-init ssl]# tree -a .
+# .
+# ├── certificates
+# │   ├── ca-cert  # CA 证书
+# │   ├── ca-cert.srl
+# │   ├── ca-key  # CA 私钥
+# │   ├── kafka.keystore
+# │   ├── kafka.truststore
+# │   ├── test-cluster-cert  # 集群公钥和私钥
+# │   └── test-cluster-cert-signed  # 集群证书文件
+# └── ssl.sh
+
+# 1 directory, 8 files
+# [root@mw-init ssl]#
+
+# 使用 keystore 和 truststore 配置 broker
+listeners=SASL_PLAINTEXT://:9092,SSL://:9093
+ssl.keystore.location=/root/ssl/certificates/kafka.keystore
+ssl.keystore.password=kafka123456
+ssl.truststore.location=/root/ssl/certificates/kafka.truststore
+ssl.truststore.password=kafka123456
+ssl.key.password=kafka123456
+ssl.client.auth=required
+
+# 使用 keystore 和 truststore 配置客户端（生产者和消费者）
+bootstrap.servers localhost:9093
+ecurity.protocol=ssl
+ssl.keystore.location=/root/ssl/certificates/kafka.keystore
+ssl.keystore.password=kafka123456
+ssl.truststore.location=/root/ssl/certificates/kafka.truststore
+ssl.truststore.password=kafka123456
+
+```
 
