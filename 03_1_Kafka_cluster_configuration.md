@@ -642,7 +642,7 @@ The `config` property in `Kafka.spec.kafka` contains Kafka broker configuration 
 - Number
 - Boolean
 
-You can specify and configure all of the options in the "Broker Configs" section of the [Apache Kafka documentation](http://kafka.apache.org/documentation/#brokerconfigs) apart from those managed directly by Strimzi. Specifically, you are prevented from modifying all configuration options with keys equal to or starting with one of the following strings:
+You can specify and configure all of the options in the "Broker Configs" section of the [Apache Kafka documentation](http://kafka.apache.org/documentation/#brokerconfigs) apart from those managed directly by Strimzi. Specifically, you are prevented from modifying all configuration options with keys equal to or starting with one of the following strings:  除了由Strimzi直接管理的选项之外，您还可以在Apache Kafka文档的代理配置部分中指定和配置所有选项。 特别是，禁止您使用等于或以以下字符串之一开头的键修改所有配置选项
 
 - `listeners`
 - `advertised.`
@@ -4330,7 +4330,7 @@ The following resources will created by the Cluster Operator in the Kubernetes c
 
 - `*cluster-name*-kafka-config`
 
-  ConfigMap which contains the Kafka ancillary configuration and is mounted as a volume by the Kafka broker pods.
+  ConfigMap which contains the Kafka ancillary辅助 configuration and is mounted as a volume by the Kafka broker pods.
 
 - `*cluster-name*-kafka-brokers`
 
