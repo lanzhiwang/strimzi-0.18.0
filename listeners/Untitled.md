@@ -20,13 +20,14 @@ Strimzi Kafka Operator 目前支持三种监听方法，分别是：
 
 所以，验证 Strimzi Kafka Operator 的三种监听过程的组合如下：
 
-| 编号 | listeners          | authentication | authorization |
-| ---- | ------------------ | -------------- | ------------- |
-| 1    | plain              | scram-sha-512  | simple        |
-| 2    | tls                | scram-sha-512  | simple        |
-| 3    | tls                | tls            | simple        |
-| 4    | external(nodeport) | scram-sha-512  | simple        |
-| 5    | external(nodeport) | tls            | simple        |
+| 编号 | listeners                  | authentication | authorization |
+| ---- | -------------------------- | -------------- | ------------- |
+| 1    | plain                      | scram-sha-512  | simple        |
+| 2    | tls                        | scram-sha-512  | simple        |
+| 3    | tls                        | tls            | simple        |
+| 4    | external(nodeport) - plain | scram-sha-512  | simple        |
+| 5    | external(nodeport) - tls   | scram-sha-512  | simple        |
+| 6    | external(nodeport) - tls   | tls            | simple        |
 
 
 
@@ -533,54 +534,347 @@ hello2
 
 
 
+## 组合四
+
+```yaml
+apiVersion: kafka.strimzi.io/v1beta1
+kind: Kafka
+metadata:
+  name: my-cluster
+spec:
+  kafka:
+    version: 2.5.0
+    replicas: 3
+    jmxOptions: {}
+    listeners:
+      external:
+        type: nodeport
+        tls: false
+        authentication:
+          type: scram-sha-512
+    authorization:
+      type: simple
+    config:
+      offsets.topic.replication.factor: 3
+      transaction.state.log.replication.factor: 3
+      transaction.state.log.min.isr: 2
+      log.message.format.version: '2.5'
+    storage:
+      type: ephemeral
+  zookeeper:
+    replicas: 3
+    storage:
+      type: ephemeral
+  entityOperator:
+    topicOperator: {}
+    userOperator: {}
+
+---
+
+
+apiVersion: kafka.strimzi.io/v1beta1
+kind: KafkaUser
+metadata:
+  name: my-user
+  labels:
+    strimzi.io/cluster: my-cluster
+spec:
+  authentication:
+    type: scram-sha-512
+  authorization:
+    type: simple
+    acls:
+      - resource:
+          type: topic
+          name: my-topic
+          patternType: literal
+        operation: Read
+        host: '*'
+      - resource:
+          type: topic
+          name: my-topic
+          patternType: literal
+        operation: Describe
+        host: '*'
+      - resource:
+          type: group
+          name: my-group
+          patternType: literal
+        operation: Read
+        host: '*'
+      - resource:
+          type: topic
+          name: my-topic
+          patternType: literal
+        operation: Write
+        host: '*'
+      - resource:
+          type: topic
+          name: my-topic
+          patternType: literal
+        operation: Create
+        host: '*'
+      - resource:
+          type: topic
+          name: my-topic
+          patternType: literal
+        operation: Describe
+        host: '*'
+
+
+```
 
 
 
-
-
-
-
-
-======================================================
-
-
-1、创建 kafka 集群，plain + no authentication
-
-
+验证结果：
 
 ```bash
 [root@mw-init ~]# kubectl -n kafka get service
-NAME                          TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)                      AGE
-my-cluster-kafka-bootstrap    ClusterIP   10.96.192.250   <none>        9091/TCP,9092/TCP            26m
-my-cluster-kafka-brokers      ClusterIP   None            <none>        9091/TCP,9092/TCP,9999/TCP   26m
-my-cluster-zookeeper-client   ClusterIP   10.106.58.254   <none>        2181/TCP                     27m
-my-cluster-zookeeper-nodes    ClusterIP   None            <none>        2181/TCP,2888/TCP,3888/TCP   27m
+NAME                                  TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)                      AGE
+my-cluster-kafka-0                    NodePort    10.104.210.5    <none>        9094:31913/TCP               2m54s
+my-cluster-kafka-1                    NodePort    10.97.203.106   <none>        9094:31721/TCP               2m54s
+my-cluster-kafka-2                    NodePort    10.110.27.217   <none>        9094:30672/TCP               2m53s
+my-cluster-kafka-bootstrap            ClusterIP   10.97.82.137    <none>        9091/TCP                     2m54s
+my-cluster-kafka-brokers              ClusterIP   None            <none>        9091/TCP,9999/TCP            2m54s
+my-cluster-kafka-external-bootstrap   NodePort    10.100.83.54    <none>        9094:31122/TCP               2m54s
+my-cluster-zookeeper-client           ClusterIP   10.110.12.204   <none>        2181/TCP                     4m42s
+my-cluster-zookeeper-nodes            ClusterIP   None            <none>        2181/TCP,2888/TCP,3888/TCP   4m42s
+[root@mw-init ~]#
+[root@mw-init ~]# kubectl -n kafka get secret
+NAME                                     TYPE                                  DATA   AGE
+default-token-r5ztg                      kubernetes.io/service-account-token   3      3d7h
+my-cluster-clients-ca                    Opaque                                1      5m26s
+my-cluster-clients-ca-cert               Opaque                                3      5m26s
+my-cluster-cluster-ca                    Opaque                                1      5m26s
+my-cluster-cluster-ca-cert               Opaque                                3      5m26s
+my-cluster-cluster-operator-certs        Opaque                                4      5m26s
+my-cluster-entity-operator-certs         Opaque                                4      3m2s
+my-cluster-entity-operator-token-hkvb6   kubernetes.io/service-account-token   3      3m2s
+my-cluster-kafka-brokers                 Opaque                                12     3m37s
+my-cluster-kafka-token-9ts6z             kubernetes.io/service-account-token   3      3m38s
+my-cluster-zookeeper-nodes               Opaque                                12     5m26s
+my-cluster-zookeeper-token-rg6hn         kubernetes.io/service-account-token   3      5m26s
+my-user                                  Opaque                                1      2m54s
+strimzi-cluster-operator-token-8r97s     kubernetes.io/service-account-token   3      3d7h
+[root@mw-init ~]#
+
+[root@mw-m1 ~]# netstat -tulnp | grep 31122
+tcp6       0      0 :::31122                :::*                    LISTEN      12265/kube-proxy
+[root@mw-m1 ~]#
+
+
+[root@mw-init ~]# kubectl -n kafka get secret my-user -o jsonpath='{.data.password}' | base64 -d
+XkSJhKDdFxMx
 [root@mw-init ~]#
 
 
-./kafka-topics.sh --create --bootstrap-server 10.96.192.250:9092 --topic test1 --partitions 6 --replication-factor 1
 
-./kafka-topics.sh --create --bootstrap-server ${MY_CLUSTER_KAFKA_BOOTSTRAP_PORT_9092_TCP_ADDR}:${MY_CLUSTER_KAFKA_BOOTSTRAP_SERVICE_PORT_TCP_CLIENTS} --topic test2 --partitions 6 --replication-factor 1
+cat << EOF > client.properties
+sasl.jaas.config=org.apache.kafka.common.security.scram.ScramLoginModule required \
+    username="my-user" \
+    password="XkSJhKDdFxMx";
 
-[kafka@my-cluster-kafka-0 bin]$ cat /etc/resolv.conf
-nameserver 10.96.0.10
-search kafka.svc.cluster.local svc.cluster.local cluster.local
-options ndots:5
-[kafka@my-cluster-kafka-0 bin]$
-
-./kafka-topics.sh --create --bootstrap-server my-cluster-kafka-bootstrap:9092 --topic test3 --partitions 6 --replication-factor 1
-
-./kafka-topics.sh --create --bootstrap-server my-cluster-kafka-bootstrap:9092 --topic test3 --partitions 6 --replication-factor 1
-
-./kafka-topics.sh --create --bootstrap-server my-cluster-kafka-bootstrap.kafka:9092 --topic test4 --partitions 6 --replication-factor 1
-
-./kafka-topics.sh --create --bootstrap-server my-cluster-kafka-bootstrap.kafka.svc:9092 --topic test5 --partitions 6 --replication-factor 1
+security.protocol=SASL_PLAINTEXT
+sasl.mechanism=SCRAM-SHA-512
+EOF
 
 
+[root@mw-init ssl]# kafka-console-producer.sh --bootstrap-server 10.0.129.171:31122 --topic my-topic --producer.config ./client.properties
+>hello1
+>hello2
+>
 
-kubectl -n kafka run kafka-producer -ti --image=10.0.129.0:60080/3rdparty/strimzi/kafka:latest --rm=true --restart=Never -- bin/kafka-console-producer.sh --bootstrap-server 10.96.192.250:9092 --topic test1
+[root@mw-init ssl]# kafka-console-consumer.sh --bootstrap-server 10.0.129.171:31122 --topic my-topic --consumer.config ./client.properties --from-beginning --group my-group
+hello1
+hello2
 
-kubectl -n kafka run kafka-consumer -ti --image=10.0.129.0:60080/3rdparty/strimzi/kafka:latest --rm=true --restart=Never -- bin/kafka-console-consumer.sh --bootstrap-server my-cluster-kafka-bootstrap:9092 --topic test1
+
+```
+
+
+
+
+
+## 组合五
+
+
+
+```yaml
+
+apiVersion: kafka.strimzi.io/v1beta1
+kind: Kafka
+metadata:
+  name: my-cluster
+spec:
+  kafka:
+    version: 2.5.0
+    replicas: 3
+    jmxOptions: {}
+    listeners:
+      external:
+        type: nodeport
+        tls: true
+        authentication:
+          type: scram-sha-512
+    authorization:
+      type: simple
+    config:
+      offsets.topic.replication.factor: 3
+      transaction.state.log.replication.factor: 3
+      transaction.state.log.min.isr: 2
+      log.message.format.version: '2.5'
+    storage:
+      type: ephemeral
+  zookeeper:
+    replicas: 3
+    storage:
+      type: ephemeral
+  entityOperator:
+    topicOperator: {}
+    userOperator: {}
+
+---
+
+
+apiVersion: kafka.strimzi.io/v1beta1
+kind: KafkaUser
+metadata:
+  name: my-user
+  labels:
+    strimzi.io/cluster: my-cluster
+spec:
+  authentication:
+    type: scram-sha-512
+  authorization:
+    type: simple
+    acls:
+      - resource:
+          type: topic
+          name: my-topic
+          patternType: literal
+        operation: Read
+        host: '*'
+      - resource:
+          type: topic
+          name: my-topic
+          patternType: literal
+        operation: Describe
+        host: '*'
+      - resource:
+          type: group
+          name: my-group
+          patternType: literal
+        operation: Read
+        host: '*'
+      - resource:
+          type: topic
+          name: my-topic
+          patternType: literal
+        operation: Write
+        host: '*'
+      - resource:
+          type: topic
+          name: my-topic
+          patternType: literal
+        operation: Create
+        host: '*'
+      - resource:
+          type: topic
+          name: my-topic
+          patternType: literal
+        operation: Describe
+        host: '*'
+
+```
+
+
+
+验证结果：
+
+```bash
+[root@mw-init ssl]# kubectl get node
+NAME           STATUS   ROLES    AGE   VERSION
+10.0.128.237   Ready    master   52d   v1.16.9
+10.0.128.64    Ready    master   52d   v1.16.9
+10.0.129.171   Ready    master   52d   v1.16.9
+[root@mw-init ssl]#
+[root@mw-init ssl]# kubectl get node 10.0.128.237 -o=jsonpath='{range .status.addresses[*]}{.type}{"\t"}{.address}{"\n"}'
+InternalIP	10.0.128.237
+Hostname	10.0.128.237
+
+[root@mw-init ssl]# kubectl -n kafka get service
+NAME                                  TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                      AGE
+my-cluster-kafka-0                    NodePort    10.104.194.202   <none>        9094:30007/TCP               3m19s
+my-cluster-kafka-1                    NodePort    10.100.106.32    <none>        9094:32546/TCP               3m19s
+my-cluster-kafka-2                    NodePort    10.103.117.152   <none>        9094:32472/TCP               3m19s
+my-cluster-kafka-bootstrap            ClusterIP   10.104.228.114   <none>        9091/TCP                     3m19s
+my-cluster-kafka-brokers              ClusterIP   None             <none>        9091/TCP,9999/TCP            3m19s
+my-cluster-kafka-external-bootstrap   NodePort    10.111.81.162    <none>        9094:30346/TCP               3m19s
+my-cluster-zookeeper-client           ClusterIP   10.111.38.244    <none>        2181/TCP                     5m8s
+my-cluster-zookeeper-nodes            ClusterIP   None             <none>        2181/TCP,2888/TCP,3888/TCP   5m8s
+[root@mw-init ssl]#
+
+[root@mw-init ssl]# kubectl -n kafka get secret
+NAME                                     TYPE                                  DATA   AGE
+default-token-r5ztg                      kubernetes.io/service-account-token   3      3d11h
+my-cluster-clients-ca                    Opaque                                1      5m50s
+my-cluster-clients-ca-cert               Opaque                                3      5m50s
+my-cluster-cluster-ca                    Opaque                                1      5m50s
+my-cluster-cluster-ca-cert               Opaque                                3      5m50s
+my-cluster-cluster-operator-certs        Opaque                                4      5m50s
+my-cluster-entity-operator-certs         Opaque                                4      3m17s
+my-cluster-entity-operator-token-mvkw6   kubernetes.io/service-account-token   3      3m17s
+my-cluster-kafka-brokers                 Opaque                                12     3m59s
+my-cluster-kafka-token-2fp79             kubernetes.io/service-account-token   3      4m
+my-cluster-zookeeper-nodes               Opaque                                12     5m49s
+my-cluster-zookeeper-token-jdhkn         kubernetes.io/service-account-token   3      5m49s
+my-user                                  Opaque                                1      3m10s
+strimzi-cluster-operator-token-8r97s     kubernetes.io/service-account-token   3      3d11h
+[root@mw-init ssl]#
+
+
+[root@mw-init ssl]# kubectl -n kafka get secret my-cluster-cluster-ca-cert -o jsonpath='{.data.ca\.crt}' | base64 -d > ca.crt
+[root@mw-init ssl]#
+[root@mw-init ssl]# kubectl -n kafka get secret my-cluster-cluster-ca-cert -o jsonpath='{.data.ca\.password}' | base64 -d
+FHDIaDaVdO6h
+[root@mw-init ssl]#
+[root@mw-init ssl]# keytool -keystore user-truststore.jks -alias CARoot -import -file ca.crt
+输入密钥库口令:
+再次输入新口令:
+是否信任此证书? [否]:  y
+证书已添加到密钥库中
+[root@mw-init ssl]#
+[root@mw-init ssl]# kubectl -n kafka get secret my-user -o jsonpath='{.data.password}' | base64 -d
+O4FmeeOQvbut
+[root@mw-init ssl]#
+
+cat << EOF > client.properties
+security.protocol=SSL
+ssl.truststore.location=./user-truststore.jks
+ssl.truststore.password=FHDIaDaVdO6h
+ssl.endpoint.identification.algorithm=
+
+sasl.jaas.config=org.apache.kafka.common.security.scram.ScramLoginModule required \
+    username="my-user" \
+    password="O4FmeeOQvbut";
+
+security.protocol=SASL_SSL
+sasl.mechanism=SCRAM-SHA-512
+EOF
+
+
+export KAFKA_OPTS="-Djavax.net.debug=ssl"
+
+[root@mw-init ssl]# kafka-console-producer.sh --bootstrap-server 10.0.128.237:30346 --topic my-topic --producer.config ./client.properties
+>hello1
+>hello2
+>hello3
+>
+
+[root@mw-init ssl]# kafka-console-consumer.sh --bootstrap-server 10.0.128.237:30346 --topic my-topic --consumer.config ./client.properties --from-beginning --group my-group
+hello1
+hello2
+hello3
 
 
 
@@ -590,38 +884,240 @@ kubectl -n kafka run kafka-consumer -ti --image=10.0.129.0:60080/3rdparty/strimz
 
 
 
-1、创建 kafka 集群，plain + authentication
+参考：
+
+* https://github.com/strimzi/strimzi-kafka-operator/issues/3829
+
+* https://github.com/strimzi/strimzi-kafka-operator/issues/1486
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## 组合六
+
+
+
+```yaml
+apiVersion: kafka.strimzi.io/v1beta1
+kind: Kafka
+metadata:
+  name: my-cluster
+spec:
+  kafka:
+    version: 2.5.0
+    replicas: 3
+    jmxOptions: {}
+    listeners:
+      external:
+        type: nodeport
+        tls: true
+        authentication:
+          type: tls
+    authorization:
+      type: simple
+    config:
+      offsets.topic.replication.factor: 3
+      transaction.state.log.replication.factor: 3
+      transaction.state.log.min.isr: 2
+      log.message.format.version: '2.5'
+    storage:
+      type: ephemeral
+  zookeeper:
+    replicas: 3
+    storage:
+      type: ephemeral
+  entityOperator:
+    topicOperator: {}
+    userOperator: {}
+
+---
+
+
+apiVersion: kafka.strimzi.io/v1beta1
+kind: KafkaUser
+metadata:
+  name: my-user
+  labels:
+    strimzi.io/cluster: my-cluster
+spec:
+  authentication:
+    type: tls
+  authorization:
+    type: simple
+    acls:
+      - resource:
+          type: topic
+          name: my-topic
+          patternType: literal
+        operation: Read
+        host: '*'
+      - resource:
+          type: topic
+          name: my-topic
+          patternType: literal
+        operation: Describe
+        host: '*'
+      - resource:
+          type: group
+          name: my-group
+          patternType: literal
+        operation: Read
+        host: '*'
+      - resource:
+          type: topic
+          name: my-topic
+          patternType: literal
+        operation: Write
+        host: '*'
+      - resource:
+          type: topic
+          name: my-topic
+          patternType: literal
+        operation: Create
+        host: '*'
+      - resource:
+          type: topic
+          name: my-topic
+          patternType: literal
+        operation: Describe
+        host: '*'
+
+
+
+
+
+
+```
+
+
+
+验证结果：
 
 
 
 ```bash
-
-[root@mw-init ~]# kubectl -n kafka get service -o wide
-No resources found in kafka namespace.
+[root@mw-init ~]# kubectl get node
+NAME           STATUS   ROLES    AGE   VERSION
+10.0.128.237   Ready    master   52d   v1.16.9
+10.0.128.64    Ready    master   52d   v1.16.9
+10.0.129.171   Ready    master   52d   v1.16.9
 [root@mw-init ~]#
-[root@mw-init ~]# kubectl -n kafka get secret -o wide
-NAME                                   TYPE                                  DATA   AGE
-default-token-r5ztg                    kubernetes.io/service-account-token   3      31h
-strimzi-cluster-operator-token-8r97s   kubernetes.io/service-account-token   3      31h
+[root@mw-init ~]# kubectl get node 10.0.128.237 -o=jsonpath='{range .status.addresses[*]}{.type}{"\t"}{.address}{"\n"}'
+InternalIP	10.0.128.237
+Hostname	10.0.128.237
 [root@mw-init ~]#
 
 
+[root@mw-init ~]# kubectl -n kafka get services
+NAME                                  TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                      AGE
+my-cluster-kafka-0                    NodePort    10.104.206.85    <none>        9094:31885/TCP               4m36s
+my-cluster-kafka-1                    NodePort    10.99.116.28     <none>        9094:30574/TCP               4m36s
+my-cluster-kafka-2                    NodePort    10.98.51.57      <none>        9094:32479/TCP               4m36s
+my-cluster-kafka-bootstrap            ClusterIP   10.108.222.144   <none>        9091/TCP                     4m36s
+my-cluster-kafka-brokers              ClusterIP   None             <none>        9091/TCP,9999/TCP            4m36s
+my-cluster-kafka-external-bootstrap   NodePort    10.107.161.253   <none>        9094:30532/TCP               4m36s
+my-cluster-zookeeper-client           ClusterIP   10.103.1.62      <none>        2181/TCP                     5m3s
+my-cluster-zookeeper-nodes            ClusterIP   None             <none>        2181/TCP,2888/TCP,3888/TCP   5m3s
+[root@mw-init ~]#
+[root@mw-init ~]# kubectl -n kafka get secret
+NAME                                     TYPE                                  DATA   AGE
+default-token-r5ztg                      kubernetes.io/service-account-token   3      4d4h
+my-cluster-clients-ca                    Opaque                                1      5m12s
+my-cluster-clients-ca-cert               Opaque                                3      5m12s
+my-cluster-cluster-ca                    Opaque                                1      5m12s
+my-cluster-cluster-ca-cert               Opaque                                3      5m12s
+my-cluster-cluster-operator-certs        Opaque                                4      5m12s
+my-cluster-entity-operator-certs         Opaque                                4      4m15s
+my-cluster-entity-operator-token-v8mwn   kubernetes.io/service-account-token   3      4m15s
+my-cluster-kafka-brokers                 Opaque                                12     4m44s
+my-cluster-kafka-token-swt4k             kubernetes.io/service-account-token   3      4m45s
+my-cluster-zookeeper-nodes               Opaque                                12     5m11s
+my-cluster-zookeeper-token-bjs5z         kubernetes.io/service-account-token   3      5m12s
+my-user                                  Opaque                                5      4m10s
+strimzi-cluster-operator-token-8r97s     kubernetes.io/service-account-token   3      4d4h
+[root@mw-init ~]#
+[root@mw-init ~]#
 
 
-kubectl -n kafka get secret
-my-cluster-clients-ca                    Opaque                                1      2m57s
-my-cluster-clients-ca-cert               Opaque                                3      2m57s
-my-cluster-cluster-ca                    Opaque                                1      2m57s
-my-cluster-cluster-ca-cert               Opaque                                3      2m57s
-my-cluster-cluster-operator-certs        Opaque                                4      2m57s
-my-cluster-entity-operator-certs         Opaque                                4      59s
-my-cluster-entity-operator-token-28fld   kubernetes.io/service-account-token   3      59s
-my-cluster-kafka-brokers                 Opaque                                12     85s
-my-cluster-kafka-token-dshgf             kubernetes.io/service-account-token   3      86s
-my-cluster-zookeeper-nodes               Opaque                                12     2m57s
-my-cluster-zookeeper-token-dqgxj         kubernetes.io/service-account-token   3      2m57s
+[root@mw-init ssl]# kubectl -n kafka get secret my-cluster-cluster-ca-cert -o jsonpath='{.data.ca\.crt}' | base64 -d > ca.crt
+[root@mw-init ssl]#
+[root@mw-init ssl]# kubectl -n kafka get secret my-cluster-cluster-ca-cert -o jsonpath='{.data.ca\.password}' | base64 -d
+qbH1fqPpWooH
+[root@mw-init ssl]#
+[root@mw-init ssl]# kubectl -n kafka get secret my-user -o jsonpath='{.data.user\.p12}' | base64 -d > user.p12
+[root@mw-init ssl]#
+[root@mw-init ssl]# kubectl -n kafka get secret my-user -o jsonpath='{.data.user\.password}' | base64 -d
+QLmKVNmY9XB9
+[root@mw-init ssl]#
+[root@mw-init ssl]#
+[root@mw-init ssl]# keytool -keystore user-truststore.jks -alias CARoot -import -file ca.crt
+输入密钥库口令:
+再次输入新口令:
+是否信任此证书? [否]:  y
+证书已添加到密钥库中
+[root@mw-init ssl]#
+
+[root@mw-init ssl]# keytool -importkeystore -srckeystore user.p12 -destkeystore user-keystore.jks -deststoretype pkcs12
+正在将密钥库 user.p12 导入到 user-keystore.jks...
+输入目标密钥库口令:
+再次输入新口令:
+输入源密钥库口令:
+已成功导入别名 my-user 的条目。
+已完成导入命令: 1 个条目成功导入, 0 个条目失败或取消
+[root@mw-init ssl]#
+[root@mw-init ssl]#
+
+[root@mw-init ssl]# ll
+总用量 16
+-rw-r--r-- 1 root root 1164 10月 17 15:00 ca.crt
+-rw-r--r-- 1 root root 2056 10月 17 15:02 user-keystore.jks
+-rw-r--r-- 1 root root 2364 10月 17 15:01 user.p12
+-rw-r--r-- 1 root root  880 10月 17 15:02 user-truststore.jks
+[root@mw-init ssl]#
+
+cat << EOF > client-ssl.properties
+security.protocol=SSL
+ssl.truststore.location=./user-truststore.jks
+ssl.truststore.password=qbH1fqPpWooH
+ssl.endpoint.identification.algorithm=
+
+ssl.keystore.location=./user-keystore.jks
+ssl.keystore.password=QLmKVNmY9XB9
+ssl.key.password=QLmKVNmY9XB9
+EOF
+
+
+[root@mw-init ssl]# kafka-console-producer.sh --bootstrap-server 10.0.128.237:30532 --topic my-topic --producer.config ./client-ssl.properties
+>hello1
+>hello2
+>hello3
+>
+
+
+[root@mw-init ssl]# kafka-console-consumer.sh --bootstrap-server 10.0.128.237:30532 --topic my-topic --consumer.config ./client-ssl.properties --from-beginning --group my-group
+
+hello1
+hello2
+hello3
 
 
 
 ```
+
+
+
+
 
