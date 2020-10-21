@@ -179,7 +179,7 @@ For more information, see [Kafka and ZooKeeper storage](https://strimzi.io/docs/
 
 Solid-state drives (SSDs), though not essential, can improve the performance of Kafka in large clusters where data is sent to and received from multiple topics asynchronously. SSDs are particularly effective with ZooKeeper, which requires fast, low latency data access.  固态驱动器（SSD）尽管不是必需的，但可以在大型集群中提高Kafka的性能，在大型集群中，数据是异步发送到多个主题或从多个主题接收的。 SSD对ZooKeeper尤其有效，它需要快速，低延迟的数据访问。
 
-> NOTE You do not need to provision replicated storage because Kafka and ZooKeeper both have built-in data replication.
+> NOTE You do not need to provision replicated storage because Kafka and ZooKeeper both have built-in data replication.  您无需置备复制的存储，因为Kafka和ZooKeeper都具有内置的数据复制。
 
 #### [3.1.3. Kafka and ZooKeeper storage types](https://strimzi.io/docs/operators/0.18.0/using.html#assembly-storage-deployment-configuration-kafka)
 
@@ -209,7 +209,7 @@ Additional resources
 
 ##### [Ephemeral storage](https://strimzi.io/docs/operators/0.18.0/using.html#ref-ephemeral-storage-deployment-configuration-kafka)
 
-Ephemeral storage uses the `emptyDir` volumes to store data. To use ephemeral storage, the `type` field should be set to `ephemeral`.
+ Ephemeral storage uses the `emptyDir` volumes to store data. To use ephemeral storage, the `type` field should be set to `ephemeral`.
 
 > IMPORTANT `emptyDir` volumes are not persistent and the data stored in them will be lost when the Pod is restarted. After the new pod is started, it has to recover all data from other nodes of the cluster. Ephemeral storage is not suitable for use with single node ZooKeeper clusters and for Kafka topics with replication factor 1, because it will lead to data loss.
 
@@ -249,23 +249,23 @@ To use persistent storage, the `type` has to be set to `persistent-claim`. Persi
 
 - `id` (optional)
 
-  Storage identification number. This option is mandatory for storage volumes defined in a JBOD storage declaration. Default is `0`.
+  Storage identification number. This option is mandatory for storage volumes defined in a JBOD storage declaration. Default is `0`.  存储标识号。 对于JBOD存储声明中定义的存储卷，此选项是必需的。 默认值为0。
 
 - `size` (required)
 
-  Defines the size of the persistent volume claim, for example, "1000Gi".
+  Defines the size of the persistent volume claim, for example, "1000Gi".  定义持久卷声明的大小，例如“ 1000Gi”。
 
 - `class` (optional)
 
-  The Kubernetes [Storage Class](https://kubernetes.io/docs/concepts/storage/storage-classes/) to use for dynamic volume provisioning.
+  The Kubernetes [Storage Class](https://kubernetes.io/docs/concepts/storage/storage-classes/) to use for dynamic volume provisioning.  用于动态卷配置的Kubernetes存储类。
 
 - `selector` (optional)
 
-  Allows selecting a specific persistent volume to use. It contains key:value pairs representing labels for selecting such a volume.
+  Allows selecting a specific persistent volume to use. It contains key:value pairs representing labels for selecting such a volume.  允许选择要使用的特定永久卷。 它包含key：value对，代表用于选择此类音量的标签。
 
 - `deleteClaim` (optional)
 
-  Boolean value which specifies if the Persistent Volume Claim has to be deleted when the cluster is undeployed. Default is `false`.
+  Boolean value which specifies if the Persistent Volume Claim has to be deleted when the cluster is undeployed. Default is `false`. 一个布尔值，它指定在取消部署集群时是否必须删除持久卷声明。 默认值为“ false”。
 
 > WARNING Increasing the size of persistent volumes in an existing Strimzi cluster is only supported in Kubernetes versions that support persistent volume resizing. The persistent volume to be resized must use a storage class that supports volume expansion. For other versions of Kubernetes and storage classes which do not support volume expansion, you must decide the necessary storage size before deploying the cluster. Decreasing the size of existing persistent volumes is not possible.
 
@@ -1794,9 +1794,9 @@ Additional resources
 
 #### [3.1.8. ZooKeeper replicas](https://strimzi.io/docs/operators/0.18.0/using.html#assembly-zookeeper-replicas-deployment-configuration-kafka)
 
-ZooKeeper clusters or ensembles usually run with an odd number of nodes, typically three, five, or seven.
+ZooKeeper clusters or ensembles usually run with an odd number of nodes, typically three, five, or seven.  ZooKeeper群集或集合通常以奇数个节点（通常为三个，五个或七个）运行。
 
-The majority of nodes must be available in order to maintain an effective quorum. If the ZooKeeper cluster loses its quorum, it will stop responding to clients and the Kafka brokers will stop working. Having a stable and highly available ZooKeeper cluster is crucial for Strimzi.
+The majority of nodes must be available in order to maintain an effective quorum. If the ZooKeeper cluster loses its quorum, it will stop responding to clients and the Kafka brokers will stop working. Having a stable and highly available ZooKeeper cluster is crucial for Strimzi.  为了保持有效的仲裁，大多数节点必须可用。 如果ZooKeeper集群失去其法定人数，它将停止对客户的响应，而Kafka经纪人将停止工作。 拥有稳定且高度可用的ZooKeeper集群对于Strimzi至关重要。
 
 - Three-node cluster
 
@@ -1810,11 +1810,9 @@ The majority of nodes must be available in order to maintain an effective quorum
 
   A seven-node ZooKeeper cluster requires at least four nodes to be up and running in order to maintain the quorum. It can tolerate three nodes being unavailable.
 
-| NOTE | For development purposes, it is also possible to run ZooKeeper with a single node. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> NOTE For development purposes, it is also possible to run ZooKeeper with a single node.
 
-Having more nodes does not necessarily mean better performance, as the costs to maintain the quorum will rise with the number of nodes in the cluster. Depending on your availability requirements, you can decide for the number of nodes to use.
+Having more nodes does not necessarily mean better performance, as the costs to maintain the quorum will rise with the number of nodes in the cluster. Depending on your availability requirements, you can decide for the number of nodes to use.  拥有更多的节点并不一定意味着更好的性能，因为维护仲裁的成本将随着集群中节点的数量而增加。 根据您的可用性要求，您可以决定要使用的节点数。
 
 ##### [Number of ZooKeeper nodes](https://strimzi.io/docs/operators/0.18.0/using.html#ref-zookeeper-replicas-deployment-configuration-kafka)
 
@@ -1894,7 +1892,7 @@ ZooKeeper nodes are configured using the `config` property in `Kafka.spec.zookee
 - Number
 - Boolean
 
-Users can specify and configure the options listed in [ZooKeeper documentation](http://zookeeper.apache.org/doc/r3.4.13/zookeeperAdmin.html) with the exception of those options which are managed directly by Strimzi. Specifically, all configuration options with keys equal to or starting with one of the following strings are forbidden:
+Users can specify and configure the options listed in [ZooKeeper documentation](http://zookeeper.apache.org/doc/r3.4.13/zookeeperAdmin.html) with the exception of those options which are managed directly by Strimzi. Specifically, all configuration options with keys equal to or starting with one of the following strings are forbidden:  用户可以指定和配置ZooKeeper文档中列出的选项，但由Strimzi直接管理的选项除外。 具体来说，禁止所有键等于或以下列字符串之一开头的配置选项：
 
 - `server.`
 - `dataDir`
@@ -1904,11 +1902,9 @@ Users can specify and configure the options listed in [ZooKeeper documentation](
 - `quorum.auth`
 - `requireClientAuthScheme`
 
-When one of the forbidden options is present in the `config` property, it is ignored and a warning message is printed to the Custer Operator log file. All other options are passed to ZooKeeper.
+When one of the forbidden options is present in the `config` property, it is ignored and a warning message is printed to the Custer Operator log file. All other options are passed to ZooKeeper.  当config属性中存在一个禁止选项时，它将被忽略，并且警告消息会打印到Custer Operator日志文件中。 所有其他选项都传递给ZooKeeper。
 
-| IMPORTANT | The Cluster Operator does not validate keys or values in the provided `config` object. When invalid configuration is provided, the ZooKeeper cluster might not start or might become unstable. In such cases, the configuration in the `Kafka.spec.zookeeper.config` object should be fixed and the Cluster Operator will roll out the new configuration to all ZooKeeper nodes. |
-| --------- | ------------------------------------------------------------ |
-|           |                                                              |
+> IMPORTANT The Cluster Operator does not validate keys or values in the provided `config` object. When invalid configuration is provided, the ZooKeeper cluster might not start or might become unstable. In such cases, the configuration in the `Kafka.spec.zookeeper.config` object should be fixed and the Cluster Operator will roll out the new configuration to all ZooKeeper nodes.  群集操作员不验证提供的配置对象中的键或值。 如果提供了无效的配置，则ZooKeeper群集可能无法启动或变得不稳定。 在这种情况下，应固定Kafka.spec.zookeeper.config对象中的配置，并且集群操作员会将新配置推广到所有ZooKeeper节点。
 
 Selected options have default values:
 
@@ -1974,9 +1970,9 @@ Procedure
 
 #### [3.1.10. ZooKeeper connection](https://strimzi.io/docs/operators/0.18.0/using.html#assembly-zookeeper-connection-deployment-configuration-kafka)
 
-ZooKeeper services are secured with encryption and authentication and are not intended to be used by external applications that are not part of Strimzi.
+ZooKeeper services are secured with encryption and authentication and are not intended to be used by external applications that are not part of Strimzi.  ZooKeeper服务通过加密和身份验证进行保护，不供不属于Strimzi的外部应用程序使用。
 
-However, if you want to use Kafka CLI tools that require a connection to ZooKeeper, such as the `kafka-topics` tool, you can use a terminal inside a Kafka container and connect to the local end of the TLS tunnel to ZooKeeper by using `localhost:2181` as the ZooKeeper address.
+However, if you want to use Kafka CLI tools that require a connection to ZooKeeper, such as the `kafka-topics` tool, you can use a terminal inside a Kafka container and connect to the local end of the TLS tunnel to ZooKeeper by using `localhost:2181` as the ZooKeeper address.  但是，如果要使用需要连接到ZooKeeper的Kafka CLI工具（例如“ kafka-topics”工具），则可以使用Kafka容器内的终端，并使用来连接到ZooKeeper的TLS隧道的本地端 localhost:2181 作为ZooKeeper地址。
 
 ##### [Connecting to ZooKeeper from a terminal](https://strimzi.io/docs/operators/0.18.0/using.html#proc-connnecting-to-zookeeper-deployment-configuration-kafka)
 
@@ -2013,9 +2009,7 @@ The Entity Operator comprises the:
 
 Through `Kafka` resource configuration, the Cluster Operator can deploy the Entity Operator, including one or both operators, when deploying a Kafka cluster.
 
-| NOTE | When deployed, the Entity Operator contains the operators according to the deployment configuration. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> NOTE When deployed, the Entity Operator contains the operators according to the deployment configuration.
 
 The operators are automatically configured to manage the topics and users of the Kafka cluster.
 
@@ -2079,7 +2073,7 @@ Topic Operator deployment can be configured using additional options inside the 
 
 - `topicMetadataMaxAttempts`
 
-  The number of attempts at getting topic metadata from Kafka. The time between each attempt is defined as an exponential back-off. Consider increasing this value when topic creation could take more time due to the number of partitions or replicas. Default `6`.
+  The number of attempts at getting topic metadata from Kafka. The time between each attempt is defined as an exponential back-off. Consider increasing this value when topic creation could take more time due to the number of partitions or replicas. Default `6`.  从Kafka获取主题元数据的尝试次数。 每次尝试之间的时间定义为指数补偿。 由于分区或副本的数量，创建主题可能需要更多时间时，请考虑增加此值。 默认值6。
 
 - `image`
 
@@ -2305,11 +2299,9 @@ Additional resources
 
 ###### [Resource requests](https://strimzi.io/docs/operators/0.18.0/using.html#resource_requests)
 
-Requests specify the resources to reserve for a given container. Reserving the resources ensures that they are always available.
+Requests specify the resources to reserve for a given container. Reserving the resources ensures that they are always available.  请求指定要为给定容器保留的资源。 保留资源可确保它们始终可用。
 
-| IMPORTANT | If the resource request is for more than the available free resources in the Kubernetes cluster, the pod is not scheduled. |
-| --------- | ------------------------------------------------------------ |
-|           |                                                              |
+> IMPORTANT If the resource request is for more than the available free resources in the Kubernetes cluster, the pod is not scheduled.
 
 Resources requests are specified in the `requests` property. Resources requests currently supported by Strimzi:
 
@@ -2331,7 +2323,7 @@ resources:
 
 ###### [Resource limits](https://strimzi.io/docs/operators/0.18.0/using.html#resource_limits)
 
-Limits specify the maximum resources that can be consumed by a given container. The limit is not reserved and might not always be available. A container can use the resources up to the limit only when they are available. Resource limits should be always higher than the resource requests.
+Limits specify the maximum resources that can be consumed by a given container. The limit is not reserved and might not always be available. A container can use the resources up to the limit only when they are available. Resource limits should be always higher than the resource requests.  限制指定给定容器可以消耗的最大资源。 该限制不是保留的，可能并不总是可用。 容器只有在可用时才能使用资源。 资源限制应始终高于资源请求。
 
 Resource limits are specified in the `limits` property. Resource limits currently supported by Strimzi:
 
@@ -2370,9 +2362,7 @@ resources:
 # ...
 ```
 
-| NOTE | The computing power of 1 CPU core may differ depending on the platform where Kubernetes is deployed. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> NOTE The computing power of 1 CPU core may differ depending on the platform where Kubernetes is deployed.
 
 Additional resources
 
@@ -2533,11 +2523,9 @@ Additional resources
 
 #### [3.1.14. Kafka rack awareness](https://strimzi.io/docs/operators/0.18.0/using.html#assembly-kafka-rack-deployment-configuration-kafka)
 
-The rack awareness feature in Strimzi helps to spread the Kafka broker pods and Kafka topic replicas across different racks. Enabling rack awareness helps to improve availability of Kafka brokers and the topics they are hosting.
+The rack awareness feature in Strimzi helps to spread the Kafka broker pods and Kafka topic replicas across different racks. Enabling rack awareness helps to improve availability of Kafka brokers and the topics they are hosting.  Strimzi中的机架感知功能有助于将Kafka经纪人吊舱和Kafka主题副本分布在不同机架上。 启用机架感知功能有助于提高Kafka经纪人及其托管主题的可用性。
 
-| NOTE | "Rack" might represent an availability zone, data center, or an actual rack in your data center. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> NOTE "Rack" might represent an availability zone, data center, or an actual rack in your data center.
 
 ##### [Configuring rack awareness in Kafka brokers](https://strimzi.io/docs/operators/0.18.0/using.html#proc-configuring-kafka-rack-awareness-deployment-configuration-kafka)
 
@@ -2581,7 +2569,7 @@ Additional resources
 
 #### [3.1.15. Healthchecks](https://strimzi.io/docs/operators/0.18.0/using.html#assembly-healthchecks-deployment-configuration-kafka)
 
-Healthchecks are periodical tests which verify the health of an application. When a Healthcheck probe fails, Kubernetes assumes that the application is not healthy and attempts to fix it.
+Healthchecks are periodical tests which verify the health of an application. When a Healthcheck probe fails, Kubernetes assumes that the application is not healthy and attempts to fix it.  运行状况检查是定期测试，可验证应用程序的运行状况。 当运行状况检查探针失败时，Kubernetes会假定该应用程序运行状况不佳，并尝试对其进行修复。
 
 Kubernetes supports two types of Healthcheck probes:
 
@@ -2671,7 +2659,7 @@ Procedure
 
 #### [3.1.16. Prometheus metrics](https://strimzi.io/docs/operators/0.18.0/using.html#assembly-metrics-deployment-configuration-kafka)
 
-Strimzi supports Prometheus metrics using [Prometheus JMX exporter](https://github.com/prometheus/jmx_exporter) to convert the JMX metrics supported by Apache Kafka and ZooKeeper to Prometheus metrics. When metrics are enabled, they are exposed on port 9404.
+Strimzi supports Prometheus metrics using [Prometheus JMX exporter](https://github.com/prometheus/jmx_exporter) to convert the JMX metrics supported by Apache Kafka and ZooKeeper to Prometheus metrics. When metrics are enabled, they are exposed on port 9404.  Strimzi使用Prometheus JMX导出器支持Prometheus指标，以将Apache Kafka和ZooKeeper支持的JMX指标转换为Prometheus指标。 启用度量后，它们将在端口9404上公开。
 
 For more information about setting up and deploying Prometheus and Grafana, see [Introducing Metrics to Kafka](https://strimzi.io/docs/operators/0.18.0/deploying.html#assembly-metrics-setup-str).
 
@@ -2764,7 +2752,7 @@ Procedure
 
 #### [3.1.17. JMX Options](https://strimzi.io/docs/operators/0.18.0/using.html#assembly-jmx-options-deployment-configuration-kafka)
 
-Strimzi supports obtaining JMX metrics from the Kafka brokers by opening a JMX port on 9999. You can obtain various metrics about each Kafka broker, for example, usage data such as the `BytesPerSecond` value or the request rate of the network of the broker. Strimzi supports opening a password and username protected JMX port or a non-protected JMX port.
+Strimzi supports obtaining JMX metrics from the Kafka brokers by opening a JMX port on 9999. You can obtain various metrics about each Kafka broker, for example, usage data such as the `BytesPerSecond` value or the request rate of the network of the broker. Strimzi supports opening a password and username protected JMX port or a non-protected JMX port.  Strimzi支持通过在9999上打开JMX端口来从Kafka代理获取JMX指标。您可以获取有关每个Kafka代理的各种指标，例如使用数据，例如“ BytesPerSecond”值或代理网络的请求率。 Strimzi支持打开密码和用户名受保护的JMX端口或不受保护的JMX端口。
 
 ##### [Configuring JMX options](https://strimzi.io/docs/operators/0.18.0/using.html#proc-kafka-jmx-options-deployment-configuration-kafka)
 
@@ -2829,7 +2817,7 @@ This will just open the JMX Port on the headless service and you can follow a si
 
 #### [3.1.18. Retrieving JMX metrics with JMXTrans](https://strimzi.io/docs/operators/0.18.0/using.html#assembly-jmxtrans-deployment-configuration-kafka)
 
-JmxTrans is a way of retrieving JMX metrics data from Java processes and pushing that data in various formats to remote sinks inside or outside of the cluster. JmxTrans can communicate with a secure JMX port. Strimzi supports using JmxTrans to read JMX data from Kafka brokers.
+JmxTrans is a way of retrieving JMX metrics data from Java processes and pushing that data in various formats to remote sinks inside or outside of the cluster. JmxTrans can communicate with a secure JMX port. Strimzi supports using JmxTrans to read JMX data from Kafka brokers.  JmxTrans是一种从Java流程中检索JMX指标数据并将其以各种格式推送到集群内部或外部的远程接收器的方法。 JmxTrans可以与安全的JMX端口进行通信。 Strimzi支持使用JmxTrans从Kafka代理读取JMX数据。
 
 ##### [Jmxtrans](https://strimzi.io/docs/operators/0.18.0/using.html#con-jmxtrans-deployment-configuration-kafka)
 
@@ -2848,9 +2836,7 @@ You can configure a JmxTrans deployment by using the `Kafka.spec.jmxTrans` prope
 
 For more information on these properties see, [JmxTransSpec schema reference](https://strimzi.io/docs/operators/0.18.0/using.html#type-JmxTransSpec-reference).
 
-| NOTE | JmxTrans will not come up enable you specify that JmxOptions on the Kafka broker. For more information see, [Kafka Jmx Options](https://strimzi.io/docs/operators/0.18.0/using.html#assembly-jmx-options-deployment-configuration-kafka) .Configuring JmxTrans output definitions |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> NOTE  JmxTrans will not come up enable you specify that JmxOptions on the Kafka broker. For more information see, [Kafka Jmx Options](https://strimzi.io/docs/operators/0.18.0/using.html#assembly-jmx-options-deployment-configuration-kafka) .Configuring JmxTrans output definitions  如果您在Kafka代理上指定JmxOptions，JmxTrans将不会出现。 有关更多信息，请参见Kafka Jmx选项。配置JmxTrans输出定义
 
 Output definitions specify where JMX metrics are pushed to, and in which data format. For information about supported data formats, see [Data formats](https://github.com/jmxtrans/jmxtrans/wiki/OutputWriters). How many seconds JmxTrans agent waits for before pushing new data can be configured through the `flushDelay` property. The `host` and `port` properties define the target host address and target port the data is pushed to. The `name` property is a required property that is referenced by the `Kafka.spec.kafka.jmxOptions.jmxTrans.queries` property.
 
@@ -2933,18 +2919,14 @@ Only a selected subset of available JVM options can be configured. The following
 
 `-Xms` configures the minimum initial allocation heap size when the JVM starts. `-Xmx` configures the maximum heap size.
 
-| NOTE | The units accepted by JVM settings such as `-Xmx` and `-Xms` are those accepted by the JDK `java` binary in the corresponding image. Accordingly, `1g` or `1G` means 1,073,741,824 bytes, and `Gi` is not a valid unit suffix. This is in contrast to the units used for [memory requests and limits](https://strimzi.io/docs/operators/0.18.0/using.html#assembly-resource-limits-and-requests-deployment-configuration-kafka), which follow the Kubernetes convention where `1G` means 1,000,000,000 bytes, and `1Gi` means 1,073,741,824 bytes |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> NOTE The units accepted by JVM settings such as `-Xmx` and `-Xms` are those accepted by the JDK `java` binary in the corresponding image. Accordingly, `1g` or `1G` means 1,073,741,824 bytes, and `Gi` is not a valid unit suffix. This is in contrast to the units used for [memory requests and limits](https://strimzi.io/docs/operators/0.18.0/using.html#assembly-resource-limits-and-requests-deployment-configuration-kafka), which follow the Kubernetes convention where `1G` means 1,000,000,000 bytes, and `1Gi` means 1,073,741,824 bytes  JVM设置（例如，-Xmx和-Xms）所接受的单位是相应映像中JDK`java`二进制文件所接受的单位。 因此，“ 1g”或“ 1G”表示1,073,741,824字节，而“ Gi”不是有效的单位后缀。 这与用于内存请求和限制的单位相反，后者遵循Kubernetes约定，其中“ 1G”表示1,000,000,000字节，而“ 1Gi”表示1,073,741,824字节
 
 The default values used for `-Xms` and `-Xmx` depends on whether there is a [memory request](https://strimzi.io/docs/operators/0.18.0/using.html#assembly-resource-limits-and-requests-deployment-configuration-kafka) limit configured for the container:
 
 - If there is a memory limit then the JVM’s minimum and maximum memory will be set to a value corresponding to the limit.
 - If there is no memory limit then the JVM’s minimum memory will be set to `128M` and the JVM’s maximum memory will not be defined. This allows for the JVM’s memory to grow as-needed, which is ideal for single node environments in test and development.
 
-| IMPORTANT | Setting `-Xmx` explicitly requires some care:The JVM’s overall memory usage will be approximately 4 × the maximum heap, as configured by `-Xmx`.If `-Xmx` is set without also setting an appropriate Kubernetes memory limit, it is possible that the container will be killed should the Kubernetes node experience memory pressure (from other Pods running on it).If `-Xmx` is set without also setting an appropriate Kubernetes memory request, it is possible that the container will be scheduled to a node with insufficient memory. In this case, the container will not start but crash (immediately if `-Xms` is set to `-Xmx`, or some later time if not). |
-| --------- | ------------------------------------------------------------ |
-|           |                                                              |
+> IMPORTANT Setting `-Xmx` explicitly requires some care:The JVM’s overall memory usage will be approximately 4 × the maximum heap, as configured by `-Xmx`.If `-Xmx` is set without also setting an appropriate Kubernetes memory limit, it is possible that the container will be killed should the Kubernetes node experience memory pressure (from other Pods running on it).If `-Xmx` is set without also setting an appropriate Kubernetes memory request, it is possible that the container will be scheduled to a node with insufficient memory. In this case, the container will not start but crash (immediately if `-Xms` is set to `-Xmx`, or some later time if not).  显式设置`-Xmx`需要谨慎：JVM的总内存使用量约为`-Xmx`所配置的最大堆的4倍。如果设置`-Xmx`且未同时设置适当的Kubernetes内存限制，则为 如果Kubernetes节点遇到内存压力（来自运行它的其他Pod），容器可能会被杀死。如果设置了-Xmx而没有同时设置适当的Kubernetes内存请求，则可能会将容器调度到 内存不足的节点。 在这种情况下，容器将不会启动而是崩溃（如果将-Xms设置为-Xmx，则立即启动；否则，则稍后再启动）。
 
 When setting `-Xmx` explicitly, it is recommended to:
 
@@ -2952,9 +2934,7 @@ When setting `-Xmx` explicitly, it is recommended to:
 - use a memory request that is at least 4.5 × the `-Xmx`,
 - consider setting `-Xms` to the same value as `-Xmx`.
 
-| IMPORTANT | Containers doing lots of disk I/O (such as Kafka broker containers) will need to leave some memory available for use as operating system page cache. On such containers, the requested memory should be significantly higher than the memory used by the JVM. |
-| --------- | ------------------------------------------------------------ |
-|           |                                                              |
+> IMPORTANT Containers doing lots of disk I/O (such as Kafka broker containers) will need to leave some memory available for use as operating system page cache. On such containers, the requested memory should be significantly higher than the memory used by the JVM.  做大量磁盘I / O的容器（例如Kafka代理容器）将需要保留一些内存以用作操作系统页面缓存。 在此类容器上，请求的内存应大大高于JVM使用的内存。
 
 Example fragment configuring `-Xmx` and `-Xms`
 
@@ -2968,7 +2948,7 @@ jvmOptions:
 
 In the above example, the JVM will use 2 GiB (=2,147,483,648 bytes) for its heap. Its total memory usage will be approximately 8GiB.
 
-Setting the same value for initial (`-Xms`) and maximum (`-Xmx`) heap sizes avoids the JVM having to allocate memory after startup, at the cost of possibly allocating more heap than is really needed. For Kafka and ZooKeeper pods such allocation could cause unwanted latency. For Kafka Connect avoiding over allocation may be the most important concern, especially in distributed mode where the effects of over-allocation will be multiplied by the number of consumers.
+Setting the same value for initial (`-Xms`) and maximum (`-Xmx`) heap sizes avoids the JVM having to allocate memory after startup, at the cost of possibly allocating more heap than is really needed. For Kafka and ZooKeeper pods such allocation could cause unwanted latency. For Kafka Connect avoiding over allocation may be the most important concern, especially in distributed mode where the effects of over-allocation will be multiplied by the number of consumers.  为初始堆大小（-Xms）和最大堆大小（-Xmx）设置相同的值可以避免JVM在启动后不得不分配内存，但这样做可能会分配比实际需要更多的堆。 对于Kafka和ZooKeeper吊舱，此类分配可能会导致不必要的延迟。 对于Kafka Connect而言，避免过度分配可能是最重要的问题，尤其是在分布式模式下，过度分配的影响将乘以消费者数量。
 
 -server
 
@@ -2983,9 +2963,7 @@ jvmOptions:
 # ...
 ```
 
-| NOTE | When neither of the two options (`-server` and `-XX`) is specified, the default Apache Kafka configuration of `KAFKA_JVM_PERFORMANCE_OPTS` will be used. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> NOTE When neither of the two options (`-server` and `-XX`) is specified, the default Apache Kafka configuration of `KAFKA_JVM_PERFORMANCE_OPTS` will be used.
 
 -XX
 
@@ -3009,9 +2987,7 @@ The example configuration above will result in the following JVM options:
 -XX:+UseG1GC -XX:MaxGCPauseMillis=20 -XX:InitiatingHeapOccupancyPercent=35 -XX:+ExplicitGCInvokesConcurrent -XX:-UseParNewGC
 ```
 
-| NOTE | When neither of the two options (`-server` and `-XX`) is specified, the default Apache Kafka configuration of `KAFKA_JVM_PERFORMANCE_OPTS` will be used. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> NOTE When neither of the two options (`-server` and `-XX`) is specified, the default Apache Kafka configuration of `KAFKA_JVM_PERFORMANCE_OPTS` will be used.
 
 ###### [Garbage collector logging](https://strimzi.io/docs/operators/0.18.0/using.html#garbage_collector_logging)
 
@@ -3063,7 +3039,7 @@ Procedure
 
 #### [3.1.20. Container images](https://strimzi.io/docs/operators/0.18.0/using.html#assembly-configuring-container-images-deployment-configuration-kafka)
 
-Strimzi allows you to configure container images which will be used for its components. Overriding container images is recommended only in special situations, where you need to use a different container registry. For example, because your network does not allow access to the container repository used by Strimzi. In such a case, you should either copy the Strimzi images or build them from the source. If the configured image is not compatible with Strimzi images, it might not work properly.
+Strimzi allows you to configure container images which will be used for its components. Overriding container images is recommended only in special situations, where you need to use a different container registry. For example, because your network does not allow access to the container repository used by Strimzi. In such a case, you should either copy the Strimzi images or build them from the source. If the configured image is not compatible with Strimzi images, it might not work properly.  Strimzi允许您配置将用于其组件的容器映像。 仅在需要使用其他容器注册表的特殊情况下才建议覆盖容器映像。 例如，由于您的网络不允许访问Strimzi使用的容器存储库。 在这种情况下，您应该复制Strimzi图像或从源代码构建它们。 如果配置的图像与Strimzi图像不兼容，则可能无法正常工作。
 
 ##### [Container image configurations](https://strimzi.io/docs/operators/0.18.0/using.html#ref-configuring-container-images-deployment-configuration-kafka)
 
@@ -3089,9 +3065,9 @@ Kafka, Kafka Connect (including Kafka Connect with S2I support), and Kafka Mirro
 - `STRIMZI_KAFKA_CONNECT_S2I_IMAGES`
 - `STRIMZI_KAFKA_MIRROR_MAKER_IMAGES`
 
-These environment variables contain mappings between the Kafka versions and their corresponding images. The mappings are used together with the `image` and `version` properties:
+These environment variables contain mappings between the Kafka versions and their corresponding images. The mappings are used together with the `image` and `version` properties:  这些环境变量包含Kafka版本及其对应映像之间的映射。 映射与`image`和`version`属性一起使用：
 
-- If neither `image` nor `version` are given in the custom resource then the `version` will default to the Cluster Operator’s default Kafka version, and the image will be the one corresponding to this version in the environment variable.
+- If neither `image` nor `version` are given in the custom resource then the `version` will default to the Cluster Operator’s default Kafka version, and the image will be the one corresponding to this version in the environment variable.  如果自定义资源中未提供“图像”和“版本”，则“版本”将默认为集群运营商的默认Kafka版本，并且该图像将是环境变量中与此版本相对应的版本。
 - If `image` is given but `version` is not, then the given image is used and the `version` is assumed to be the Cluster Operator’s default Kafka version.
 - If `version` is given but `image` is not, then the image that corresponds to the given version in the environment variable is used.
 - If both `version` and `image` are given, then the given image is used. The image is assumed to contain a Kafka image with the given version.
@@ -3101,9 +3077,7 @@ The `image` and `version` for the different components can be configured in the 
 - For Kafka in `spec.kafka.image` and `spec.kafka.version`.
 - For Kafka Connect, Kafka Connect S2I, and Kafka MirrorMaker in `spec.image` and `spec.version`.
 
-| WARNING | It is recommended to provide only the `version` and leave the `image` property unspecified. This reduces the chance of making a mistake when configuring the custom resource. If you need to change the images used for different versions of Kafka, it is preferable to configure the Cluster Operator’s environment variables. |
-| ------- | ------------------------------------------------------------ |
-|         |                                                              |
+> WARNING It is recommended to provide only the `version` and leave the `image` property unspecified. This reduces the chance of making a mistake when configuring the custom resource. If you need to change the images used for different versions of Kafka, it is preferable to configure the Cluster Operator’s environment variables.  建议仅提供“ version”，并保留“ image”属性未指定。 这样可以减少在配置自定义资源时出错的机会。 如果您需要更改用于不同版本的Kafka的映像，则最好配置Cluster Operator的环境变量。
 
 ###### [Configuring the `image` property in other resources](https://strimzi.io/docs/operators/0.18.0/using.html#configuring_the_image_property_in_other_resources)
 
@@ -3138,9 +3112,7 @@ For the `image` property in the other custom resources, the given value will be 
   1. Container image specified in the `STRIMZI_DEFAULT_JMXTRANS_IMAGE` environment variable from the Cluster Operator configuration.
   2. `strimzi/operator:0.18.0` container image.
 
-| WARNING | Overriding container images is recommended only in special situations, where you need to use a different container registry. For example, because your network does not allow access to the container repository used by Strimzi. In such case, you should either copy the Strimzi images or build them from source. In case the configured image is not compatible with Strimzi images, it might not work properly. |
-| ------- | ------------------------------------------------------------ |
-|         |                                                              |
+> WARNING Overriding container images is recommended only in special situations, where you need to use a different container registry. For example, because your network does not allow access to the container repository used by Strimzi. In such case, you should either copy the Strimzi images or build them from source. In case the configured image is not compatible with Strimzi images, it might not work properly.
 
 Example of container image configuration
 
@@ -3193,7 +3165,7 @@ Procedure
 
 #### [3.1.21. TLS sidecar](https://strimzi.io/docs/operators/0.18.0/using.html#assembly-tls-sidecar-deployment-configuration-kafka)
 
-A sidecar is a container that runs in a pod but serves a supporting purpose. In Strimzi, the TLS sidecar uses TLS to encrypt and decrypt all communication between the various components and ZooKeeper. ZooKeeper does not have native TLS support.
+A sidecar is a container that runs in a pod but serves a supporting purpose. In Strimzi, the TLS sidecar uses TLS to encrypt and decrypt all communication between the various components and ZooKeeper. ZooKeeper does not have native TLS support.  边车是一种在吊舱中运行但用于支撑目的的容器。 在Strimzi中，TLS边车使用TLS加密和解密各个组件与ZooKeeper之间的所有通信。 ZooKeeper没有本机TLS支持。
 
 The TLS sidecar is used in:
 
@@ -3309,9 +3281,7 @@ Procedure
 
 #### [3.1.22. Configuring pod scheduling](https://strimzi.io/docs/operators/0.18.0/using.html#assembly-scheduling-deployment-configuration-kafka)
 
-| IMPORTANT | When two applications are scheduled to the same Kubernetes node, both applications might use the same resources like disk I/O and impact performance. That can lead to performance degradation. Scheduling Kafka pods in a way that avoids sharing nodes with other critical workloads, using the right nodes or dedicated a set of nodes only for Kafka are the best ways how to avoid such problems. |
-| --------- | ------------------------------------------------------------ |
-|           |                                                              |
+> IMPORTANT When two applications are scheduled to the same Kubernetes node, both applications might use the same resources like disk I/O and impact performance. That can lead to performance degradation. Scheduling Kafka pods in a way that avoids sharing nodes with other critical workloads, using the right nodes or dedicated a set of nodes only for Kafka are the best ways how to avoid such problems.  当将两个应用程序安排到同一Kubernetes节点时，这两个应用程序可能会使用相同的资源（如磁盘I / O）并影响性能。 这会导致性能下降。 避免与其他关键工作负载共享节点，使用正确的节点或仅将一组节点专用于Kafka的方式来调度Kafka Pod是避免此类问题的最佳方法。
 
 ##### [Scheduling pods based on other applications](https://strimzi.io/docs/operators/0.18.0/using.html#assembly-scheduling-pods-based-on-other-applications-deployment-configuration-kafka-scheduling-based-on-pods)
 
@@ -3659,7 +3629,7 @@ Additional resources
 
 #### [3.1.24. Performing a rolling update of a Kafka cluster](https://strimzi.io/docs/operators/0.18.0/using.html#proc-manual-rolling-update-kafka-deployment-configuration-kafka)
 
-This procedure describes how to manually trigger a rolling update of an existing Kafka cluster by using a Kubernetes annotation.
+This procedure describes how to manually trigger a rolling update of an existing Kafka cluster by using a Kubernetes annotation.  此过程介绍了如何使用Kubernetes批注手动触发现有Kafka集群的滚动更新。
 
 Prerequisites
 
@@ -3678,7 +3648,7 @@ Procedure
    kubectl annotate statefulset cluster-name-kafka strimzi.io/manual-rolling-update=true
    ```
 
-3. Wait for the next reconciliation to occur (every two minutes by default). A rolling update of all pods within the annotated `StatefulSet` is triggered, as long as the annotation was detected by the reconciliation process. When the rolling update of all the pods is complete, the annotation is removed from the `StatefulSet`.
+3. Wait for the next reconciliation to occur (every two minutes by default). A rolling update of all pods within the annotated `StatefulSet` is triggered, as long as the annotation was detected by the reconciliation process. When the rolling update of all the pods is complete, the annotation is removed from the `StatefulSet`.  等待下一次对帐（默认情况下，每两分钟进行一次）。 只要通过协调过程检测到注释，就会触发带注释的“ StatefulSet”中所有pod的滚动更新。 当所有Pod的滚动更新完成后，注释将从“ StatefulSet”中删除。
 
 Additional resources
 
@@ -3719,17 +3689,17 @@ Additional resources
 
 ###### [Adding brokers to a cluster](https://strimzi.io/docs/operators/0.18.0/using.html#adding_brokers_to_a_cluster)
 
-The primary way of increasing throughput for a topic is to increase the number of partitions for that topic. That works because the extra partitions allow the load of the topic to be shared between the different brokers in the cluster. However, in situations where every broker is constrained by a particular resource (typically I/O) using more partitions will not result in increased throughput. Instead, you need to add brokers to the cluster.
+The primary way of increasing throughput for a topic is to increase the number of partitions for that topic. That works because the extra partitions allow the load of the topic to be shared between the different brokers in the cluster. However, in situations where every broker is constrained by a particular resource (typically I/O) using more partitions will not result in increased throughput. Instead, you need to add brokers to the cluster.  增加主题吞吐量的主要方法是增加该主题的分区数量。 之所以可行，是因为额外的分区允许在群集中的不同代理之间共享主题的负载。 但是，在每个代理都受特定资源（通常是I / O）约束的情况下，使用更多分区将不会导致吞吐量增加。 相反，您需要将代理添加到集群。
 
-When you add an extra broker to the cluster, Kafka does not assign any partitions to it automatically. You must decide which partitions to move from the existing brokers to the new broker.
+When you add an extra broker to the cluster, Kafka does not assign any partitions to it automatically. You must decide which partitions to move from the existing brokers to the new broker.  当您向集群添加额外的代理时，Kafka不会自动为其分配任何分区。 您必须决定从现有代理迁移到新代理的分区。
 
-Once the partitions have been redistributed between all the brokers, the resource utilization of each broker should be reduced.
+Once the partitions have been redistributed between all the brokers, the resource utilization of each broker should be reduced.  一旦在所有代理之间重新分配了分区，就应该降低每个代理的资源利用率。
 
 ###### [Removing brokers from a cluster](https://strimzi.io/docs/operators/0.18.0/using.html#removing_brokers_from_a_cluster)
 
-Because Strimzi uses `StatefulSets` to manage broker pods, you cannot remove *any* pod from the cluster. You can only remove one or more of the highest numbered pods from the cluster. For example, in a cluster of 12 brokers the pods are named `*cluster-name*-kafka-0` up to `*cluster-name*-kafka-11`. If you decide to scale down by one broker, the `*cluster-name*-kafka-11` will be removed.
+Because Strimzi uses `StatefulSets` to manage broker pods, you cannot remove *any* pod from the cluster. You can only remove one or more of the highest numbered pods from the cluster. For example, in a cluster of 12 brokers the pods are named `*cluster-name*-kafka-0` up to `*cluster-name*-kafka-11`. If you decide to scale down by one broker, the `*cluster-name*-kafka-11` will be removed.  因为Strimzi使用StatefulSets来管理代理Pod，所以您不能从集群中删除* any * Pod。 您只能从群集中删除一个或多个编号最高的窗格。 例如，在一个由12个经纪人组成的集群中，这些吊舱被命名为“ *集群名称* -kafka-0”，最高称为“ *集群名称* -kafka-11”。 如果您决定由一位经纪人缩减规模，则将删除* cluster-name * -kafka-11。
 
-Before you remove a broker from a cluster, ensure that it is not assigned to any partitions. You should also decide which of the remaining brokers will be responsible for each of the partitions on the broker being decommissioned. Once the broker has no assigned partitions, you can scale the cluster down safely.
+Before you remove a broker from a cluster, ensure that it is not assigned to any partitions. You should also decide which of the remaining brokers will be responsible for each of the partitions on the broker being decommissioned. Once the broker has no assigned partitions, you can scale the cluster down safely.  从群集中删除代理之前，请确保未将其分配给任何分区。 您还应该确定剩余的哪个代理负责将要停用的代理上的每个分区。 一旦代理没有分配的分区，就可以安全地缩小群集。
 
 ##### [Partition reassignment](https://strimzi.io/docs/operators/0.18.0/using.html#con-partition-reassignment-deployment-configuration-kafka)
 
@@ -3741,7 +3711,7 @@ It has three different modes:
 
 - `--generate`
 
-  Takes a set of topics and brokers and generates a *reassignment JSON file* which will result in the partitions of those topics being assigned to those brokers. Because this operates on whole topics, it cannot be used when you just need to reassign some of the partitions of some topics.
+  Takes a set of topics and brokers and generates a *reassignment JSON file* which will result in the partitions of those topics being assigned to those brokers. Because this operates on whole topics, it cannot be used when you just need to reassign some of the partitions of some topics.  接受一组主题和代理，并生成一个* reassignment JSON文件*，这将导致将这些主题的分区分配给这些代理。 因为这适用于整个主题，所以当您只需要重新分配某些主题的某些分区时就不能使用它。
 
 - `--execute`
 
@@ -3776,9 +3746,7 @@ Where ** is a comma-separated list of objects like:
 }
 ```
 
-| NOTE | Although Kafka also supports a `"log_dirs"` property this should not be used in Strimzi. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> NOTE Although Kafka also supports a `"log_dirs"` property this should not be used in Strimzi.
 
 The following is an example reassignment JSON file that assigns topic `topic-a`, partition `4` to brokers `2`, `4` and `7`, and topic `topic-b` partition `2` to brokers `1`, `5` and `7`:
 
@@ -4096,9 +4064,7 @@ Additional resources
 
 This procedure describes how to delete an existing Kafka node by using a Kubernetes annotation. Deleting a Kafka node consists of deleting both the `Pod` on which the Kafka broker is running and the related `PersistentVolumeClaim` (if the cluster was deployed with persistent storage). After deletion, the `Pod` and its related `PersistentVolumeClaim` are recreated automatically.
 
-| WARNING | Deleting a `PersistentVolumeClaim` can cause permanent data loss. The following procedure should only be performed if you have encountered storage issues. |
-| ------- | ------------------------------------------------------------ |
-|         |                                                              |
+> WARNING Deleting a `PersistentVolumeClaim` can cause permanent data loss. The following procedure should only be performed if you have encountered storage issues.
 
 Prerequisites
 
@@ -4130,9 +4096,7 @@ Additional resources
 
 This procedure describes how to delete an existing ZooKeeper node by using a Kubernetes annotation. Deleting a ZooKeeper node consists of deleting both the `Pod` on which ZooKeeper is running and the related `PersistentVolumeClaim` (if the cluster was deployed with persistent storage). After deletion, the `Pod` and its related `PersistentVolumeClaim` are recreated automatically.
 
-| WARNING | Deleting a `PersistentVolumeClaim` can cause permanent data loss. The following procedure should only be performed if you have encountered storage issues. |
-| ------- | ------------------------------------------------------------ |
-|         |                                                              |
+> WARNING Deleting a `PersistentVolumeClaim` can cause permanent data loss. The following procedure should only be performed if you have encountered storage issues. 
 
 Prerequisites
 
@@ -4187,9 +4151,7 @@ maintenanceTimeWindows:
 
 In practice, maintenance windows should be set in conjunction with the `Kafka.spec.clusterCa.renewalDays` and `Kafka.spec.clientsCa.renewalDays` properties of the `Kafka` resource, to ensure that the necessary CA certificate renewal can be completed in the configured maintenance time windows.
 
-| NOTE | Strimzi does not schedule maintenance operations exactly according to the given windows. Instead, for each reconciliation, it checks whether a maintenance window is currently "open". This means that the start of maintenance operations within a given time window can be delayed by up to the Cluster Operator reconciliation interval. Maintenance time windows must therefore be at least this long. |
-| ---- | ------------------------------------------------------------ |
-|      |                                                              |
+> NOTE Strimzi does not schedule maintenance operations exactly according to the given windows. Instead, for each reconciliation, it checks whether a maintenance window is currently "open". This means that the start of maintenance operations within a given time window can be delayed by up to the Cluster Operator reconciliation interval. Maintenance time windows must therefore be at least this long.
 
 Additional resources
 

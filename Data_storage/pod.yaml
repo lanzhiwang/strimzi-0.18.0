@@ -1,0 +1,66 @@
+apiVersion: kafka.strimzi.io/v1beta1
+kind: Kafka
+metadata:
+  name: my-cluster
+spec:
+  kafka:
+    version: 2.5.0
+    replicas: 3
+    jmxOptions: {}
+    listeners:
+      plain: {}
+      tls: {}
+      external:
+        type: nodeport
+        tls: true
+        authentication:
+          type: tls
+    config:
+      offsets.topic.replication.factor: 3
+      transaction.state.log.replication.factor: 3
+      transaction.state.log.min.isr: 2
+      log.message.format.version: '2.5'
+    storage:
+      type: persistent-claim
+      size: 1000Gi
+      class: intceph
+      selector:
+        hdd-type: ssd
+      deleteClaim: true
+      overrides:
+        - broker: 0
+          class: my-storage-class-zone-1a
+        - broker: 1
+          class: my-storage-class-zone-1b
+        - broker: 2
+          class: my-storage-class-zone-1c
+    template:
+      pod:
+        securityContext:
+          runAsUser: 0
+          fsGroup: 0
+  zookeeper:
+    replicas: 3
+    storage:
+      type: persistent-claim
+      size: 1000Gi
+      class: intceph
+      selector:
+        hdd-type: ssd
+      deleteClaim: true
+      overrides:
+        - broker: 0
+          class: my-storage-class-zone-1a
+        - broker: 1
+          class: my-storage-class-zone-1b
+        - broker: 2
+          class: my-storage-class-zone-1c
+    template:
+      pod:
+        securityContext:
+          runAsUser: 0
+          fsGroup: 0
+  entityOperator:
+    topicOperator: {}
+    userOperator: {}
+

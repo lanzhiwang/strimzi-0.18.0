@@ -436,96 +436,125 @@ spec:
 
 验证结果：
 
-
-
-
-
 ```bash
+[root@mw-init ssl]# kubectl -n kafka get services
+NAME                          TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                      AGE
+my-cluster-kafka-bootstrap    ClusterIP   10.101.141.154   <none>        9091/TCP,9093/TCP            4m
+my-cluster-kafka-brokers      ClusterIP   None             <none>        9091/TCP,9093/TCP,9999/TCP   4m
+my-cluster-zookeeper-client   ClusterIP   10.105.220.161   <none>        2181/TCP                     4m52s
+my-cluster-zookeeper-nodes    ClusterIP   None             <none>        2181/TCP,2888/TCP,3888/TCP   4m52s
+[root@mw-init ssl]#
 [root@mw-init ssl]# kubectl -n kafka get secret
 NAME                                     TYPE                                  DATA   AGE
-default-token-r5ztg                      kubernetes.io/service-account-token   3      2d8h
-my-cluster-clients-ca                    Opaque                                1      130m
-my-cluster-clients-ca-cert               Opaque                                3      130m
-my-cluster-cluster-ca                    Opaque                                1      130m
-my-cluster-cluster-ca-cert               Opaque                                3      130m
-my-cluster-cluster-operator-certs        Opaque                                4      130m
-my-cluster-entity-operator-certs         Opaque                                4      128m
-my-cluster-entity-operator-token-xs8v6   kubernetes.io/service-account-token   3      128m
-my-cluster-kafka-brokers                 Opaque                                12     129m
-my-cluster-kafka-token-9pphl             kubernetes.io/service-account-token   3      130m
-my-cluster-zookeeper-nodes               Opaque                                12     130m
-my-cluster-zookeeper-token-rsgj4         kubernetes.io/service-account-token   3      130m
-my-user                                  Opaque                                5      128m
-strimzi-cluster-operator-token-8r97s     kubernetes.io/service-account-token   3      2d8h
+default-token-r5ztg                      kubernetes.io/service-account-token   3      6d23h
+my-cluster-clients-ca                    Opaque                                1      4m55s
+my-cluster-clients-ca-cert               Opaque                                3      4m55s
+my-cluster-cluster-ca                    Opaque                                1      4m55s
+my-cluster-cluster-ca-cert               Opaque                                3      4m55s
+my-cluster-cluster-operator-certs        Opaque                                4      4m55s
+my-cluster-entity-operator-certs         Opaque                                4      50s
+my-cluster-entity-operator-token-42wj7   kubernetes.io/service-account-token   3      50s
+my-cluster-kafka-brokers                 Opaque                                12     4m2s
+my-cluster-kafka-token-lxff5             kubernetes.io/service-account-token   3      4m3s
+my-cluster-zookeeper-nodes               Opaque                                12     4m54s
+my-cluster-zookeeper-token-c2cxt         kubernetes.io/service-account-token   3      4m55s
+my-user                                  Opaque                                5      46s
+strimzi-cluster-operator-token-8r97s     kubernetes.io/service-account-token   3      6d23h
 [root@mw-init ssl]#
 
-[root@mw-init ssl]# kubectl -n kafka get secret my-user -o jsonpath='{.data.ca\.crt}' | base64 -d > ca.crt
+mkdir ./ssl
+cd ./ssl
 
-[root@mw-init ssl]# kubectl -n kafka get secret my-user -o jsonpath='{.data.user\.password}' | base64 -d > user.password
-
-[root@mw-init ssl]# cat user.password
-QrUWbsAYpU13
-
+[root@mw-init ssl]# kubectl -n kafka get secret my-cluster-cluster-ca-cert -o jsonpath='{.data.ca\.crt}' | base64 -d > ca.crt
+[root@mw-init ssl]# kubectl -n kafka get secret my-cluster-cluster-ca-cert -o jsonpath='{.data.ca\.password}' | base64 -d
+xi58Ne3W6Oqn
+[root@mw-init ssl]#
 [root@mw-init ssl]# kubectl -n kafka get secret my-user -o jsonpath='{.data.user\.p12}' | base64 -d > user.p12
 [root@mw-init ssl]#
-
+[root@mw-init ssl]# kubectl -n kafka get secret my-user -o jsonpath='{.data.user\.password}' | base64 -d
+M9a2Z4O0FVyn
+[root@mw-init ssl]#
 [root@mw-init ssl]# keytool -keystore user-truststore.jks -alias CARoot -import -file ca.crt
 输入密钥库口令:
 再次输入新口令:
-
-[root@mw-init ssl]# keytool -importkeystore -srckeystore user.p12 -srcstoretype pkcs12 -destkeystore user-keystore.jks -deststoretype jks
+是否信任此证书? [否]:  y
+证书已添加到密钥库中
+[root@mw-init ssl]#
+[root@mw-init ssl]# keytool -importkeystore -srckeystore user.p12 -destkeystore user-keystore.jks -deststoretype pkcs12
 正在将密钥库 user.p12 导入到 user-keystore.jks...
 输入目标密钥库口令:
 再次输入新口令:
 输入源密钥库口令:
 已成功导入别名 my-user 的条目。
+已完成导入命令: 1 个条目成功导入, 0 个条目失败或取消
+[root@mw-init ssl]#
+[root@mw-init ssl]#
 
 cat << EOF > client-ssl.properties
 security.protocol=SSL
-ssl.truststore.location=/path/user-truststore.jks
-ssl.truststore.password=QrUWbsAYpU13
+ssl.truststore.location=/home/kafka/user-truststore.jks
+ssl.truststore.password=xi58Ne3W6Oqn
 
-ssl.keystore.location=/path/user-keystore.jks
-ssl.keystore.password=QrUWbsAYpU13
-ssl.key.password=QrUWbsAYpU13
+ssl.keystore.location=/home/kafka/user-keystore.jks
+ssl.keystore.password=M9a2Z4O0FVyn
+ssl.key.password=M9a2Z4O0FVyn
 EOF
 
-$ kafka-console-producer.sh --bootstrap-server 10.108.84.26:9093 --topic my-topic --producer.config client-ssl.properties
+[root@mw-init ssl]# ll
+总用量 20
+-rw-r--r-- 1 root root 1164 10月 20 10:44 ca.crt
+-rw-r--r-- 1 root root  233 10月 20 10:50 client-ssl.properties
+-rw-r--r-- 1 root root 2401 10月 20 10:47 user-keystore.jks
+-rw-r--r-- 1 root root 2364 10月 20 10:44 user.p12
+-rw-r--r-- 1 root root  880 10月 20 10:46 user-truststore.jks
+[root@mw-init ssl]#
 
-$ kafka-console-consumer.sh --bootstrap-server 10.108.84.26:9093 --topic my-topic --producer.config client-ssl.properties
+[root@mw-init ssl]# kubectl -n kafka run kafka-test -ti --image=10.0.129.0:60080/3rdparty/strimzi/kafka:latest --rm=true --restart=Never bash
 
+[root@mw-init ssl]# kubectl -n kafka cp ca.crt kafka-test:/home/kafka/
+[root@mw-init ssl]#
+[root@mw-init ssl]# kubectl -n kafka cp client-ssl.properties kafka-test:/home/kafka/
+[root@mw-init ssl]#
+[root@mw-init ssl]# kubectl -n kafka cp user-keystore.jks kafka-test:/home/kafka/
+[root@mw-init ssl]#
+[root@mw-init ssl]# kubectl -n kafka cp user.p12 kafka-test:/home/kafka/
+[root@mw-init ssl]#
+[root@mw-init ssl]# kubectl -n kafka cp user-truststore.jks kafka-test:/home/kafka/
+[root@mw-init ssl]#
+
+
+[root@mw-init ssl]# kubectl -n kafka exec -ti kafka-test bash
+[kafka@kafka-test kafka]$ cd /home/kafka/
+[kafka@kafka-test ~]$ ll
+total 20
+-rw-r--r-- 1 kafka root 1164 Oct 20 02:52 ca.crt
+-rw-r--r-- 1 kafka root  233 Oct 20 02:53 client-ssl.properties
+-rw-r--r-- 1 kafka root 2401 Oct 20 02:53 user-keystore.jks
+-rw-r--r-- 1 kafka root  880 Oct 20 02:53 user-truststore.jks
+-rw-r--r-- 1 kafka root 2364 Oct 20 02:53 user.p12
+[kafka@kafka-test ~]$
+[kafka@kafka-test ~]$
 
 # 一定要使用服务名，不能使用服务 IP
 # 生产者
-$ kubectl -n kafka run kafka-producer -ti --image=10.0.129.0:60080/3rdparty/strimzi/kafka-test:latest --rm=true --restart=Never -- export KAFKA_OPTS="-Djavax.net.debug=ssl"
-./bin/kafka-console-producer.sh bin/kafka-console-producer.sh --bootstrap-server my-cluster-kafka-bootstrap:9093 --topic my-topic --producer-property security.protocol=SSL --producer-property ssl.truststore.location=./bin/user-truststore.jks --producer-property ssl.truststore.password=QrUWbsAYpU13 --producer-property ssl.keystore.location=./bin/user-keystore.jks --producer-property ssl.keystore.password=QrUWbsAYpU13 --producer-property ssl.key.password=QrUWbsAYpU13
-
-$ ./kafka-console-producer.sh --bootstrap-server my-cluster-kafka-bootstrap:9093 --topic my-topic --producer-property security.protocol=SSL --producer-property ssl.truststore.location=./user-truststore.jks --producer-property ssl.truststore.password=QrUWbsAYpU13 --producer-property ssl.keystore.location=./user-keystore.jks --producer-property ssl.keystore.password=QrUWbsAYpU13 --producer-property ssl.key.password=QrUWbsAYpU13
-
-$ kubectl -n kafka run kafka-consumer -ti --image=10.0.129.0:60080/3rdparty/strimzi/kafka-test:latest --rm=true --restart=Never -- bin/kafka-console-consumer.sh --bootstrap-server my-cluster-kafka-bootstrap:9093 --topic my-topic --consumer-property security.protocol=SSL --consumer-property ssl.truststore.location=./bin/user-truststore.jks --consumer-property ssl.truststore.password=QrUWbsAYpU13 --consumer-property ssl.keystore.location=./bin/user-keystore.jks --consumer-property ssl.keystore.password=QrUWbsAYpU13 --consumer-property ssl.key.password=QrUWbsAYpU13 --from-beginning --group my-group
-
-$ ./kafka-console-consumer.sh --bootstrap-server my-cluster-kafka-bootstrap:9093 --topic my-topic --consumer-property security.protocol=SSL --consumer-property ssl.truststore.location=./user-truststore.jks --consumer-property ssl.truststore.password=QrUWbsAYpU13 --consumer-property ssl.keystore.location=./user-keystore.jks --consumer-property ssl.keystore.password=QrUWbsAYpU13 --consumer-property ssl.key.password=QrUWbsAYpU13 --from-beginning --group my-group
-
-
-
-[kafka@kafka-consumer bin]$ ./kafka-console-producer.sh --bootstrap-server my-cluster-kafka-bootstrap:9093 --topic my-topic --producer-property security.protocol=SSL --producer-property ssl.truststore.location=./user-truststore.jks --producer-property ssl.truststore.password=QrUWbsAYpU13 --producer-property ssl.keystore.location=./user-keystore.jks --producer-property ssl.keystore.password=QrUWbsAYpU13 --producer-property ssl.key.password=QrUWbsAYpU13
+[kafka@kafka-test ~]$ /opt/kafka/bin/kafka-console-producer.sh --bootstrap-server my-cluster-kafka-bootstrap:9093 --topic my-topic --producer.config ./client-ssl.properties
 OpenJDK 64-Bit Server VM warning: If the number of processors is expected to increase from one, then you should configure the number of parallel GC threads appropriately using -XX:ParallelGCThreads=N
 >hello1
 >hello2
+>hello3
 >
 
-
-[kafka@kafka-consumer bin]$ ./kafka-console-consumer.sh --bootstrap-server my-cluster-kafka-bootstrap:9093 --topic my-topic --consumer-property security.protocol=SSL --consumer-property ssl.truststore.location=./user-truststore.jks --consumer-property ssl.truststore.password=QrUWbsAYpU13 --consumer-property ssl.keystore.location=./user-keystore.jks --consumer-property ssl.keystore.password=QrUWbsAYpU13 --consumer-property ssl.key.password=QrUWbsAYpU13 --from-beginning --group my-group
+# 消费者
+[kafka@kafka-test ~]$ /opt/kafka/bin/kafka-console-consumer.sh --bootstrap-server my-cluster-kafka-bootstrap:9093 --topic my-topic --consumer.config ./client-ssl.properties --from-beginning --group my-group
 OpenJDK 64-Bit Server VM warning: If the number of processors is expected to increase from one, then you should configure the number of parallel GC threads appropriately using -XX:ParallelGCThreads=N
-
-
-hello
-heklo world
 hello1
 hello2
+hello3
+
+
+
 
 ```
-
 
 
 参考：
