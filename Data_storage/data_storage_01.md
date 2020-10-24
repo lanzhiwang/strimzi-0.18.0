@@ -273,143 +273,57 @@ volumeBindingMode: Immediate
 
 
 ```bash
-[root@mw-init ssl]# kubectl -n kafka get pvc -o wide
-NAME                          STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE     VOLUMEMODE
-data-my-cluster-kafka-0       Bound    pvc-2e59d519-7b60-41c5-8f7d-364100a14eaf   10Gi       RWO            intceph        2m21s   Filesystem
-data-my-cluster-kafka-1       Bound    pvc-a9849088-1acd-48e3-bdcf-1c0240a861b7   10Gi       RWO            intceph        2m21s   Filesystem
-data-my-cluster-kafka-2       Bound    pvc-e60fb453-a0ae-443b-9471-19cfea46c133   10Gi       RWO            intceph        2m21s   Filesystem
-data-my-cluster-zookeeper-0   Bound    pvc-2d8edad7-cef1-46e0-99e0-24e4c2fbcfbb   10Gi       RWO            intceph        3m15s   Filesystem
-data-my-cluster-zookeeper-1   Bound    pvc-b58c074a-3ebd-4749-b8ab-6966276af34b   10Gi       RWO            intceph        3m15s   Filesystem
-data-my-cluster-zookeeper-2   Bound    pvc-415cb469-1de5-4ca5-9622-8f251b6ce1fc   10Gi       RWO            intceph        3m15s   Filesystem
-[root@mw-init ssl]#
-[root@mw-init ssl]#
-
-[root@mw-init ~]# kubectl -n kafka get pvc data-my-cluster-kafka-0 -o yaml
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  annotations:
-    pv.kubernetes.io/bind-completed: "yes"
-    strimzi.io/delete-claim: "true"
-  creationTimestamp: "2020-10-22T02:05:59Z"
-  finalizers:
-  - kubernetes.io/pvc-protection
-  labels:
-    app.kubernetes.io/instance: my-cluster
-    app.kubernetes.io/managed-by: strimzi-cluster-operator
-    app.kubernetes.io/name: kafka
-    app.kubernetes.io/part-of: strimzi-my-cluster
-    strimzi.io/cluster: my-cluster
-    strimzi.io/kind: Kafka
-    strimzi.io/name: my-cluster-kafka
-  name: data-my-cluster-kafka-0
-  namespace: kafka
-  ownerReferences:
-  - apiVersion: kafka.strimzi.io/v1beta1
-    blockOwnerDeletion: false
-    controller: false
-    kind: Kafka
-    name: my-cluster
-    uid: e6d98525-ca17-41ad-a245-5363403fe810
-  resourceVersion: "59193884"
-  selfLink: /api/v1/namespaces/kafka/persistentvolumeclaims/data-my-cluster-kafka-0
-  uid: 3f73e2c0-1d3a-4874-8a79-5057174c6e69
-spec:
-  accessModes:
-  - ReadWriteOnce
-  resources:
-    requests:
-      storage: 10Gi
-  storageClassName: intceph
-  volumeMode: Filesystem
-  volumeName: pvc-3f73e2c0-1d3a-4874-8a79-5057174c6e69
-status:
-  accessModes:
-  - ReadWriteOnce
-  capacity:
-    storage: 10Gi
-  phase: Bound
+[root@mw-init ~]# kubectl -n kafka get pvc -o wide
+NAME                          STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE   VOLUMEMODE
+data-my-cluster-kafka-0       Bound    pvc-bac2c497-296e-4a0b-8c92-4acd4f3a0de5   10Gi       RWO            intceph        14m   Filesystem
+data-my-cluster-kafka-1       Bound    pvc-bcb9ff07-733f-4481-a13f-188cfdddd738   10Gi       RWO            intceph        14m   Filesystem
+data-my-cluster-kafka-2       Bound    pvc-f4f03b45-42f3-4b8b-b0c7-96237453b822   10Gi       RWO            intceph        14m   Filesystem
+data-my-cluster-zookeeper-0   Bound    pvc-ffb2101e-df03-4b5b-918c-0a217730fde3   10Gi       RWO            intceph        27m   Filesystem
+data-my-cluster-zookeeper-1   Bound    pvc-e77853b9-4ea6-4c1f-aa3f-417453f90c64   10Gi       RWO            intceph        27m   Filesystem
+data-my-cluster-zookeeper-2   Bound    pvc-e293a339-0b3a-40ef-ae69-ebfcf7ad14f3   10Gi       RWO            intceph        27m   Filesystem
 [root@mw-init ~]#
 
+# pv
+pvc-bac2c497-296e-4a0b-8c92-4acd4f3a0de5
+pvc-bcb9ff07-733f-4481-a13f-188cfdddd738
+pvc-f4f03b45-42f3-4b8b-b0c7-96237453b822
+pvc-ffb2101e-df03-4b5b-918c-0a217730fde3
+pvc-e77853b9-4ea6-4c1f-aa3f-417453f90c64
+pvc-e293a339-0b3a-40ef-ae69-ebfcf7ad14f3
 
-[root@mw-init ~]# kubectl get pv pvc-3f73e2c0-1d3a-4874-8a79-5057174c6e69 -o yaml
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  annotations:
-    cephFSProvisionerIdentity: cephfs-provisioner-1
-    cephShare: kubernetes-dynamic-pvc-2ba9e02d-690d-4c3b-8145-00101714e519
-    pv.kubernetes.io/provisioned-by: ceph.com/cephfs
-  creationTimestamp: "2020-10-22T02:06:02Z"
-  finalizers:
-  - kubernetes.io/pv-protection
-  name: pvc-3f73e2c0-1d3a-4874-8a79-5057174c6e69
-  resourceVersion: "59188610"
-  selfLink: /api/v1/persistentvolumes/pvc-3f73e2c0-1d3a-4874-8a79-5057174c6e69
-  uid: f4074fe8-2968-4592-a492-170522427840
-spec:
-  accessModes:
-  - ReadWriteOnce
-  capacity:
-    storage: 10Gi
-  cephfs:
-    monitors:
-    - 192.168.16.172:6789
-    - 192.168.16.173:6790
-    - 192.168.16.174:6791
-    path: /kubernetes/kubernetes/kubernetes/kubernetes-dynamic-pvc-2ba9e02d-690d-4c3b-8145-00101714e519
-    secretRef:
-      name: ceph-kubernetes-dynamic-user-8b62896a-5186-4f34-a4cb-f71331aa3998-secret
-      namespace: cpaas-system
-    user: kubernetes-dynamic-user-8b62896a-5186-4f34-a4cb-f71331aa3998
-  claimRef:
-    apiVersion: v1
-    kind: PersistentVolumeClaim
-    name: data-my-cluster-kafka-0
-    namespace: kafka
-    resourceVersion: "59188496"
-    uid: 3f73e2c0-1d3a-4874-8a79-5057174c6e69
-  persistentVolumeReclaimPolicy: Delete
-  storageClassName: intceph
-  volumeMode: Filesystem
-status:
-  phase: Bound
+[root@mw-init ~]# kubectl get pv pvc-bac2c497-296e-4a0b-8c92-4acd4f3a0de5 pvc-bcb9ff07-733f-4481-a13f-188cfdddd738 pvc-f4f03b45-42f3-4b8b-b0c7-96237453b822 pvc-ffb2101e-df03-4b5b-918c-0a217730fde3 pvc-e77853b9-4ea6-4c1f-aa3f-417453f90c64 pvc-e293a339-0b3a-40ef-ae69-ebfcf7ad14f3 -o wide
+NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                               STORAGECLASS   REASON   AGE   VOLUMEMODE
+pvc-bac2c497-296e-4a0b-8c92-4acd4f3a0de5   10Gi       RWO            Delete           Bound    kafka/data-my-cluster-kafka-0       intceph                 17m   Filesystem
+pvc-bcb9ff07-733f-4481-a13f-188cfdddd738   10Gi       RWO            Delete           Bound    kafka/data-my-cluster-kafka-1       intceph                 17m   Filesystem
+pvc-f4f03b45-42f3-4b8b-b0c7-96237453b822   10Gi       RWO            Delete           Bound    kafka/data-my-cluster-kafka-2       intceph                 17m   Filesystem
+pvc-ffb2101e-df03-4b5b-918c-0a217730fde3   10Gi       RWO            Delete           Bound    kafka/data-my-cluster-zookeeper-0   intceph                 29m   Filesystem
+pvc-e77853b9-4ea6-4c1f-aa3f-417453f90c64   10Gi       RWO            Delete           Bound    kafka/data-my-cluster-zookeeper-1   intceph                 29m   Filesystem
+pvc-e293a339-0b3a-40ef-ae69-ebfcf7ad14f3   10Gi       RWO            Delete           Bound    kafka/data-my-cluster-zookeeper-2   intceph                 29m   Filesystem
+[root@mw-init ~]#
 [root@mw-init ~]#
 
-
-
-[root@mw-init ssl]# kubectl get pv pvc-2e59d519-7b60-41c5-8f7d-364100a14eaf pvc-a9849088-1acd-48e3-bdcf-1c0240a861b7 pvc-e60fb453-a0ae-443b-9471-19cfea46c133 pvc-2d8edad7-cef1-46e0-99e0-24e4c2fbcfbb pvc-b58c074a-3ebd-4749-b8ab-6966276af34b pvc-415cb469-1de5-4ca5-9622-8f251b6ce1fc -o wide
-NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                               STORAGECLASS   REASON   AGE     VOLUMEMODE
-pvc-2e59d519-7b60-41c5-8f7d-364100a14eaf   10Gi       RWO            Delete           Bound    kafka/data-my-cluster-kafka-0       intceph                 5m      Filesystem
-pvc-a9849088-1acd-48e3-bdcf-1c0240a861b7   10Gi       RWO            Delete           Bound    kafka/data-my-cluster-kafka-1       intceph                 5m      Filesystem
-pvc-e60fb453-a0ae-443b-9471-19cfea46c133   10Gi       RWO            Delete           Bound    kafka/data-my-cluster-kafka-2       intceph                 5m      Filesystem
-pvc-2d8edad7-cef1-46e0-99e0-24e4c2fbcfbb   10Gi       RWO            Delete           Bound    kafka/data-my-cluster-zookeeper-0   intceph                 5m54s   Filesystem
-pvc-b58c074a-3ebd-4749-b8ab-6966276af34b   10Gi       RWO            Delete           Bound    kafka/data-my-cluster-zookeeper-1   intceph                 5m54s   Filesystem
-pvc-415cb469-1de5-4ca5-9622-8f251b6ce1fc   10Gi       RWO            Delete           Bound    kafka/data-my-cluster-zookeeper-2   intceph                 5m54s   Filesystem
-[root@mw-init ssl]#
 
 
 修改
-pvc-2e59d519-7b60-41c5-8f7d-364100a14eaf
-pvc-a9849088-1acd-48e3-bdcf-1c0240a861b7
-pvc-e60fb453-a0ae-443b-9471-19cfea46c133
-pvc-2d8edad7-cef1-46e0-99e0-24e4c2fbcfbb
-pvc-b58c074a-3ebd-4749-b8ab-6966276af34b
-pvc-415cb469-1de5-4ca5-9622-8f251b6ce1fc
+pvc-bac2c497-296e-4a0b-8c92-4acd4f3a0de5
+pvc-bcb9ff07-733f-4481-a13f-188cfdddd738
+pvc-f4f03b45-42f3-4b8b-b0c7-96237453b822
+pvc-ffb2101e-df03-4b5b-918c-0a217730fde3
+pvc-e77853b9-4ea6-4c1f-aa3f-417453f90c64
+pvc-e293a339-0b3a-40ef-ae69-ebfcf7ad14f3
 
 
 Retain
-
-[root@mw-init ssl]# kubectl get pv pvc-2e59d519-7b60-41c5-8f7d-364100a14eaf pvc-a9849088-1acd-48e3-bdcf-1c0240a861b7 pvc-e60fb453-a0ae-443b-9471-19cfea46c133 pvc-2d8edad7-cef1-46e0-99e0-24e4c2fbcfbb pvc-b58c074a-3ebd-4749-b8ab-6966276af34b pvc-415cb469-1de5-4ca5-9622-8f251b6ce1fc -o wide
-NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                               STORAGECLASS   REASON   AGE     VOLUMEMODE
-pvc-2e59d519-7b60-41c5-8f7d-364100a14eaf   10Gi       RWO            Retain           Bound    kafka/data-my-cluster-kafka-0       intceph                 9m2s    Filesystem
-pvc-a9849088-1acd-48e3-bdcf-1c0240a861b7   10Gi       RWO            Retain           Bound    kafka/data-my-cluster-kafka-1       intceph                 9m2s    Filesystem
-pvc-e60fb453-a0ae-443b-9471-19cfea46c133   10Gi       RWO            Retain           Bound    kafka/data-my-cluster-kafka-2       intceph                 9m2s    Filesystem
-pvc-2d8edad7-cef1-46e0-99e0-24e4c2fbcfbb   10Gi       RWO            Retain           Bound    kafka/data-my-cluster-zookeeper-0   intceph                 9m56s   Filesystem
-pvc-b58c074a-3ebd-4749-b8ab-6966276af34b   10Gi       RWO            Retain           Bound    kafka/data-my-cluster-zookeeper-1   intceph                 9m56s   Filesystem
-pvc-415cb469-1de5-4ca5-9622-8f251b6ce1fc   10Gi       RWO            Retain           Bound    kafka/data-my-cluster-zookeeper-2   intceph                 9m56s   Filesystem
-[root@mw-init ssl]#
-
+[root@mw-init ~]# kubectl get pv pvc-bac2c497-296e-4a0b-8c92-4acd4f3a0de5 pvc-bcb9ff07-733f-4481-a13f-188cfdddd738 pvc-f4f03b45-42f3-4b8b-b0c7-96237453b822 pvc-ffb2101e-df03-4b5b-918c-0a217730fde3 pvc-e77853b9-4ea6-4c1f-aa3f-417453f90c64 pvc-e293a339-0b3a-40ef-ae69-ebfcf7ad14f3 -o wide
+NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                               STORAGECLASS   REASON   AGE   VOLUMEMODE
+pvc-bac2c497-296e-4a0b-8c92-4acd4f3a0de5   10Gi       RWO            Retain           Bound    kafka/data-my-cluster-kafka-0       intceph                 21m   Filesystem
+pvc-bcb9ff07-733f-4481-a13f-188cfdddd738   10Gi       RWO            Retain           Bound    kafka/data-my-cluster-kafka-1       intceph                 21m   Filesystem
+pvc-f4f03b45-42f3-4b8b-b0c7-96237453b822   10Gi       RWO            Retain           Bound    kafka/data-my-cluster-kafka-2       intceph                 21m   Filesystem
+pvc-ffb2101e-df03-4b5b-918c-0a217730fde3   10Gi       RWO            Retain           Bound    kafka/data-my-cluster-zookeeper-0   intceph                 33m   Filesystem
+pvc-e77853b9-4ea6-4c1f-aa3f-417453f90c64   10Gi       RWO            Retain           Bound    kafka/data-my-cluster-zookeeper-1   intceph                 33m   Filesystem
+pvc-e293a339-0b3a-40ef-ae69-ebfcf7ad14f3   10Gi       RWO            Retain           Bound    kafka/data-my-cluster-zookeeper-2   intceph                 33m   Filesystem
+[root@mw-init ~]#
+[root@mw-init ~]#
 
 备份 pvc
 
@@ -420,8 +334,7 @@ data-my-cluster-zookeeper-0
 data-my-cluster-zookeeper-1
 data-my-cluster-zookeeper-2
 
-
-[root@mw-init ssl]# kubectl -n kafka get pvc data-my-cluster-kafka-0 -o yaml
+[root@mw-init ~]# kubectl -n kafka get pvc data-my-cluster-kafka-0 -o yaml
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -435,11 +348,9 @@ spec:
       storage: 10Gi
   storageClassName: intceph
   volumeMode: Filesystem
-  volumeName: pvc-2e59d519-7b60-41c5-8f7d-364100a14eaf
+  volumeName: pvc-bac2c497-296e-4a0b-8c92-4acd4f3a0de5
 
-
-[root@mw-init ssl]#
-[root@mw-init ssl]# kubectl -n kafka get pvc data-my-cluster-kafka-1 -o yaml
+[root@mw-init ~]# kubectl -n kafka get pvc data-my-cluster-kafka-1 -o yaml
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -453,11 +364,10 @@ spec:
       storage: 10Gi
   storageClassName: intceph
   volumeMode: Filesystem
-  volumeName: pvc-a9849088-1acd-48e3-bdcf-1c0240a861b7
+  volumeName: pvc-bcb9ff07-733f-4481-a13f-188cfdddd738
 
 
-[root@mw-init ssl]#
-[root@mw-init ssl]# kubectl -n kafka get pvc data-my-cluster-kafka-2 -o yaml
+[root@mw-init ~]# kubectl -n kafka get pvc data-my-cluster-kafka-2 -o yaml
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -471,13 +381,11 @@ spec:
       storage: 10Gi
   storageClassName: intceph
   volumeMode: Filesystem
-  volumeName: pvc-e60fb453-a0ae-443b-9471-19cfea46c133
+  volumeName: pvc-f4f03b45-42f3-4b8b-b0c7-96237453b822
 
 
 
-[root@mw-init ssl]#
-
-[root@mw-init ssl]# kubectl -n kafka get pvc data-my-cluster-zookeeper-0 -o yaml
+[root@mw-init ~]# kubectl -n kafka get pvc data-my-cluster-zookeeper-0 -o yaml
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -491,11 +399,10 @@ spec:
       storage: 10Gi
   storageClassName: intceph
   volumeMode: Filesystem
-  volumeName: pvc-2d8edad7-cef1-46e0-99e0-24e4c2fbcfbb
+  volumeName: pvc-ffb2101e-df03-4b5b-918c-0a217730fde3
 
 
-[root@mw-init ssl]#
-[root@mw-init ssl]# kubectl -n kafka get pvc data-my-cluster-zookeeper-1 -o yaml
+[root@mw-init ~]# kubectl -n kafka get pvc data-my-cluster-zookeeper-1 -o yaml
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -509,11 +416,10 @@ spec:
       storage: 10Gi
   storageClassName: intceph
   volumeMode: Filesystem
-  volumeName: pvc-b58c074a-3ebd-4749-b8ab-6966276af34b
+  volumeName: pvc-e77853b9-4ea6-4c1f-aa3f-417453f90c64
 
 
-[root@mw-init ssl]#
-[root@mw-init ssl]# kubectl -n kafka get pvc data-my-cluster-zookeeper-2 -o yaml
+[root@mw-init ~]# kubectl -n kafka get pvc data-my-cluster-zookeeper-2 -o yaml
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -527,33 +433,34 @@ spec:
       storage: 10Gi
   storageClassName: intceph
   volumeMode: Filesystem
-  volumeName: pvc-415cb469-1de5-4ca5-9622-8f251b6ce1fc
+  volumeName: pvc-e293a339-0b3a-40ef-ae69-ebfcf7ad14f3
 
 
-[root@mw-init ssl]#
-[root@mw-init ssl]#
+
+
+
 
 cat << EOF > client-ssl.properties
 security.protocol=SSL
 ssl.truststore.location=./user-truststore.jks
-ssl.truststore.password=hpO9TcK4R2KC
+ssl.truststore.password=ZVkSTdcr3Wwo
 ssl.endpoint.identification.algorithm=
 
 ssl.keystore.location=./user-keystore.jks
-ssl.keystore.password=rPXqfQbGqHM6
-ssl.key.password=rPXqfQbGqHM6
+ssl.keystore.password=JpNNDCiSbA0c
+ssl.key.password=JpNNDCiSbA0c
 EOF
 
-[root@mw-init ssl]# kafka-topics.sh --bootstrap-server 10.0.128.237:30609 --command-config ./client-ssl.properties --list
+[root@mw-init ssl]# kafka-topics.sh --bootstrap-server 10.0.128.237:30298 --command-config ./client-ssl.properties --list
 my-topic
 [root@mw-init ssl]#
 
-[root@mw-init ssl]# kafka-producer-perf-test.sh --num-records 500 --topic my-topic --throughput -1 --record-size 1000 --producer-props bootstrap.servers=10.0.128.237:30609 --producer.config ./client-ssl.properties
+[root@mw-init ssl]# kafka-producer-perf-test.sh --num-records 500 --topic my-topic --throughput -1 --record-size 1000 --producer-props bootstrap.servers=10.0.128.237:30298 --producer.config ./client-ssl.properties
 500 records sent, 551.876380 records/sec (0.53 MB/sec), 320.75 ms avg latency, 613.00 ms max latency, 319 ms 50th, 438 ms 95th, 440 ms 99th, 613 ms 99.9th.
 [root@mw-init ssl]#
 
 
-[root@mw-init ssl]# kafka-console-producer.sh --bootstrap-server 10.0.128.237:30609 --topic my-topic --producer.config ./client-ssl.properties
+[root@mw-init ssl]# kafka-console-producer.sh --bootstrap-server 10.0.128.237:30298 --topic my-topic --producer.config ./client-ssl.properties
 >hello1
 >hello2
 >hello3
@@ -561,35 +468,27 @@ my-topic
 >
 
 
-[root@mw-init ssl]# kafka-console-consumer.sh --bootstrap-server 10.0.128.237:30647 --topic my-topic --consumer.config ./client-ssl.properties --from-beginning --group my-group
+[root@mw-init ssl]# kafka-console-consumer.sh --bootstrap-server 10.0.128.237:30298 --topic my-topic --consumer.config ./client-ssl.properties --from-beginning --group my-group
 hello4
 hello1
 hello3
 hello2
 
-
-[root@mw-init ssl]# kafka-consumer-groups.sh --bootstrap-server 10.0.128.237:30647 --command-config ./client-ssl.properties --describe --group my-group
+[root@mw-init ssl]# kafka-consumer-groups.sh --bootstrap-server 10.0.128.237:30298 --command-config ./client-ssl.properties --describe --group my-group
 GROUP           TOPIC           PARTITION  CURRENT-OFFSET  LOG-END-OFFSET  LAG             CONSUMER-ID                                              HOST            CLIENT-ID
-my-group        my-topic        0          -               176             -               consumer-my-group-1-4b067430-fd88-4cfb-b4a2-6345298f33cb /10.0.128.64    consumer-my-group-1
-my-group        my-topic        1          -               192             -               consumer-my-group-1-4b067430-fd88-4cfb-b4a2-6345298f33cb /10.0.128.64    consumer-my-group-1
-my-group        my-topic        2          -               132             -               consumer-my-group-1-4b067430-fd88-4cfb-b4a2-6345298f33cb /10.0.128.64    consumer-my-group-1
-
-[root@mw-init ssl]# kafka-consumer-groups.sh --bootstrap-server 10.0.128.237:30609 --command-config ./client-ssl.properties --describe --group my-group
-GROUP           TOPIC           PARTITION  CURRENT-OFFSET  LOG-END-OFFSET  LAG             CONSUMER-ID                                              HOST            CLIENT-ID
-my-group        my-topic        0          176             176             0               consumer-my-group-1-4b067430-fd88-4cfb-b4a2-6345298f33cb /10.0.128.64    consumer-my-group-1
-my-group        my-topic        1          192             192             0               consumer-my-group-1-4b067430-fd88-4cfb-b4a2-6345298f33cb /10.0.128.64    consumer-my-group-1
-my-group        my-topic        2          132             132             0               consumer-my-group-1-4b067430-fd88-4cfb-b4a2-6345298f33cb /10.0.128.64    consumer-my-group-1
-[root@mw-init ssl]#
-
-[root@mw-init ssl]# kafka-consumer-groups.sh --bootstrap-server 10.0.128.237:30609 --command-config ./client-ssl.properties --describe --group my-group
-GROUP           TOPIC           PARTITION  CURRENT-OFFSET  LOG-END-OFFSET  LAG             CONSUMER-ID                                              HOST            CLIENT-ID
-my-group        my-topic        0          176             176             0               consumer-my-group-1-4b067430-fd88-4cfb-b4a2-6345298f33cb /10.0.128.64    consumer-my-group-1
-my-group        my-topic        1          192             192             0               consumer-my-group-1-4b067430-fd88-4cfb-b4a2-6345298f33cb /10.0.128.64    consumer-my-group-1
-my-group        my-topic        2          132             132             0               consumer-my-group-1-4b067430-fd88-4cfb-b4a2-6345298f33cb /10.0.128.64    consumer-my-group-1
+my-group        my-topic        0          176             176             0               consumer-my-group-1-713423ee-515d-4b6d-93e2-65f3ec7ed0b2 /10.0.129.171   consumer-my-group-1
+my-group        my-topic        1          176             176             0               consumer-my-group-1-713423ee-515d-4b6d-93e2-65f3ec7ed0b2 /10.0.129.171   consumer-my-group-1
+my-group        my-topic        2          148             148             0               consumer-my-group-1-713423ee-515d-4b6d-93e2-65f3ec7ed0b2 /10.0.129.171   consumer-my-group-1
 [root@mw-init ssl]#
 
 
 
+
+[root@mw-init ssl]# kubectl -n kafka get kafkatopic
+NAME                                                          PARTITIONS   REPLICATION FACTOR
+consumer-offsets---84e7a678d08f4bd226872e5cdd4eb527fadc1c6a   50           3
+my-topic                                                      3            3
+[root@mw-init ssl]#
 [root@mw-init ssl]# kubectl -n kafka get kafkatopic my-topic -o yaml
 apiVersion: kafka.strimzi.io/v1beta1
 kind: KafkaTopic
@@ -606,6 +505,7 @@ spec:
   replicas: 3
 
 
+[root@mw-init ssl]#
 [root@mw-init ssl]# kubectl -n kafka get kafkatopic consumer-offsets---84e7a678d08f4bd226872e5cdd4eb527fadc1c6a -o yaml
 apiVersion: kafka.strimzi.io/v1beta1
 kind: KafkaTopic
@@ -630,6 +530,8 @@ spec:
 
 
 
+
+
 [root@mw-init ssl]# kubectl -n kafka delete kafkatopic consumer-offsets---84e7a678d08f4bd226872e5cdd4eb527fadc1c6a my-topic
 
 [root@mw-init ssl]# kubectl -n kafka delete kafkauser my-user
@@ -641,24 +543,53 @@ kafka.kafka.strimzi.io "my-cluster" deleted
 [root@mw-init ssl]#
 
 
-[root@mw-init ssl]# kubectl -n kafka get pvc
-No resources found in kafka namespace.
+删除 namespaces
+
+[root@mw-init ssl]# kubectl get ns kafka -o wide
+NAME    STATUS   AGE
+kafka   Active   10d
+[root@mw-init ssl]#
+[root@mw-init ssl]# kubectl delete ns kafka
+namespace "kafka" deleted
+[root@mw-init ssl]#
+[root@mw-init ssl]# kubectl get ns kafka -o wide
+Error from server (NotFound): namespaces "kafka" not found
 [root@mw-init ssl]#
 [root@mw-init ssl]#
-[root@mw-init ssl]# kubectl get pv pvc-2e59d519-7b60-41c5-8f7d-364100a14eaf pvc-a9849088-1acd-48e3-bdcf-1c0240a861b7 pvc-e60fb453-a0ae-443b-9471-19cfea46c133 pvc-2d8edad7-cef1-46e0-99e0-24e4c2fbcfbb pvc-b58c074a-3ebd-4749-b8ab-6966276af34b pvc-415cb469-1de5-4ca5-9622-8f251b6ce1fc -o wide
+
+
+[root@mw-init ssl]# kubectl get pv pvc-bac2c497-296e-4a0b-8c92-4acd4f3a0de5 pvc-bcb9ff07-733f-4481-a13f-188cfdddd738 pvc-f4f03b45-42f3-4b8b-b0c7-96237453b822 pvc-ffb2101e-df03-4b5b-918c-0a217730fde3 pvc-e77853b9-4ea6-4c1f-aa3f-417453f90c64 pvc-e293a339-0b3a-40ef-ae69-ebfcf7ad14f3 -o wide
 NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS     CLAIM                               STORAGECLASS   REASON   AGE   VOLUMEMODE
-pvc-2e59d519-7b60-41c5-8f7d-364100a14eaf   10Gi       RWO            Retain           Released   kafka/data-my-cluster-kafka-0       intceph                 35m   Filesystem
-pvc-a9849088-1acd-48e3-bdcf-1c0240a861b7   10Gi       RWO            Retain           Released   kafka/data-my-cluster-kafka-1       intceph                 35m   Filesystem
-pvc-e60fb453-a0ae-443b-9471-19cfea46c133   10Gi       RWO            Retain           Released   kafka/data-my-cluster-kafka-2       intceph                 35m   Filesystem
-pvc-2d8edad7-cef1-46e0-99e0-24e4c2fbcfbb   10Gi       RWO            Retain           Released   kafka/data-my-cluster-zookeeper-0   intceph                 36m   Filesystem
-pvc-b58c074a-3ebd-4749-b8ab-6966276af34b   10Gi       RWO            Retain           Released   kafka/data-my-cluster-zookeeper-1   intceph                 36m   Filesystem
-pvc-415cb469-1de5-4ca5-9622-8f251b6ce1fc   10Gi       RWO            Retain           Released   kafka/data-my-cluster-zookeeper-2   intceph                 36m   Filesystem
+pvc-bac2c497-296e-4a0b-8c92-4acd4f3a0de5   10Gi       RWO            Retain           Released   kafka/data-my-cluster-kafka-0       intceph                 41m   Filesystem
+pvc-bcb9ff07-733f-4481-a13f-188cfdddd738   10Gi       RWO            Retain           Released   kafka/data-my-cluster-kafka-1       intceph                 41m   Filesystem
+pvc-f4f03b45-42f3-4b8b-b0c7-96237453b822   10Gi       RWO            Retain           Released   kafka/data-my-cluster-kafka-2       intceph                 41m   Filesystem
+pvc-ffb2101e-df03-4b5b-918c-0a217730fde3   10Gi       RWO            Retain           Released   kafka/data-my-cluster-zookeeper-0   intceph                 53m   Filesystem
+pvc-e77853b9-4ea6-4c1f-aa3f-417453f90c64   10Gi       RWO            Retain           Released   kafka/data-my-cluster-zookeeper-1   intceph                 53m   Filesystem
+pvc-e293a339-0b3a-40ef-ae69-ebfcf7ad14f3   10Gi       RWO            Retain           Released   kafka/data-my-cluster-zookeeper-2   intceph                 53m   Filesystem
 [root@mw-init ssl]#
 [root@mw-init ssl]#
+
+
+
+[root@mw-init ssl]# kubectl create namespace kafka
+namespace/kafka created
+[root@mw-init ssl]#
+[root@mw-init ssl]# kubectl get ns kafka -o wide
+NAME    STATUS   AGE
+kafka   Active   11s
+[root@mw-init ssl]#
+
+
+
+
+
+
+
 
 
 
 恢复数据 pvc
+
 
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -673,7 +604,7 @@ spec:
       storage: 10Gi
   storageClassName: intceph
   volumeMode: Filesystem
-  volumeName: pvc-2e59d519-7b60-41c5-8f7d-364100a14eaf
+  volumeName: pvc-bac2c497-296e-4a0b-8c92-4acd4f3a0de5
 
 ---
 
@@ -690,7 +621,7 @@ spec:
       storage: 10Gi
   storageClassName: intceph
   volumeMode: Filesystem
-  volumeName: pvc-a9849088-1acd-48e3-bdcf-1c0240a861b7
+  volumeName: pvc-bcb9ff07-733f-4481-a13f-188cfdddd738
 
 ---
 
@@ -707,7 +638,7 @@ spec:
       storage: 10Gi
   storageClassName: intceph
   volumeMode: Filesystem
-  volumeName: pvc-e60fb453-a0ae-443b-9471-19cfea46c133
+  volumeName: pvc-f4f03b45-42f3-4b8b-b0c7-96237453b822
 
 ---
 
@@ -724,7 +655,7 @@ spec:
       storage: 10Gi
   storageClassName: intceph
   volumeMode: Filesystem
-  volumeName: pvc-2d8edad7-cef1-46e0-99e0-24e4c2fbcfbb
+  volumeName: pvc-ffb2101e-df03-4b5b-918c-0a217730fde3
 
 ---
 
@@ -741,7 +672,7 @@ spec:
       storage: 10Gi
   storageClassName: intceph
   volumeMode: Filesystem
-  volumeName: pvc-b58c074a-3ebd-4749-b8ab-6966276af34b
+  volumeName: pvc-e77853b9-4ea6-4c1f-aa3f-417453f90c64
 
 ---
 
@@ -758,33 +689,42 @@ spec:
       storage: 10Gi
   storageClassName: intceph
   volumeMode: Filesystem
-  volumeName: pvc-415cb469-1de5-4ca5-9622-8f251b6ce1fc
+  volumeName: pvc-e293a339-0b3a-40ef-ae69-ebfcf7ad14f3
+
+
 
 
 
 修改
-pvc-2e59d519-7b60-41c5-8f7d-364100a14eaf
-pvc-a9849088-1acd-48e3-bdcf-1c0240a861b7
-pvc-e60fb453-a0ae-443b-9471-19cfea46c133
-pvc-2d8edad7-cef1-46e0-99e0-24e4c2fbcfbb
-pvc-b58c074a-3ebd-4749-b8ab-6966276af34b
-pvc-415cb469-1de5-4ca5-9622-8f251b6ce1fc
+
+pvc-bac2c497-296e-4a0b-8c92-4acd4f3a0de5
+pvc-bcb9ff07-733f-4481-a13f-188cfdddd738
+pvc-f4f03b45-42f3-4b8b-b0c7-96237453b822
+pvc-ffb2101e-df03-4b5b-918c-0a217730fde3
+pvc-e77853b9-4ea6-4c1f-aa3f-417453f90c64
+pvc-e293a339-0b3a-40ef-ae69-ebfcf7ad14f3
 
 
 [root@mw-init ssl]# kubectl -n kafka get pvc
 NAME                          STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
-data-my-cluster-kafka-0       Bound    pvc-2e59d519-7b60-41c5-8f7d-364100a14eaf   10Gi       RWO            intceph        7m46s
-data-my-cluster-kafka-1       Bound    pvc-a9849088-1acd-48e3-bdcf-1c0240a861b7   10Gi       RWO            intceph        7m46s
-data-my-cluster-kafka-2       Bound    pvc-e60fb453-a0ae-443b-9471-19cfea46c133   10Gi       RWO            intceph        7m46s
-data-my-cluster-zookeeper-0   Bound    pvc-2d8edad7-cef1-46e0-99e0-24e4c2fbcfbb   10Gi       RWO            intceph        7m46s
-data-my-cluster-zookeeper-1   Bound    pvc-b58c074a-3ebd-4749-b8ab-6966276af34b   10Gi       RWO            intceph        7m46s
-data-my-cluster-zookeeper-2   Bound    pvc-415cb469-1de5-4ca5-9622-8f251b6ce1fc   10Gi       RWO            intceph        7m46s
+data-my-cluster-kafka-0       Bound    pvc-bac2c497-296e-4a0b-8c92-4acd4f3a0de5   10Gi       RWO            intceph        4m37s
+data-my-cluster-kafka-1       Bound    pvc-bcb9ff07-733f-4481-a13f-188cfdddd738   10Gi       RWO            intceph        4m37s
+data-my-cluster-kafka-2       Bound    pvc-f4f03b45-42f3-4b8b-b0c7-96237453b822   10Gi       RWO            intceph        4m37s
+data-my-cluster-zookeeper-0   Bound    pvc-ffb2101e-df03-4b5b-918c-0a217730fde3   10Gi       RWO            intceph        4m37s
+data-my-cluster-zookeeper-1   Bound    pvc-e77853b9-4ea6-4c1f-aa3f-417453f90c64   10Gi       RWO            intceph        4m37s
+data-my-cluster-zookeeper-2   Bound    pvc-e293a339-0b3a-40ef-ae69-ebfcf7ad14f3   10Gi       RWO            intceph        4m37s
 [root@mw-init ssl]#
-[root@mw-init ssl]#
+
+
+
+kubectl apply -f install/cluster-operator -n kafka
+
+
 
 恢复 User
 
 恢复 Topic
+
 
 apiVersion: kafka.strimzi.io/v1beta1
 kind: KafkaTopic
@@ -819,47 +759,53 @@ spec:
   topicName: __consumer_offsets
 
 
-恢复 kafka 集群
-
 
 [root@mw-init ssl]# kubectl -n kafka get kafkatopic
 NAME                                                          PARTITIONS   REPLICATION FACTOR
 consumer-offsets---84e7a678d08f4bd226872e5cdd4eb527fadc1c6a   50           3
+my-topic                                                      3            3
+[root@mw-init ssl]#
+[root@mw-init ssl]# kubectl -n kafka get kafkausers
+NAME      AUTHENTICATION   AUTHORIZATION
+my-user   tls              simple
+[root@mw-init ssl]#
 [root@mw-init ssl]#
 
 
-root@mw-init ssl]# kafka-topics.sh --bootstrap-server 10.0.128.237:30647 --command-config ./client-ssl.properties --list
-[2020-10-22 15:32:06,341] WARN The configuration 'ssl.truststore.location' was supplied but isn't a known config. (org.apache.kafka.clients.admin.AdminClientConfig)
-[2020-10-22 15:32:06,341] WARN The configuration 'ssl.keystore.password' was supplied but isn't a known config. (org.apache.kafka.clients.admin.AdminClientConfig)
-[2020-10-22 15:32:06,341] WARN The configuration 'ssl.key.password' was supplied but isn't a known config. (org.apache.kafka.clients.admin.AdminClientConfig)
-[2020-10-22 15:32:06,341] WARN The configuration 'ssl.keystore.location' was supplied but isn't a known config. (org.apache.kafka.clients.admin.AdminClientConfig)
-[2020-10-22 15:32:06,341] WARN The configuration 'ssl.truststore.password' was supplied but isn't a known config. (org.apache.kafka.clients.admin.AdminClientConfig)
-[2020-10-22 15:32:06,341] WARN The configuration 'ssl.endpoint.identification.algorithm' was supplied but isn't a known config. (org.apache.kafka.clients.admin.AdminClientConfig)
-__consumer_offsets
-my-topic
-[root@mw-init ssl]#
-[root@mw-init ssl]#
-[root@mw-init ssl]#
-[root@mw-init ssl]# kafka-consumer-groups.sh --bootstrap-server 10.0.128.237:30647 --command-config ./client-ssl.properties --describe --group my-group
-[2020-10-22 15:33:06,652] WARN The configuration 'ssl.truststore.location' was supplied but isn't a known config. (org.apache.kafka.clients.admin.AdminClientConfig)
-[2020-10-22 15:33:06,653] WARN The configuration 'ssl.keystore.password' was supplied but isn't a known config. (org.apache.kafka.clients.admin.AdminClientConfig)
-[2020-10-22 15:33:06,653] WARN The configuration 'ssl.key.password' was supplied but isn't a known config. (org.apache.kafka.clients.admin.AdminClientConfig)
-[2020-10-22 15:33:06,653] WARN The configuration 'ssl.keystore.location' was supplied but isn't a known config. (org.apache.kafka.clients.admin.AdminClientConfig)
-[2020-10-22 15:33:06,653] WARN The configuration 'ssl.truststore.password' was supplied but isn't a known config. (org.apache.kafka.clients.admin.AdminClientConfig)
-[2020-10-22 15:33:06,653] WARN The configuration 'ssl.endpoint.identification.algorithm' was supplied but isn't a known config. (org.apache.kafka.clients.admin.AdminClientConfig)
 
+
+
+恢复 kafka 集群
+
+
+cat << EOF > client-ssl.properties
+security.protocol=SSL
+ssl.truststore.location=./user-truststore.jks
+ssl.truststore.password=JQGjv40A5uPV
+ssl.endpoint.identification.algorithm=
+
+ssl.keystore.location=./user-keystore.jks
+ssl.keystore.password=MomRHe1bTa3T
+ssl.key.password=MomRHe1bTa3T
+EOF
+
+[root@mw-init ssl]# kafka-consumer-groups.sh --bootstrap-server 10.0.128.237:31995 --command-config ./client-ssl.properties --describe --group my-group
+GROUP           TOPIC           PARTITION  CURRENT-OFFSET  LOG-END-OFFSET  LAG             CONSUMER-ID     HOST            CLIENT-ID
+my-group        my-topic        0          176             176             0               -               -               -
+my-group        my-topic        1          176             176             0               -               -               -
+my-group        my-topic        2          148             148             0               -               -               -
+
+
+kafka-console-consumer.sh --bootstrap-server 10.0.128.237:31995 --topic my-topic --consumer.config ./client-ssl.properties --from-beginning --group my-group
+
+
+[root@mw-init ssl]# kafka-consumer-groups.sh --bootstrap-server 10.0.128.237:31995 --command-config ./client-ssl.properties --describe --group my-group
 GROUP           TOPIC           PARTITION  CURRENT-OFFSET  LOG-END-OFFSET  LAG             CONSUMER-ID                                              HOST            CLIENT-ID
-my-group        my-topic        0          0               0               0               consumer-my-group-1-ce861df6-e32e-4ced-ae3f-e49f5a303b3e /10.0.129.171   consumer-my-group-1
-my-group        my-topic        1          0               0               0               consumer-my-group-1-ce861df6-e32e-4ced-ae3f-e49f5a303b3e /10.0.129.171   consumer-my-group-1
-my-group        my-topic        2          0               0               0               consumer-my-group-1-ce861df6-e32e-4ced-ae3f-e49f5a303b3e /10.0.129.171   consumer-my-group-1
+my-group        my-topic        0          176             176             0               consumer-my-group-1-bc7092f8-d531-498c-a971-d8c33c080f41 /10.0.129.171   consumer-my-group-1
+my-group        my-topic        1          176             176             0               consumer-my-group-1-bc7092f8-d531-498c-a971-d8c33c080f41 /10.0.129.171   consumer-my-group-1
+my-group        my-topic        2          148             148             0               consumer-my-group-1-bc7092f8-d531-498c-a971-d8c33c080f41 /10.0.129.171   consumer-my-group-1
 [root@mw-init ssl]#
 
-
-
-
-
-kafka-consumer-groups.sh --bootstrap-server 10.0.128.237:30609 --command-config ./client-ssl.properties --list
-kafka-consumer-groups.sh --bootstrap-server 10.0.128.237:30609 --command-config ./client-ssl.properties --describe --group my-group
 
 ```
 
