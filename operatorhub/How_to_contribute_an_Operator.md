@@ -63,7 +63,6 @@ strimzi-kafka-operator
 │   ├── strimzientityoperator.clusterrole.yaml
 │   ├── strimzikafkabroker.clusterrole.yaml
 │   └── strimzitopicoperator.clusterrole.yaml
-├── ci.yaml
 └── strimzi-kafka-operator.package.yaml
 
 ```
@@ -108,8 +107,9 @@ $ tree
 │   ├── etcdcluster.crd.yaml
 │   └── etcdoperator.clusterserviceversion.yaml
 └── metadata
-    ├── annotations.yaml
-    └── dependencies.yaml
+│   ├── annotations.yaml
+│   └── dependencies.yaml
+└── Dockerfile
 ```
 
 *Notes:*
