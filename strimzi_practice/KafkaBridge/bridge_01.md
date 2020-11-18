@@ -1,3 +1,17 @@
+# Strimzi HTTP Bridge for Apache Kafka
+
+适用于Apache Kafka的Strimzi HTTP桥提供了REST API，用于将基于HTTP的客户端应用程序与Kafka集群集成在一起。 您可以使用API来创建和管理使用者，并通过HTTP（而非本机Kafka协议）发送和接收记录。
+
+## 实践
+
+Strimzi HTTP Bridge 提供的是一个 REST API，使用 API 来操作 Kafka 中的相关资源，因此部署和使用都比较简单。
+
+对于部署，只需要部署 kafka 集群和相关的资源，然后部署 KafkaBridge 连接到 kafka 集群即可。
+
+对于使用，只需要知道 KafkaBridge 提供了哪些 API ，使用 http 客户端工具（比如curl）访问 API 即可。由于 Strimzi HTTP Bridge 提供的 API 不是很完善，功能也不是很全，所以 Strimzi HTTP Bridge 基本只能作为适用性功能使用
+
+1. 部署 kafka 集群及相关资源
+
 ```yaml
 # 创建 Kafka 集群的 yaml 文件
 apiVersion: kafka.strimzi.io/v1beta1
@@ -187,8 +201,11 @@ spec:
     retention.ms: 604800000
     segment.bytes: 1073741824
 
----
+```
 
+2. 部署 Strimzi HTTP Bridge
+
+```yaml
 apiVersion: kafka.strimzi.io/v1alpha1
 kind: KafkaBridge
 metadata:
@@ -209,133 +226,17 @@ spec:
   http:
     port: 8080
 
-
-
-
 ```
 
-验证：
+3. 获取 Strimzi HTTP Bridge 提供的 API
 
 ```bash
-kubectl -n kafka run kafka-test -ti --image=10.0.129.0:60080/3rdparty/strimzi/kafka:latest --rm=true --restart=Never bash
+$ kubectl -n kafka run kafka-test -ti --image=10.0.129.0:60080/3rdparty/strimzi/kafka:latest --rm=true --restart=Never bash
 
-curl -i -X GET -H "Content-Type: application/json" http://my-bridge-bridge-service:8080/
-
-3.1. GET /
-
-3.2. POST /consumers/{groupid}
-
-3.3. DELETE /consumers/{groupid}/instances/{name}
-
-3.4. POST /consumers/{groupid}/instances/{name}/assignments
-
-3.5. POST /consumers/{groupid}/instances/{name}/offsets
-
-3.6. POST /consumers/{groupid}/instances/{name}/positions
-
-3.7. POST /consumers/{groupid}/instances/{name}/positions/beginning
-
-3.8. POST /consumers/{groupid}/instances/{name}/positions/end
-
-3.9. GET /consumers/{groupid}/instances/{name}/records
-
-3.10. POST /consumers/{groupid}/instances/{name}/subscription
-
-3.11. GET /consumers/{groupid}/instances/{name}/subscription
-
-3.12. DELETE /consumers/{groupid}/instances/{name}/subscription
-
-3.13. GET /healthy
-
-3.14. GET /openapi
-
-3.15. GET /ready
-
-3.16. GET /topics
-
-3.17. POST /topics/{topicname}
-
-3.18. GET /topics/{topicname}
-
-3.19. GET /topics/{topicname}/partitions
-
-3.20. POST /topics/{topicname}/partitions/{partitionid}
-
-3.21. GET /topics/{topicname}/partitions/{partitionid}
-
-
-
-
-
-
+$ curl -i -X GET -H "Content-Type: application/json" http://my-bridge-bridge-service:8080/openapi
 
 ```
 
+4.根据不同的 API 进行调用
 
-
-
-
-
-
-
-
-```
-
-
-```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-3.1. GET /
-
-3.2. POST /consumers/{groupid}
-
-3.3. DELETE /consumers/{groupid}/instances/{name}
-
-3.4. POST /consumers/{groupid}/instances/{name}/assignments
-
-3.5. POST /consumers/{groupid}/instances/{name}/offsets
-
-3.6. POST /consumers/{groupid}/instances/{name}/positions
-
-3.7. POST /consumers/{groupid}/instances/{name}/positions/beginning
-
-3.8. POST /consumers/{groupid}/instances/{name}/positions/end
-
-3.9. GET /consumers/{groupid}/instances/{name}/records
-
-3.10. POST /consumers/{groupid}/instances/{name}/subscription
-
-3.11. GET /consumers/{groupid}/instances/{name}/subscription
-
-3.12. DELETE /consumers/{groupid}/instances/{name}/subscription
-
-3.13. GET /healthy
-
-3.14. GET /openapi
-
-3.15. GET /ready
-
-3.16. GET /topics
-
-3.17. POST /topics/{topicname}
-
-3.18. GET /topics/{topicname}
-
-3.19. GET /topics/{topicname}/partitions
-
-3.20. POST /topics/{topicname}/partitions/{partitionid}
-
-3.21. GET /topics/{topicname}/partitions/{partitionid}
+每个 API 的详细用法参考[文档](https://strimzi.io/docs/bridge/master/)，文档提供了比较全面的API 说明，但不同版本的 Strimzi HTTP Bridge 实现却不相同，因此需要以实际操作为准。
