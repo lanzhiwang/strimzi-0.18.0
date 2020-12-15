@@ -839,3 +839,681 @@ try {
 
 
 
+
+
+如何选举 lerder 副本
+
+Kafka 如何把分区的所有副本均匀地分布在 broker 上
+
+
+
+leader epoch 原理
+
+
+
+**leader 接收到生产消息的请求后，主要做如下两件事情。**
+
+1. 写入消息到底层日志，同时更新 leader 副本的 LEO 属性。
+
+2. 尝试更新 leader 副本的 HW 值。此时 follower 尚未发送 FETCH 请求，那么 leader 端保存的 remote LEO 依然是 0，因此 leader 会比较它自己的 LEO 值和 remote LEO 值，发现最小值是 0，更新 HW 值为 -1。
+
+**此时 follower 发送 FETCH 请求，leader 端的处理逻辑依次如下。**
+
+1. 读取底层 log 数据。
+
+2. 更新 remote LEO = 0。为什么是 0？因为这是通过 follower 发来的 FETCH 请求中的 fetch offset 来确定的。
+
+3. 尝试更新 leader 副本的 HW 值。此时 leader LEO = 1，remote LEO = 0，故 Leader HW = min(leader LEO，follower remote LEO) -1 = -1。
+
+4. 把数据和 leader 副本的 HW 值发送给 follower 副本。
+
+**follower 副本接收到 FETCH response 后依次执行下列操作。**
+
+1. 写入本地 log，同时更新 followerLEO。
+
+2. 更新 follower HW，比较本地 LEO 和当前 leader HW 后取较小值，故 follower HW=-1。
+
+**follower 发来了第二轮 FETCH 请求，leader 端接收到后仍然会依次执行下列操作。**
+
+1. 读取底层 log 数据。
+
+2. 更新 remote LEO=1，因为这轮 FETCH RPC 携带的 fetch offset 是 1。
+
+3. 尝试更新 Leader HW，此时 leader LEO = 1，remote LEO = 1，故 Leader HW = 
+min(leader LEO，fllower remote LEO) -1 = 0
+
+4. 把数据（实际上没有数据）和 Leader HW 发送给 follower 副本。
+
+**follower 副本接收到 FETCH response 后依次执行下列操作。**
+
+1. 写入本地 log，因为没有数据，故 follower LEO 也不会变化。
+
+2. 更新 follower HW。比较本地 LEO 和 Leader HW 后取较小值。故更新 follower HW = 0。
+
+
+
+
+
+使用 Java 消息类实现消息结构，如下面的代码所示：
+
+优点：简单
+
+```java
+public class Message implements Serializable {
+    // CRC 校验码
+    private CRC32 crc;
+    // 版本号
+    private short magic;
+    // 是否压缩
+    private boolean codecEnabled;
+    // 压缩算法
+    private short codecClassOrdinal;
+    // 消息键值
+    private String key;
+    // 消息体
+    private String value;
+}
+
+// JVM 重排
+public class Message implements Serializable {
+    private short magic;  // 2 bytes
+    private short codecClassOrdinal;  // 2 bytes
+    private boolean codecEnabled;  // 1 bytes
+    private CRC32 crc;  // 4 bytes
+    private String key;  // 4 bytes, 引用类型
+    private String body;  // 4 bytes, 引用类型
+}
+```
+
+缺点：16(16字节对象头部) + 2 + 2 + 1 + 4 + 4 + 4 + 7(7字节补齐) = 40 bytes
+
+
+V0 版本
+
+![](./kafka_manager/kafka_02.png)
+
+优点：节约空间
+
+1. CRC 校验码：4 字节的 CRC 校验码，用于确保消息在传输过程中不会被恶意篡改。
+
+2. magic：单字节的版本号。V0 版本 magic = 0，V1 版本 magic = 1，V2 版本 magic = 2。
+
+3. attribute：单字节属性字段，只使用低 3 位表示消息的压缩类型。
+
+4. key 长度：4 字节的消息 key 长度信息。若未指定 key，则给该字段赋值为 -1。
+
+5. key 值：消息 key，长度由上面的 key 长度字段值指定。如果 key 长度字段值是 -1，则消息没有该字段。
+
+6. value 长度：4 字节的消息长度。若未指定 value，则给该字段赋值 -1。
+
+7. value 值：消息 value，长度由上面的 value 长度字段值指定。如果 value 长度字段值是 -1，则消息没有该字段。
+
+4 + 1 + 1 + 4 + 4 = 14
+
+缺点：
+
+1. 由于没有消息的时间信息，Kafka 定期删除过期日志只能依靠日志段文件的”最近修改时间“，但这个时间极易受到外部操作的干扰。 若不小心对日志段文件执行了 UNIX 的 touch 命令，该日志文件的最近修改时间就被更新了。一旦这个时间被”破坏“或者更改，Kafka将无法对哪些消息过期做出正确判断。
+
+2. 很多流式处理框架都需要消息保存时间信息以便对消息执行时间窗口等聚合操作。
+
+V1 版本
+
+![](./kafka_manager/kafka_03.png)
+
+消息在文件中的存储方式
+
+![](./kafka_manager/kafka_04.png)
+
+日志项
+
+![](./kafka_manager/kafka_05.png)
+
+缺点：
+
+1. 空间利用率不高：不论 key 和 value 长度是多少，它总是使用 4 字节固定长度来保存这部分信息。例如保存 100 或是1000 都是使用 4 字节，但其实只需要 7 位就足以保存 100 这个数字了，也就是说，只用 1 字节就足够，另外 3 字节纯属浪费。
+
+2. 只保存最新消息位移：若启用压缩，offset 是消息集合中最后一条消息的 offset。如果想要获取第 1 条消息的位移，必须要把所有的消息全部解压缩装入内存，然后反向遍历才能获取，显然这个代价是很大的。
+
+3. 冗余的消息级 CRC 校验：为每条消息都执行 CRC 校验有些多余。即使在网络传  输过程中没有出现恶意篡改，也不能认为在 producer 端发送的消息到 consumer 端时其 CRC 值是不变的。若用户指定时间戳类型是 LOG APPEND TIME，broker 将使用当前时间戳覆盖掉消息已有时间戳，那么当 broker 端对消息进行时间戳更新后，CRC 就需要重新计算从而发生变化；再如，broker 端进行消息格式转换（broker 端和 clients 端版本不一致时会发生消息格式转换，不过这对用户而言是完全透明的）也会带来 CRC 值的变化。鉴于这些情况，对每条消息都执行 CRC 校验实际上没有必要，不仅浪费空间，还占用了宝贵的 CPU 时间片。
+
+4. 未保存消息长度：每次需要单条消息的总字节数信息时都需要计算得出，没有使用单独字段来保存。
+
+
+V2 版本
+
+![](./kafka_manager/kafka_06.png)
+
+1. 增加消息总长度字段：在消息格式的头部增加该字段，一次性计算出消息总字节数后保存在该字段中，而不需要像之前版本一样每次重新计算。Kafka 操作消息时可直接获取总字节数，直接创建出等大小的 ByteBuffer，然后分别装填其他字段，简化了消息处理过程。总字节数的引入还实现了消息遍历时的快速跳跃和过滤，省去了很多空间拷贝的开销。
+2. 保存时间戳增量：不再需要使用 8 字节来保存时间戳信息，而是使用一个可变长度保存与 batch 起始时间戳的差值。差值通常都是很小的，故需要的字节数也是很少的，从而节省了空间。
+3. 保存位移增量：与时间戳增量类似，保存消息位移与 batch 起始位移的差值，而不再固定保存 8  字节的位移值，进一步节省消息总字节数。
+4. 增加消息头部：V2 版本中每条消息都必须有一个头部数组，里面的每个头部信息只包含两个字段：头部 key 和头部 value，类型分别是 String 和 byte[]。增加头部信息主要是为了满足用户的一些定制化需求，比如，做集群间的消息路由之用或承载消息的一些特定元数据信息。
+5. 去除消息级CRC校验：V2 版本不再为每条消息计算 CRC32 值，而是对整个消息 batch 进行 CRC 校验。
+6. 废弃 attribute 字段：V0、V1 版本格式都有一个 attribute 字段，V2 版本的消息正式废弃了这个字段。原先保存在 attribute 字段中的压缩类型、时间戳等信息都统一保存在外层的 batch 格式字段中，但 V2 版本依然保留了单字节的 attribute 字段留作以后扩展使用。
+
+
+
+
+
+
+
+
+
+
+
+```bash
+[root@mw-m3 pvc-39ff0bcf-1642-4889-bf22-54f945c88b0e_kafka_data-acp-kafka-cluster-kafka-1]# tree -a kafka-log1/
+kafka-log1/
+├── alauda-audit-topic-0
+│   ├── 00000000000000035504.index
+│   ├── 00000000000000035504.log
+│   ├── 00000000000000035504.timeindex
+│   ├── 00000000000000051423.index
+│   ├── 00000000000000051423.log
+│   ├── 00000000000000051423.timeindex
+│   ├── 00000000000000064585.index
+│   ├── 00000000000000064585.log
+│   ├── 00000000000000064585.timeindex
+│   ├── 00000000000000076209.index
+│   ├── 00000000000000076209.log
+│   ├── 00000000000000076209.snapshot
+│   ├── 00000000000000076209.timeindex
+│   ├── 00000000000000076235.snapshot
+│   ├── 00000000000000081497.index
+│   ├── 00000000000000081497.log
+│   ├── 00000000000000081497.snapshot
+│   ├── 00000000000000081497.timeindex
+│   └── leader-epoch-checkpoint
+├── alauda-audit-topic-1
+│   ├── 00000000000000035520.index
+│   ├── 00000000000000035520.log
+│   ├── 00000000000000035520.timeindex
+│   ├── 00000000000000051435.index
+│   ├── 00000000000000051435.log
+│   ├── 00000000000000051435.timeindex
+│   ├── 00000000000000064591.index
+│   ├── 00000000000000064591.log
+│   ├── 00000000000000064591.timeindex
+│   ├── 00000000000000076221.index
+│   ├── 00000000000000076221.log
+│   ├── 00000000000000076221.snapshot
+│   ├── 00000000000000076221.timeindex
+│   ├── 00000000000000076264.snapshot
+│   ├── 00000000000000081526.index
+│   ├── 00000000000000081526.log
+│   ├── 00000000000000081526.snapshot
+│   ├── 00000000000000081526.timeindex
+│   └── leader-epoch-checkpoint
+├── alauda-audit-topic-2
+│   ├── 00000000000000035517.index
+│   ├── 00000000000000035517.log
+│   ├── 00000000000000035517.timeindex
+│   ├── 00000000000000051431.index
+│   ├── 00000000000000051431.log
+│   ├── 00000000000000051431.timeindex
+│   ├── 00000000000000064586.index
+│   ├── 00000000000000064586.log
+│   ├── 00000000000000064586.timeindex
+│   ├── 00000000000000076195.index
+│   ├── 00000000000000076195.log
+│   ├── 00000000000000076195.snapshot
+│   ├── 00000000000000076195.timeindex
+│   ├── 00000000000000076227.snapshot
+│   ├── 00000000000000081488.index
+│   ├── 00000000000000081488.log
+│   ├── 00000000000000081488.snapshot
+│   ├── 00000000000000081488.timeindex
+│   └── leader-epoch-checkpoint
+├── alauda-event-topic-0
+│   ├── 00000000000000000526.index
+│   ├── 00000000000000000526.log
+│   ├── 00000000000000000526.timeindex
+│   ├── 00000000000000000671.index
+│   ├── 00000000000000000671.log
+│   ├── 00000000000000000671.timeindex
+│   ├── 00000000000000000865.index
+│   ├── 00000000000000000865.log
+│   ├── 00000000000000000865.timeindex
+│   ├── 00000000000000001030.index
+│   ├── 00000000000000001030.log
+│   ├── 00000000000000001030.snapshot
+│   ├── 00000000000000001030.timeindex
+│   ├── 00000000000000001036.snapshot
+│   ├── 00000000000000001099.index
+│   ├── 00000000000000001099.log
+│   ├── 00000000000000001099.snapshot
+│   ├── 00000000000000001099.timeindex
+│   └── leader-epoch-checkpoint
+├── alauda-event-topic-1
+│   ├── 00000000000000000519.index
+│   ├── 00000000000000000519.log
+│   ├── 00000000000000000519.timeindex
+│   ├── 00000000000000000664.index
+│   ├── 00000000000000000664.log
+│   ├── 00000000000000000664.timeindex
+│   ├── 00000000000000000856.index
+│   ├── 00000000000000000856.log
+│   ├── 00000000000000000856.timeindex
+│   ├── 00000000000000001032.index
+│   ├── 00000000000000001032.log
+│   ├── 00000000000000001032.snapshot
+│   ├── 00000000000000001032.timeindex
+│   ├── 00000000000000001037.snapshot
+│   ├── 00000000000000001099.index
+│   ├── 00000000000000001099.log
+│   ├── 00000000000000001099.snapshot
+│   ├── 00000000000000001099.timeindex
+│   └── leader-epoch-checkpoint
+├── alauda-event-topic-2
+│   ├── 00000000000000000526.index
+│   ├── 00000000000000000526.log
+│   ├── 00000000000000000526.timeindex
+│   ├── 00000000000000000671.index
+│   ├── 00000000000000000671.log
+│   ├── 00000000000000000671.timeindex
+│   ├── 00000000000000000867.index
+│   ├── 00000000000000000867.log
+│   ├── 00000000000000000867.timeindex
+│   ├── 00000000000000001034.index
+│   ├── 00000000000000001034.log
+│   ├── 00000000000000001034.snapshot
+│   ├── 00000000000000001034.timeindex
+│   ├── 00000000000000001040.snapshot
+│   ├── 00000000000000001101.index
+│   ├── 00000000000000001101.log
+│   ├── 00000000000000001101.snapshot
+│   ├── 00000000000000001101.timeindex
+│   └── leader-epoch-checkpoint
+├── alauda-log-topic-0
+│   ├── 00000000000000058813.index
+│   ├── 00000000000000058813.log
+│   ├── 00000000000000058813.timeindex
+│   ├── 00000000000000085639.index
+│   ├── 00000000000000085639.log
+│   ├── 00000000000000085639.timeindex
+│   ├── 00000000000000107770.index
+│   ├── 00000000000000107770.log
+│   ├── 00000000000000107770.timeindex
+│   ├── 00000000000000127185.index
+│   ├── 00000000000000127185.log
+│   ├── 00000000000000127185.snapshot
+│   ├── 00000000000000127185.timeindex
+│   ├── 00000000000000127241.snapshot
+│   ├── 00000000000000136082.index
+│   ├── 00000000000000136082.log
+│   ├── 00000000000000136082.snapshot
+│   ├── 00000000000000136082.timeindex
+│   └── leader-epoch-checkpoint
+├── alauda-log-topic-1
+│   ├── 00000000000000058787.index
+│   ├── 00000000000000058787.log
+│   ├── 00000000000000058787.timeindex
+│   ├── 00000000000000085560.index
+│   ├── 00000000000000085560.log
+│   ├── 00000000000000085560.timeindex
+│   ├── 00000000000000107724.index
+│   ├── 00000000000000107724.log
+│   ├── 00000000000000107724.timeindex
+│   ├── 00000000000000127163.index
+│   ├── 00000000000000127163.log
+│   ├── 00000000000000127163.snapshot
+│   ├── 00000000000000127163.timeindex
+│   ├── 00000000000000127217.snapshot
+│   ├── 00000000000000136059.index
+│   ├── 00000000000000136059.log
+│   ├── 00000000000000136059.snapshot
+│   ├── 00000000000000136059.timeindex
+│   └── leader-epoch-checkpoint
+├── alauda-log-topic-2
+│   ├── 00000000000000058783.index
+│   ├── 00000000000000058783.log
+│   ├── 00000000000000058783.timeindex
+│   ├── 00000000000000085558.index
+│   ├── 00000000000000085558.log
+│   ├── 00000000000000085558.timeindex
+│   ├── 00000000000000107700.index
+│   ├── 00000000000000107700.log
+│   ├── 00000000000000107700.timeindex
+│   ├── 00000000000000127158.index
+│   ├── 00000000000000127158.log
+│   ├── 00000000000000127158.snapshot
+│   ├── 00000000000000127158.timeindex
+│   ├── 00000000000000127193.snapshot
+│   ├── 00000000000000136033.index
+│   ├── 00000000000000136033.log
+│   ├── 00000000000000136033.snapshot
+│   ├── 00000000000000136033.timeindex
+│   └── leader-epoch-checkpoint
+├── cleaner-offset-checkpoint
+├── __consumer_offsets-0
+│   ├── 00000000000000000000.index
+│   ├── 00000000000000000000.log
+│   ├── 00000000000000000000.timeindex
+│   └── leader-epoch-checkpoint
+├── __consumer_offsets-1
+│   ├── 00000000000000000000.index
+│   ├── 00000000000000000000.log
+│   ├── 00000000000000000000.timeindex
+│   └── leader-epoch-checkpoint
+├── __consumer_offsets-10
+│   ├── 00000000000000000000.index
+│   ├── 00000000000000000000.log
+│   ├── 00000000000000000000.timeindex
+│   └── leader-epoch-checkpoint
+├── __consumer_offsets-11
+│   ├── 00000000000000000000.index
+│   ├── 00000000000000000000.log
+│   ├── 00000000000000000000.timeindex
+│   └── leader-epoch-checkpoint
+├── __consumer_offsets-12
+│   ├── 00000000000000000000.index
+│   ├── 00000000000000000000.log
+│   ├── 00000000000000000000.timeindex
+│   ├── 00000000000000000011.index
+│   ├── 00000000000000000011.log
+│   ├── 00000000000000000011.snapshot
+│   ├── 00000000000000000011.timeindex
+│   └── leader-epoch-checkpoint
+├── __consumer_offsets-13
+│   ├── 00000000000000000000.index
+│   ├── 00000000000000000000.log
+│   ├── 00000000000000000000.timeindex
+│   └── leader-epoch-checkpoint
+├── __consumer_offsets-14
+│   ├── 00000000000000000000.index
+│   ├── 00000000000000000000.log
+│   ├── 00000000000000000000.timeindex
+│   └── leader-epoch-checkpoint
+├── __consumer_offsets-15
+│   ├── 00000000000000000000.index
+│   ├── 00000000000000000000.log
+│   ├── 00000000000000000000.timeindex
+│   └── leader-epoch-checkpoint
+├── __consumer_offsets-16
+│   ├── 00000000000000000000.index
+│   ├── 00000000000000000000.log
+│   ├── 00000000000000000000.timeindex
+│   └── leader-epoch-checkpoint
+├── __consumer_offsets-17
+│   ├── 00000000000000000000.index
+│   ├── 00000000000000000000.log
+│   ├── 00000000000000000000.timeindex
+│   └── leader-epoch-checkpoint
+├── __consumer_offsets-18
+│   ├── 00000000000000000000.index
+│   ├── 00000000000000000000.log
+│   ├── 00000000000000000000.timeindex
+│   └── leader-epoch-checkpoint
+├── __consumer_offsets-19
+│   ├── 00000000000000000000.index
+│   ├── 00000000000000000000.log
+│   ├── 00000000000000000000.timeindex
+│   └── leader-epoch-checkpoint
+├── __consumer_offsets-2
+│   ├── 00000000000000000000.index
+│   ├── 00000000000000000000.log
+│   ├── 00000000000000000000.timeindex
+│   └── leader-epoch-checkpoint
+├── __consumer_offsets-20
+│   ├── 00000000000000000000.index
+│   ├── 00000000000000000000.log
+│   ├── 00000000000000000000.timeindex
+│   └── leader-epoch-checkpoint
+├── __consumer_offsets-21
+│   ├── 00000000000000000000.index
+│   ├── 00000000000000000000.log
+│   ├── 00000000000000000000.timeindex
+│   └── leader-epoch-checkpoint
+├── __consumer_offsets-22
+│   ├── 00000000000000000000.index
+│   ├── 00000000000000000000.log
+│   ├── 00000000000000000000.timeindex
+│   └── leader-epoch-checkpoint
+├── __consumer_offsets-23
+│   ├── 00000000000000000000.index
+│   ├── 00000000000000000000.log
+│   ├── 00000000000000000000.timeindex
+│   ├── 00000000000000000288.snapshot
+│   ├── 00000000000000001053.snapshot
+│   ├── 00000000000000001139.snapshot
+│   ├── 00000000000000001389.index
+│   ├── 00000000000000001389.log
+│   ├── 00000000000000001389.snapshot
+│   ├── 00000000000000001389.timeindex
+│   ├── 00000000000000001394.snapshot
+│   └── leader-epoch-checkpoint
+├── __consumer_offsets-24
+│   ├── 00000000000000000000.index
+│   ├── 00000000000000000000.log
+│   ├── 00000000000000000000.timeindex
+│   └── leader-epoch-checkpoint
+├── __consumer_offsets-25
+│   ├── 00000000000000000000.index
+│   ├── 00000000000000000000.log
+│   ├── 00000000000000000000.timeindex
+│   └── leader-epoch-checkpoint
+├── __consumer_offsets-26
+│   ├── 00000000000000000000.index
+│   ├── 00000000000000000000.log
+│   ├── 00000000000000000000.timeindex
+│   └── leader-epoch-checkpoint
+├── __consumer_offsets-27
+│   ├── 00000000000000000000.index
+│   ├── 00000000000000000000.log
+│   ├── 00000000000000000000.timeindex
+│   └── leader-epoch-checkpoint
+├── __consumer_offsets-28
+│   ├── 00000000000000000000.index
+│   ├── 00000000000000000000.log
+│   ├── 00000000000000000000.timeindex
+│   └── leader-epoch-checkpoint
+├── __consumer_offsets-29
+│   ├── 00000000000000000000.index
+│   ├── 00000000000000000000.log
+│   ├── 00000000000000000000.timeindex
+│   └── leader-epoch-checkpoint
+├── __consumer_offsets-3
+│   ├── 00000000000000000000.index
+│   ├── 00000000000000000000.log
+│   ├── 00000000000000000000.timeindex
+│   ├── 00000000000000031728.snapshot
+│   ├── 00000000000000093620.snapshot
+│   ├── 00000000000000108642.snapshot
+│   ├── 00000000000000137602.index
+│   ├── 00000000000000137602.log
+│   ├── 00000000000000137602.snapshot
+│   ├── 00000000000000137602.timeindex
+│   ├── 00000000000000137607.snapshot
+│   └── leader-epoch-checkpoint
+├── __consumer_offsets-30
+│   ├── 00000000000000000000.index
+│   ├── 00000000000000000000.log
+│   ├── 00000000000000000000.timeindex
+│   └── leader-epoch-checkpoint
+├── __consumer_offsets-31
+│   ├── 00000000000000000000.index
+│   ├── 00000000000000000000.log
+│   ├── 00000000000000000000.timeindex
+│   └── leader-epoch-checkpoint
+├── __consumer_offsets-32
+│   ├── 00000000000000000000.index
+│   ├── 00000000000000000000.log
+│   ├── 00000000000000000000.timeindex
+│   ├── 00000000000000019578.snapshot
+│   ├── 00000000000000057733.snapshot
+│   ├── 00000000000000066509.snapshot
+│   ├── 00000000000000083412.index
+│   ├── 00000000000000083412.log
+│   ├── 00000000000000083412.snapshot
+│   ├── 00000000000000083412.timeindex
+│   ├── 00000000000000083417.snapshot
+│   └── leader-epoch-checkpoint
+├── __consumer_offsets-33
+│   ├── 00000000000000000000.index
+│   ├── 00000000000000000000.log
+│   ├── 00000000000000000000.timeindex
+│   └── leader-epoch-checkpoint
+├── __consumer_offsets-34
+│   ├── 00000000000000000000.index
+│   ├── 00000000000000000000.log
+│   ├── 00000000000000000000.timeindex
+│   └── leader-epoch-checkpoint
+├── __consumer_offsets-35
+│   ├── 00000000000000000000.index
+│   ├── 00000000000000000000.log
+│   ├── 00000000000000000000.timeindex
+│   └── leader-epoch-checkpoint
+├── __consumer_offsets-36
+│   ├── 00000000000000000000.index
+│   ├── 00000000000000000000.log
+│   ├── 00000000000000000000.timeindex
+│   └── leader-epoch-checkpoint
+├── __consumer_offsets-37
+│   ├── 00000000000000000000.index
+│   ├── 00000000000000000000.log
+│   ├── 00000000000000000000.timeindex
+│   └── leader-epoch-checkpoint
+├── __consumer_offsets-38
+│   ├── 00000000000000000000.index
+│   ├── 00000000000000000000.log
+│   ├── 00000000000000000000.timeindex
+│   └── leader-epoch-checkpoint
+├── __consumer_offsets-39
+│   ├── 00000000000000000000.index
+│   ├── 00000000000000000000.log
+│   ├── 00000000000000000000.timeindex
+│   └── leader-epoch-checkpoint
+├── __consumer_offsets-4
+│   ├── 00000000000000000000.index
+│   ├── 00000000000000000000.log
+│   ├── 00000000000000000000.timeindex
+│   └── leader-epoch-checkpoint
+├── __consumer_offsets-40
+│   ├── 00000000000000000000.index
+│   ├── 00000000000000000000.log
+│   ├── 00000000000000000000.timeindex
+│   └── leader-epoch-checkpoint
+├── __consumer_offsets-41
+│   ├── 00000000000000000000.index
+│   ├── 00000000000000000000.log
+│   ├── 00000000000000000000.timeindex
+│   └── leader-epoch-checkpoint
+├── __consumer_offsets-42
+│   ├── 00000000000000000000.index
+│   ├── 00000000000000000000.log
+│   ├── 00000000000000000000.timeindex
+│   └── leader-epoch-checkpoint
+├── __consumer_offsets-43
+│   ├── 00000000000000000000.index
+│   ├── 00000000000000000000.log
+│   ├── 00000000000000000000.timeindex
+│   └── leader-epoch-checkpoint
+├── __consumer_offsets-44
+│   ├── 00000000000000000000.index
+│   ├── 00000000000000000000.log
+│   ├── 00000000000000000000.timeindex
+│   └── leader-epoch-checkpoint
+├── __consumer_offsets-45
+│   ├── 00000000000000000000.index
+│   ├── 00000000000000000000.log
+│   ├── 00000000000000000000.timeindex
+│   └── leader-epoch-checkpoint
+├── __consumer_offsets-46
+│   ├── 00000000000000000000.index
+│   ├── 00000000000000000000.log
+│   ├── 00000000000000000000.timeindex
+│   └── leader-epoch-checkpoint
+├── __consumer_offsets-47
+│   ├── 00000000000000000000.index
+│   ├── 00000000000000000000.log
+│   ├── 00000000000000000000.timeindex
+│   └── leader-epoch-checkpoint
+├── __consumer_offsets-48
+│   ├── 00000000000000000000.index
+│   ├── 00000000000000000000.log
+│   ├── 00000000000000000000.timeindex
+│   └── leader-epoch-checkpoint
+├── __consumer_offsets-49
+│   ├── 00000000000000000000.index
+│   ├── 00000000000000000000.log
+│   ├── 00000000000000000000.timeindex
+│   └── leader-epoch-checkpoint
+├── __consumer_offsets-5
+│   ├── 00000000000000000000.index
+│   ├── 00000000000000000000.log
+│   ├── 00000000000000000000.timeindex
+│   └── leader-epoch-checkpoint
+├── __consumer_offsets-6
+│   ├── 00000000000000000000.index
+│   ├── 00000000000000000000.log
+│   ├── 00000000000000000000.timeindex
+│   └── leader-epoch-checkpoint
+├── __consumer_offsets-7
+│   ├── 00000000000000000000.index
+│   ├── 00000000000000000000.log
+│   ├── 00000000000000000000.timeindex
+│   └── leader-epoch-checkpoint
+├── __consumer_offsets-8
+│   ├── 00000000000000000000.index
+│   ├── 00000000000000000000.log
+│   ├── 00000000000000000000.timeindex
+│   └── leader-epoch-checkpoint
+├── __consumer_offsets-9
+│   ├── 00000000000000000000.index
+│   ├── 00000000000000000000.log
+│   ├── 00000000000000000000.timeindex
+│   └── leader-epoch-checkpoint
+├── .lock
+├── log-start-offset-checkpoint
+├── meta.properties
+├── my-topic-0
+│   ├── 00000000000000000160.index
+│   ├── 00000000000000000160.log
+│   ├── 00000000000000000160.timeindex
+│   └── leader-epoch-checkpoint
+├── my-topic-1
+│   ├── 00000000000000000148.index
+│   ├── 00000000000000000148.log
+│   ├── 00000000000000000148.timeindex
+│   └── leader-epoch-checkpoint
+├── my-topic-2
+│   ├── 00000000000000000192.index
+│   ├── 00000000000000000192.log
+│   ├── 00000000000000000192.timeindex
+│   └── leader-epoch-checkpoint
+├── recovery-point-offset-checkpoint
+└── replication-offset-checkpoint
+
+62 directories, 417 files
+[root@mw-m3 pvc-39ff0bcf-1642-4889-bf22-54f945c88b0e_kafka_data-acp-kafka-cluster-kafka-1]#
+
+
+
+
+
+
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

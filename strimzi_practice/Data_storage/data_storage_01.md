@@ -943,3 +943,660 @@ https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.18/#podsecurity
 
 
 
+
+
+
+
+# NFS 验证
+
+
+
+```yaml
+# kafka 和 KafkaTopic 部署的 yaml 文件
+apiVersion: kafka.strimzi.io/v1beta1
+kind: Kafka
+metadata:
+  name: my-cluster-nfs
+spec:
+  kafka:
+    version: 2.5.0
+    replicas: 3
+    jmxOptions: {}
+    listeners:
+      plain: {}
+      tls: {}
+      external:
+        type: nodeport
+        tls: false
+    config:
+      offsets.topic.replication.factor: 3
+      transaction.state.log.replication.factor: 3
+      transaction.state.log.min.isr: 2
+      log.message.format.version: '2.5'
+    storage:
+      type: persistent-claim
+      size: 2Gi
+      class: galaxy-sc
+      deleteClaim: false
+    template:
+      pod:
+        securityContext:
+          runAsUser: 0
+          fsGroup: 0
+  zookeeper:
+    replicas: 3
+    storage:
+      type: persistent-claim
+      size: 1Gi
+      class: galaxy-sc
+      deleteClaim: false
+  entityOperator:
+    topicOperator: {}
+    userOperator: {}
+
+---
+
+apiVersion: kafka.strimzi.io/v1beta1
+kind: KafkaTopic
+metadata:
+  name: my-topic
+  labels:
+    strimzi.io/cluster: my-cluster-nfs
+  namespace: kafka
+spec:
+  partitions: 3
+  replicas: 3
+
+# 验证成功创建 PVC，也找到对应的的 PV
+[root@192 ~]# kubectl -n kafka get pvc
+NAME                              STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+data-my-cluster-nfs-kafka-0       Bound    pvc-311b15bf-5758-4c43-acc7-b1d32d540890   2Gi        RWO            galaxy-sc      2m30s
+data-my-cluster-nfs-kafka-1       Bound    pvc-f64e5c96-85b8-4192-b63b-8c71472cf9c8   2Gi        RWO            galaxy-sc      2m30s
+data-my-cluster-nfs-kafka-2       Bound    pvc-78dfb238-9a72-44f9-bb69-fd6b0a7b82d2   2Gi        RWO            galaxy-sc      2m30s
+data-my-cluster-nfs-zookeeper-0   Bound    pvc-57aad475-33b1-4626-a47f-3531bb611edc   1Gi        RWO            galaxy-sc      3m2s
+data-my-cluster-nfs-zookeeper-1   Bound    pvc-a88782b5-1089-43cc-bc39-f8622850e9b9   1Gi        RWO            galaxy-sc      3m2s
+data-my-cluster-nfs-zookeeper-2   Bound    pvc-f7c342e2-6af2-471f-aeb1-efc4d9dd7587   1Gi        RWO            galaxy-sc      3m2s
+[root@192 ~]#
+
+
+kubectl get pv pvc-311b15bf-5758-4c43-acc7-b1d32d540890 pvc-f64e5c96-85b8-4192-b63b-8c71472cf9c8 pvc-78dfb238-9a72-44f9-bb69-fd6b0a7b82d2 pvc-57aad475-33b1-4626-a47f-3531bb611edc pvc-a88782b5-1089-43cc-bc39-f8622850e9b9 pvc-f7c342e2-6af2-471f-aeb1-efc4d9dd7587
+
+# 修改 PV 的 RECLAIM POLICY 为 Retain
+[root@192 ~]# kubectl get pv pvc-311b15bf-5758-4c43-acc7-b1d32d540890 pvc-f64e5c96-85b8-4192-b63b-8c71472cf9c8 pvc-78dfb238-9a72-44f9-bb69-fd6b0a7b82d2 pvc-57aad475-33b1-4626-a47f-3531bb611edc pvc-a88782b5-1089-43cc-bc39-f8622850e9b9 pvc-f7c342e2-6af2-471f-aeb1-efc4d9dd7587
+NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                                   STORAGECLASS   REASON   AGE
+pvc-311b15bf-5758-4c43-acc7-b1d32d540890   2Gi        RWO            Retain           Bound    kafka/data-my-cluster-nfs-kafka-0       galaxy-sc               7m32s
+pvc-f64e5c96-85b8-4192-b63b-8c71472cf9c8   2Gi        RWO            Retain           Bound    kafka/data-my-cluster-nfs-kafka-1       galaxy-sc               7m32s
+pvc-78dfb238-9a72-44f9-bb69-fd6b0a7b82d2   2Gi        RWO            Retain           Bound    kafka/data-my-cluster-nfs-kafka-2       galaxy-sc               7m32s
+pvc-57aad475-33b1-4626-a47f-3531bb611edc   1Gi        RWO            Retain           Bound    kafka/data-my-cluster-nfs-zookeeper-0   galaxy-sc               8m4s
+pvc-a88782b5-1089-43cc-bc39-f8622850e9b9   1Gi        RWO            Retain           Bound    kafka/data-my-cluster-nfs-zookeeper-1   galaxy-sc               8m4s
+pvc-f7c342e2-6af2-471f-aeb1-efc4d9dd7587   1Gi        RWO            Retain           Bound    kafka/data-my-cluster-nfs-zookeeper-2   galaxy-sc               8m4s
+[root@192 ~]#
+
+
+# 备份 PVC
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-my-cluster-nfs-kafka-0
+  namespace: kafka
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: galaxy-sc
+  volumeMode: Filesystem
+  volumeName: pvc-311b15bf-5758-4c43-acc7-b1d32d540890
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-my-cluster-nfs-kafka-1
+  namespace: kafka
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: galaxy-sc
+  volumeMode: Filesystem
+  volumeName: pvc-f64e5c96-85b8-4192-b63b-8c71472cf9c8
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-my-cluster-nfs-kafka-2
+  namespace: kafka
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: galaxy-sc
+  volumeMode: Filesystem
+  volumeName: pvc-78dfb238-9a72-44f9-bb69-fd6b0a7b82d2
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-my-cluster-nfs-zookeeper-0
+  namespace: kafka
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: galaxy-sc
+  volumeMode: Filesystem
+  volumeName: pvc-57aad475-33b1-4626-a47f-3531bb611edc
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-my-cluster-nfs-zookeeper-1
+  namespace: kafka
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: galaxy-sc
+  volumeMode: Filesystem
+  volumeName: pvc-a88782b5-1089-43cc-bc39-f8622850e9b9
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-my-cluster-nfs-zookeeper-2
+  namespace: kafka
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: galaxy-sc
+  volumeMode: Filesystem
+  volumeName: pvc-f7c342e2-6af2-471f-aeb1-efc4d9dd7587
+
+
+# 向集群写入数据
+kafka-producer-perf-test.sh --num-records 500 --topic my-topic --throughput -1 --record-size 1000 --producer-props bootstrap.servers=my-cluster-nfs-kafka-bootstrap:9092
+
+# 消费数据
+kafka-console-consumer.sh --bootstrap-server my-cluster-nfs-kafka-bootstrap:9092 --topic my-topic --from-beginning --group my-group
+
+kafka-consumer-groups.sh --bootstrap-server my-cluster-nfs-kafka-bootstrap:9092 --list
+
+# 确定数据数量
+kafka-consumer-groups.sh --bootstrap-server my-cluster-nfs-kafka-bootstrap:9092 --describe --group my-group
+
+# 备份 kafkatopic
+apiVersion: kafka.strimzi.io/v1beta1
+kind: KafkaTopic
+metadata:
+  labels:
+    strimzi.io/cluster: my-cluster-nfs
+  name: my-topic
+  namespace: kafka
+spec:
+  partitions: 3
+  replicas: 3
+
+---
+
+apiVersion: kafka.strimzi.io/v1beta1
+kind: KafkaTopic
+metadata:
+  labels:
+    strimzi.io/cluster: my-cluster-nfs
+  name: consumer-offsets---84e7a678d08f4bd226872e5cdd4eb527fadc1c6a
+  namespace: kafka
+spec:
+  config:
+    cleanup.policy: compact
+    compression.type: producer
+    segment.bytes: "104857600"
+  partitions: 50
+  replicas: 3
+  topicName: __consumer_offsets
+
+#############################################################
+
+# 删除 kafka 命名空间
+kubectl delete ns kafka
+
+# 恢复 PVC，删除 PV 的 claimRef 的属性
+  claimRef:
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    name: data-my-cluster-nfs-zookeeper-2
+    namespace: kafka
+    resourceVersion: "31518082"
+    uid: 30230d27-fc0b-47c0-880c-e734ece69831
+
+# 创建 kafka 命名空间
+kubectl create ns kafka
+
+# 恢复 kafkatopic
+
+# 恢复 kafka 集群
+
+# 确认数据存在
+[root@my-cluster-nfs-kafka-1 bin]# ./kafka-consumer-groups.sh --bootstrap-server my-cluster-nfs-kafka-bootstrap:9092 --describe --group my-group
+OpenJDK 64-Bit Server VM warning: If the number of processors is expected to increase from one, then you should configure the number of parallel GC threads appropriately using-XX:ParallelGCThreads=N
+
+Consumer group 'my-group' has no active members.
+
+GROUP           TOPIC           PARTITION  CURRENT-OFFSET  LOG-END-OFFSET  LAG             CONSUMER-ID     HOST            CLIENT-ID
+my-group        my-topic        0          128             128             0               -               -               -
+my-group        my-topic        1          196             196             0               -               -               -
+my-group        my-topic        2          176             176             0               -               -               -
+[root@my-cluster-nfs-kafka-1 bin]#
+
+
+
+
+
+
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+# hostpath 验证
+
+
+
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  labels:
+    strimzi.io/cluster: acp-kafka-cluster
+  name: admin
+  namespace: kafka
+data:
+  password: bVR0Q0dDV0tab0FfeFJ6Vw==
+type: Opaque
+
+---
+
+apiVersion: kafka.strimzi.io/v1beta1
+kind: Kafka
+metadata:
+  name: acp-kafka-cluster
+  namespace: kafka
+spec:
+  kafka:
+    version: 2.5.0
+    replicas: 3
+    resources:
+      limits:
+        cpu: "2"
+        memory: 4Gi
+      requests:
+        cpu: 200m
+        memory: 256Mi
+    jmxOptions: {}
+    listeners:
+      plain:
+        authentication:
+          type: scram-sha-512
+      external:
+        type: nodeport
+        tls: false
+        authentication:
+          type: scram-sha-512
+    config:
+      group.initial.rebalance.delay.ms: 6000
+      default.replication.factor: 3
+      offsets.topic.replication.factor: 3
+      transaction.state.log.min.isr: 2
+      transaction.state.log.replication.factor: 3
+      log.retention.hours: 48
+      log.roll.hours: 12
+      log.segment.delete.delay.ms: 0
+      max.message.bytes: 1048576000
+      max.request.size: 10000000000
+      message.max.bytes: 1048576000
+      num.partitions: 30
+      replica.fetch.max.bytes: 1048576000
+      replica.fetch.response.max.bytes: 1048576000
+      socket.request.max.bytes: 1000000000
+      log.message.format.version: "2.5"
+    storage:
+      type: persistent-claim
+      size: 1Gi
+      class: local-path
+      deleteClaim: false
+  zookeeper:
+    replicas: 3
+    storage:
+      type: persistent-claim
+      size: 1Gi
+      class: local-path
+      deleteClaim: false
+  entityOperator:
+    topicOperator: {}
+    userOperator: {}
+
+---
+
+apiVersion: kafka.strimzi.io/v1beta1
+kind: KafkaUser
+metadata:
+  name: admin
+  labels:
+    strimzi.io/cluster: acp-kafka-cluster
+  namespace: kafka
+spec:
+  authentication:
+    type: scram-sha-512
+
+---
+
+apiVersion: kafka.strimzi.io/v1beta1
+kind: KafkaTopic
+metadata:
+  name: my-topic
+  labels:
+    strimzi.io/cluster: acp-kafka-cluster
+  namespace: kafka
+spec:
+  partitions: 3
+  replicas: 3
+
+---
+
+apiVersion: kafka.strimzi.io/v1beta1
+kind: KafkaTopic
+metadata:
+  name: alauda-audit-topic
+  labels:
+    strimzi.io/cluster: acp-kafka-cluster
+  namespace: kafka
+spec:
+  partitions: 3
+  replicas: 3
+
+---
+
+apiVersion: kafka.strimzi.io/v1beta1
+kind: KafkaTopic
+metadata:
+  name: alauda-event-topic
+  labels:
+    strimzi.io/cluster: acp-kafka-cluster
+  namespace: kafka
+spec:
+  partitions: 3
+  replicas: 3
+
+---
+
+apiVersion: kafka.strimzi.io/v1beta1
+kind: KafkaTopic
+metadata:
+  name: alauda-log-topic
+  labels:
+    strimzi.io/cluster: acp-kafka-cluster
+  namespace: kafka
+spec:
+  partitions: 3
+  replicas: 3
+
+```
+
+验证：
+
+```bash
+[root@mw-init test]# kubectl -n kafka get pvc
+NAME                                 STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+data-acp-kafka-cluster-kafka-0       Bound    pvc-a64a1912-c150-44d6-bf01-3c0bef03c16e   1Gi        RWO            local-path     2m32s
+data-acp-kafka-cluster-kafka-1       Bound    pvc-39ff0bcf-1642-4889-bf22-54f945c88b0e   1Gi        RWO            local-path     2m32s
+data-acp-kafka-cluster-kafka-2       Bound    pvc-9988de37-be6f-403a-a04b-7fe9561f2f44   1Gi        RWO            local-path     2m32s
+data-acp-kafka-cluster-zookeeper-0   Bound    pvc-a2e03cc0-6daa-4c5d-9826-67c3adf81f33   1Gi        RWO            local-path     3m3s
+data-acp-kafka-cluster-zookeeper-1   Bound    pvc-ae828e1a-3aa5-4857-818a-47ab57076869   1Gi        RWO            local-path     3m3s
+data-acp-kafka-cluster-zookeeper-2   Bound    pvc-655a3c85-ffaf-4f84-8f6c-25142feb9305   1Gi        RWO            local-path     3m3s
+[root@mw-init test]#
+
+[root@mw-init test]# kubectl get pv pvc-a64a1912-c150-44d6-bf01-3c0bef03c16e pvc-39ff0bcf-1642-4889-bf22-54f945c88b0e pvc-9988de37-be6f-403a-a04b-7fe9561f2f44 pvc-a2e03cc0-6daa-4c5d-9826-67c3adf81f33 pvc-ae828e1a-3aa5-4857-818a-47ab57076869 pvc-655a3c85-ffaf-4f84-8f6c-25142feb9305
+NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                                      STORAGECLASS   REASON   AGE
+pvc-a64a1912-c150-44d6-bf01-3c0bef03c16e   1Gi        RWO            Delete           Bound    kafka/data-acp-kafka-cluster-kafka-0       local-path              4m46s
+pvc-39ff0bcf-1642-4889-bf22-54f945c88b0e   1Gi        RWO            Delete           Bound    kafka/data-acp-kafka-cluster-kafka-1       local-path              4m46s
+pvc-9988de37-be6f-403a-a04b-7fe9561f2f44   1Gi        RWO            Delete           Bound    kafka/data-acp-kafka-cluster-kafka-2       local-path              4m45s
+pvc-a2e03cc0-6daa-4c5d-9826-67c3adf81f33   1Gi        RWO            Delete           Bound    kafka/data-acp-kafka-cluster-zookeeper-0   local-path              5m17s
+pvc-ae828e1a-3aa5-4857-818a-47ab57076869   1Gi        RWO            Delete           Bound    kafka/data-acp-kafka-cluster-zookeeper-1   local-path              5m16s
+pvc-655a3c85-ffaf-4f84-8f6c-25142feb9305   1Gi        RWO            Delete           Bound    kafka/data-acp-kafka-cluster-zookeeper-2   local-path              5m15s
+[root@mw-init test]#
+
+
+[root@mw-init test]# kubectl get pv pvc-a64a1912-c150-44d6-bf01-3c0bef03c16e pvc-39ff0bcf-1642-4889-bf22-54f945c88b0e pvc-9988de37-be6f-403a-a04b-7fe9561f2f44 pvc-a2e03cc0-6daa-4c5d-9826-67c3adf81f33 pvc-ae828e1a-3aa5-4857-818a-47ab57076869 pvc-655a3c85-ffaf-4f84-8f6c-25142feb9305
+NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                                      STORAGECLASS   REASON   AGE
+pvc-a64a1912-c150-44d6-bf01-3c0bef03c16e   1Gi        RWO            Retain           Bound    kafka/data-acp-kafka-cluster-kafka-0       local-path              8m50s
+pvc-39ff0bcf-1642-4889-bf22-54f945c88b0e   1Gi        RWO            Retain           Bound    kafka/data-acp-kafka-cluster-kafka-1       local-path              8m50s
+pvc-9988de37-be6f-403a-a04b-7fe9561f2f44   1Gi        RWO            Retain           Bound    kafka/data-acp-kafka-cluster-kafka-2       local-path              8m49s
+pvc-a2e03cc0-6daa-4c5d-9826-67c3adf81f33   1Gi        RWO            Retain           Bound    kafka/data-acp-kafka-cluster-zookeeper-0   local-path              9m21s
+pvc-ae828e1a-3aa5-4857-818a-47ab57076869   1Gi        RWO            Retain           Bound    kafka/data-acp-kafka-cluster-zookeeper-1   local-path              9m20s
+pvc-655a3c85-ffaf-4f84-8f6c-25142feb9305   1Gi        RWO            Retain           Bound    kafka/data-acp-kafka-cluster-zookeeper-2   local-path              9m19s
+[root@mw-init test]#
+
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-acp-kafka-cluster-kafka-0
+  namespace: kafka
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: local-path
+  volumeMode: Filesystem
+  volumeName: pvc-a64a1912-c150-44d6-bf01-3c0bef03c16e
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-acp-kafka-cluster-kafka-1
+  namespace: kafka
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: local-path
+  volumeMode: Filesystem
+  volumeName: pvc-39ff0bcf-1642-4889-bf22-54f945c88b0e
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-acp-kafka-cluster-kafka-2
+  namespace: kafka
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: local-path
+  volumeMode: Filesystem
+  volumeName: pvc-9988de37-be6f-403a-a04b-7fe9561f2f44
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-acp-kafka-cluster-zookeeper-0
+  namespace: kafka
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: local-path
+  volumeMode: Filesystem
+  volumeName: pvc-a2e03cc0-6daa-4c5d-9826-67c3adf81f33
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-acp-kafka-cluster-zookeeper-1
+  namespace: kafka
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: local-path
+  volumeMode: Filesystem
+  volumeName: pvc-ae828e1a-3aa5-4857-818a-47ab57076869
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-acp-kafka-cluster-zookeeper-2
+  namespace: kafka
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: local-path
+  volumeMode: Filesystem
+  volumeName: pvc-655a3c85-ffaf-4f84-8f6c-25142feb9305
+
+
+
+kafka-producer-perf-test.sh --num-records 500 --topic my-topic --throughput -1 --record-size 1000 --producer-props bootstrap.servers=10.0.128.237:31827 --producer.config ./client.properties
+
+kafka-console-consumer.sh --bootstrap-server 10.0.128.237:31827 --topic my-topic --consumer.config ./client.properties --from-beginning --group my-group
+
+kafka-consumer-groups.sh --bootstrap-server 10.0.128.237:31827 --command-config ./client.properties --list
+
+kafka-consumer-groups.sh --bootstrap-server 10.0.128.237:31827 --command-config ./client.properties --describe --group my-group
+
+
+apiVersion: kafka.strimzi.io/v1beta1
+kind: KafkaTopic
+metadata:
+  labels:
+    strimzi.io/cluster: acp-kafka-cluster
+  name: alauda-audit-topic
+  namespace: kafka
+spec:
+  partitions: 3
+  replicas: 3
+
+---
+
+apiVersion: kafka.strimzi.io/v1beta1
+kind: KafkaTopic
+metadata:
+  labels:
+    strimzi.io/cluster: acp-kafka-cluster
+  name: alauda-event-topic
+  namespace: kafka
+spec:
+  partitions: 3
+  replicas: 3
+
+---
+
+apiVersion: kafka.strimzi.io/v1beta1
+kind: KafkaTopic
+metadata:
+  labels:
+    strimzi.io/cluster: acp-kafka-cluster
+  name: alauda-log-topic
+  namespace: kafka
+spec:
+  partitions: 3
+  replicas: 3
+
+---
+
+apiVersion: kafka.strimzi.io/v1beta1
+kind: KafkaTopic
+metadata:
+  labels:
+    strimzi.io/cluster: acp-kafka-cluster
+  name: consumer-offsets---84e7a678d08f4bd226872e5cdd4eb527fadc1c6a
+  namespace: kafka
+spec:
+  config:
+    cleanup.policy: compact
+    compression.type: producer
+    segment.bytes: "104857600"
+  partitions: 50
+  replicas: 3
+  topicName: __consumer_offsets
+
+---
+
+apiVersion: kafka.strimzi.io/v1beta1
+kind: KafkaTopic
+metadata:
+  labels:
+    strimzi.io/cluster: acp-kafka-cluster
+  name: my-topic
+  namespace: kafka
+spec:
+  partitions: 3
+  replicas: 3
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+```
+
+
+
+
+
+
+
+
+

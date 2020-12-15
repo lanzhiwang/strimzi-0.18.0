@@ -52,7 +52,27 @@ rcvEkumeJLEk1NF8kkCK
 SwitchyOmega
 alauda/Tnriw2z267geivn5aLvk
 
-139.186.17.154:52975
+http 139.186.17.154:52975
+
+
+
+Yuliang_Zhang
+
+bbx09osxozn00n4uvfgtunp9st9taozv
+
+
+
+docker login harbor.alauda.cn
+admin
+raOYiOXaDyGMlLhi
+
+
+
+
+
+```
+MVN_ARGS="-Dmaven.javadoc.skip=true -DskipITs -DskipTests" make all
+```
 
 
 
@@ -114,6 +134,101 @@ git config user.name "胡志"
 git config user.email "zhihu@alauda.io"
   
 ```
+
+
+
+Jenkins  配置
+
+```json
+[
+    config: [
+        agent: maven3.5,
+        folder:.,
+        scm: [
+            credentials:devops-alauda-gitlab,
+            submodules: false
+        ],
+        sonar: [
+            binding:sonarqube,
+            enabled: true
+        ],
+        pod: [
+            yaml:
+        ],
+        chart: [
+            name: ,
+            component:
+        ],
+        chartX: [
+            enabled: false
+        ],
+        docker: [
+            repository: ,
+            credentials:alaudak8s,
+            context:.,
+            dockerfile:Dockerfile,
+            armBuild: true,
+            disableArmBuildOnPR: false,
+            enabled: true,
+            scan: true
+        ],
+        operator: [
+            hub_project:common,
+            hub_pipeline:operators-index,
+            bundle: [
+                name: ,
+                script:make bundle,
+                dockerfile:bundle.Dockerfile,
+                repository:
+            ],
+            enabled: false
+        ],
+        sec: [
+            enabled: true,
+            block: false,
+            lang: ,
+            scanMod: 1,
+            customOpts:
+        ],
+        notification: [
+            :
+        ]
+    ],
+    steps: [
+        [
+            name:tool,
+            container:java,
+            commands: [./Jenkinsfile-script/install_tool.sh]
+        ],
+        [
+            name:Build,
+            container:java,
+            commands: [MVN_ARGS="-Dmaven.javadoc.skip=true -DskipITs -DskipTests" make all]
+        ]
+    ],
+    yaml: ,
+    env: [
+        :
+    ],
+    endSteps: [],
+    post: [
+        always: []
+    ]
+]
+
+```
+
+
+
+
+
+helm install mystrimzi ./redis --debug --dry-run
+
+
+
+
+
+
 
 
 
@@ -508,3 +623,6 @@ spec:
 
 
 ```
+
+
+

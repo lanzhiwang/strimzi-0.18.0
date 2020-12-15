@@ -112,6 +112,8 @@ $ kind delete cluster
 $ minikube start --image-mirror-country='cn' --iso-url='https://kubernetes.oss-cn-hangzhou.aliyuncs.com/minikube/iso/minikube-v1.14.0.iso' --driver='hyperkit' --memory='4g'
 
 #
+
+
 $ kubectl create ns kafka
 namespace/kafka created
 
@@ -193,4 +195,138 @@ deployment "packageserver" successfully rolled out
 huzhi@huzhideMacBook-Pro strimzi-0.18.0 %
 
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+```
+$ docker build --network=host  --build-arg JAVA_VERSION=1.8.0  --build-arg strimzi_version=0.18.0 -t strimzi/base:latest ./
+
+$ docker tag strimzi/base:latest strimzi/base:latest
+
+#####################
+
+$ docker build --network=host  --build-arg JAVA_VERSION=1.8.0  --build-arg strimzi_version=0.18.0 -t strimzi/operator:latest ./
+
+$ docker tag strimzi/operator:latest strimzi/operator:latest
+
+######################
+
+$ docker build --network=host  --build-arg JAVA_VERSION=1.8.0  --build-arg strimzi_version=0.18.0 -t strimzi/jmxtrans:latest ./
+
+$ docker tag strimzi/jmxtrans:latest strimzi/jmxtrans:latest
+
+######################
+
+$ docker build --network=host --build-arg JAVA_VERSION=1.8.0 --build-arg KAFKA_VERSION=2.4.0 --build-arg KAFKA_DIST_DIR=./tmp/2.4.0 --build-arg THIRD_PARTY_LIBS=2.4.x  --build-arg strimzi_version=0.18.0 -t strimzi/kafka:latest ./
+
+$ docker tag strimzi/kafka:latest strimzi/kafka:build-kafka-2.4.0
+
+######################
+
+$ docker build --network=host --build-arg JAVA_VERSION=1.8.0 --build-arg KAFKA_VERSION=2.4.0 --build-arg KAFKA_DIST_DIR=./tmp/2.4.0 --build-arg THIRD_PARTY_LIBS=2.4.x  --build-arg strimzi_version=0.18.0 -t strimzi/test-client:latest ./
+
+$ docker tag strimzi/test-client:latest strimzi/test-client:build-kafka-2.4.0
+
+######################
+
+$ docker build --network=host --build-arg JAVA_VERSION=1.8.0 --build-arg KAFKA_VERSION=2.4.1 --build-arg KAFKA_DIST_DIR=./tmp/2.4.1 --build-arg THIRD_PARTY_LIBS=2.4.x  --build-arg strimzi_version=0.18.0 -t strimzi/kafka:latest ./
+
+$ docker tag strimzi/kafka:latest strimzi/kafka:build-kafka-2.4.1
+
+######################
+
+$ docker build --network=host --build-arg JAVA_VERSION=1.8.0 --build-arg KAFKA_VERSION=2.4.1 --build-arg KAFKA_DIST_DIR=./tmp/2.4.1 --build-arg THIRD_PARTY_LIBS=2.4.x  --build-arg strimzi_version=0.18.0 -t strimzi/test-client:latest ./
+
+$ docker tag strimzi/test-client:latest strimzi/test-client:build-kafka-2.4.1
+
+######################
+
+$ docker build --network=host --build-arg JAVA_VERSION=1.8.0 --build-arg KAFKA_VERSION=2.5.0 --build-arg KAFKA_DIST_DIR=./tmp/2.5.0 --build-arg THIRD_PARTY_LIBS=2.5.x  --build-arg strimzi_version=0.18.0 -t strimzi/kafka:latest ./
+
+$ docker tag strimzi/kafka:latest strimzi/kafka:build-kafka-2.5.0
+
+######################
+
+$ docker build --network=host --build-arg JAVA_VERSION=1.8.0 --build-arg KAFKA_VERSION=2.5.0 --build-arg KAFKA_DIST_DIR=./tmp/2.5.0 --build-arg THIRD_PARTY_LIBS=2.5.x  --build-arg strimzi_version=0.18.0 -t strimzi/test-client:latest ./
+
+$ docker tag strimzi/test-client:latest strimzi/test-client:build-kafka-2.5.0
+
+######################
+
+docker tag strimzi/operator:latest docker.io/root/operator:latest
+docker push docker.io/root/operator:latest
+
+docker tag strimzi/jmxtrans:latest docker.io/root/jmxtrans:latest
+docker push docker.io/root/jmxtrans:latest
+
+docker tag strimzi/kafka:build-kafka-2.4.0 docker.io/root/kafka:latest-kafka-2.4.0
+docker push docker.io/root/kafka:latest-kafka-2.4.0
+
+docker tag strimzi/test-client:build-kafka-2.4.0 docker.io/root/test-client:latest-kafka-2.4.0
+docker push docker.io/root/test-client:latest-kafka-2.4.0
+
+docker tag strimzi/kafka:build-kafka-2.4.1 docker.io/root/kafka:latest-kafka-2.4.1
+docker push docker.io/root/kafka:latest-kafka-2.4.1
+
+docker tag strimzi/test-client:build-kafka-2.4.1 docker.io/root/test-client:latest-kafka-2.4.1
+docker push docker.io/root/test-client:latest-kafka-2.4.1
+
+docker tag strimzi/kafka:build-kafka-2.5.0 docker.io/root/kafka:latest-kafka-2.5.0
+docker push docker.io/root/kafka:latest-kafka-2.5.0
+
+docker tag strimzi/test-client:build-kafka-2.5.0 docker.io/root/test-client:latest-kafka-2.5.0
+docker push docker.io/root/test-client:latest-kafka-2.5.0
+
+
+######################测试
+
+docker tag strimzi/operator:latest docker.io//operator:latest
+docker push docker.io/root/operator:latest
+
+docker tag strimzi/jmxtrans:latest docker.io/root/jmxtrans:latest
+docker push docker.io/root/jmxtrans:latest
+
+docker tag strimzi/kafka:build-kafka-2.4.0 docker.io/root/kafka:latest-kafka-2.4.0
+docker push docker.io/root/kafka:latest-kafka-2.4.0
+
+docker tag strimzi/test-client:build-kafka-2.4.0 docker.io/root/test-client:latest-kafka-2.4.0
+docker push docker.io/root/test-client:latest-kafka-2.4.0
+
+docker tag strimzi/kafka:build-kafka-2.4.1 docker.io/root/kafka:latest-kafka-2.4.1
+docker push docker.io/root/kafka:latest-kafka-2.4.1
+
+docker tag strimzi/test-client:build-kafka-2.4.1 docker.io/root/test-client:latest-kafka-2.4.1
+docker push docker.io/root/test-client:latest-kafka-2.4.1
+
+docker tag strimzi/kafka:build-kafka-2.5.0 docker.io/root/kafka:latest-kafka-2.5.0
+docker push docker.io/root/kafka:latest-kafka-2.5.0
+
+docker tag strimzi/test-client:build-kafka-2.5.0 docker.io/root/test-client:latest-kafka-2.5.0
+docker push docker.io/root/test-client:latest-kafka-2.5.0
+
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
 
