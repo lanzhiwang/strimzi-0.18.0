@@ -68,17 +68,470 @@ raOYiOXaDyGMlLhi
 
 
 
+harbor-b.alauda.cn
+
+alaudak8s
+
+ybfzna4qjmdl71t6rg0xpvp8immxpg6f
+
+
+
+docker login https://index.docker.io/v1/
+
+lanzhiwang
+
+huzhi567233
+
+
+
+国内harbor：
+地址：https://harbor.alauda.cn/
+用户：admin
+密码：raOYiOXaDyGMlLhi
+
+
+
+
+
+/Users/zhh/.minikube/machines/minikube/config.json
+ HostOptions --> EngineOptions --> 
+  InsecureRegistry: [
+            "10.96.0.0/12",
+            "192.168.99.0/24"
+        ],
+        "RegistryMirror": [
+            "https://c8it25aj.mirror.aliyuncs.com/",
+            "https://9o1kmxjk.mirror.aliyuncs.com"
+        ],
+
+
+
+int环境：
+地址：https://int.alauda.cn
+账号：admin@cpaas.io
+密码：w7TJg2THbnEqGdF6m
+
+
+
 
 
 ```
+
+
+
+
+
+
+
+
+
+strimzi/operator:0.18.0
+strimzi/kafka:0.18.0-kafka-2.4.0
+strimzi/kafka:0.18.0-kafka-2.4.1
+strimzi/kafka:0.18.0-kafka-2.5.0
+strimzi/jmxtrans:0.18.0
+strimzi/kafka-bridge:0.16.0
+
+
+strimzi/operator:amd64-0.18.0
+strimzi/kafka:amd64-0.18.0-kafka-2.4.0
+strimzi/kafka:amd64-0.18.0-kafka-2.4.1
+strimzi/kafka:amd64-0.18.0-kafka-2.5.0
+strimzi/jmxtrans:amd64-0.18.0
+strimzi/kafka-bridge:amd64-0.16.0
+
+
+
+strimzi/operator:arm64-0.18.0
+strimzi/kafka:arm64-0.18.0-kafka-2.4.0
+strimzi/kafka:arm64-0.18.0-kafka-2.4.1
+strimzi/kafka:arm64-0.18.0-kafka-2.5.0
+strimzi/jmxtrans:arm64-0.18.0
+strimzi/kafka-bridge:arm64-0.16.0
+
+
+
+
+
+
+export DOCKER_BUILDX=buildx
+export DOCKER_BUILD_ARGS="--platform linux/arm64"
 MVN_ARGS="-Dmaven.javadoc.skip=true -DskipITs -DskipTests" make all
+
+
+strimzi/test-client:build-kafka-2.5.0 strimzi/test-client:latest strimzi/kafka:build-kafka-2.5.0 strimzi/kafka:latest strimzi/test-client:build-kafka-2.4.1 strimzi/kafka:build-kafka-2.4.1 strimzi/test-client:build-kafka-2.4.0 strimzi/kafka:build-kafka-2.4.0 strimzi/operator:latest strimzi/jmxtrans:latest strimzi/base:latest root/test-client:latest-kafka-2.5.0 root/kafka:latest-kafka-2.5.0 root/test-client:latest-kafka-2.4.1 root/kafka:latest-kafka-2.4.1 root/test-client:latest-kafka-2.4.0 root/kafka:latest-kafka-2.4.0 root/kafka-bridge:latest strimzi/kafka-bridge:latest harbor-b.alauda.cn/tdsql/kafka-bridge:0.16.0 root/operator:latest root/jmxtrans:latest root/jmxtrans:ARM-latest harbor-b.alauda.cn/tdsql/operator:arm-0.18.0 harbor-b.alauda.cn/tdsql/jmxtrans:arm-0.18.0 harbor-b.alauda.cn/tdsql/jmxtrans:latest harbor-b.alauda.cn/tdsql/base:v1 192.168.34.81:60080/tdsql/kafka-bridge:arm-0.16.0 lanzhiwang/kafka-bridge:arm-0.16.0 harbor-b.alauda.cn/tdsql/kafka-bridge:arm-0.16.0 192.168.34.81:60080/tdsql/kafka:arm-0.18.0-kafka-2.5.0 lanzhiwang/kafka:arm-0.18.0-kafka-2.5.0 harbor-b.alauda.cn/tdsql/kafka:arm-0.18.0-kafka-2.5.0 harbor-b.alauda.cn/tdsql/kafka:arm-0.18.0-kafka-2.4.1 192.168.34.81:60080/tdsql/kafka:arm-0.18.0-kafka-2.4.1 lanzhiwang/kafka:arm-0.18.0-kafka-2.4.1 192.168.34.81:60080/tdsql/kafka:arm-0.18.0-kafka-2.4.0 lanzhiwang/kafka:arm-0.18.0-kafka-2.4.0 harbor-b.alauda.cn/tdsql/kafka:arm-0.18.0-kafka-2.4.0 192.168.34.81:60080/tdsql/jmxtrans:arm-0.18.0 lanzhiwang/jmxtrans:arm-0.18.0 192.168.34.81:60080/tdsql/operator:arm-0.18.0 lanzhiwang/operator:arm-0.18.0
+
+
+
+
+helm install mystrimzi ./ --debug --dry-run
+
+helm --set image.repository=192.168.34.233:60080/tdsql --set zookeeper.image.repository=192.168.34.233:60080/tdsql --set kafka.image.repository=192.168.34.233:60080/tdsql --set kafkaConnect.image.repository=192.168.34.233:60080/tdsql --set kafkaConnects2i.image.repository=192.168.34.233:60080/tdsql --set topicOperator.image.repository=192.168.34.233:60080/tdsql --set userOperator.image.repository=192.168.34.233:60080/tdsql --set kafkaInit.image.repository=192.168.34.233:60080/tdsql --set tlsSidecarKafka.image.repository=192.168.34.233:60080/tdsql --set tlsSidecarEntityOperator.image.repository=192.168.34.233:60080/tdsql --set kafkaMirrorMaker.image.repository=192.168.34.233:60080/tdsql --set kafkaBridge.image.repository=192.168.34.233:60080/tdsql --set kafkaExporter.image.repository=192.168.34.233:60080/tdsql --set jmxTrans.image.repository=192.168.34.233:60080/tdsql --set kafkaMirrorMaker2.image.repository=192.168.34.233:60080/tdsql --set cruiseControl.image.repository=192.168.34.233:60080/tdsql --set tlsSidecarCruiseControl.image.repository=192.168.34.233:60080/tdsql install mystrimzi ./ --debug --dry-run
+
+
+harbor-b.alauda.cn/tdsql/operator:arm-0.18.0
+harbor-b.alauda.cn/tdsql/kafka:arm-0.18.0-kafka-2.4.0
+harbor-b.alauda.cn/tdsql/kafka:arm-0.18.0-kafka-2.4.1
+harbor-b.alauda.cn/tdsql/kafka:arm-0.18.0-kafka-2.5.0
+harbor-b.alauda.cn/tdsql/kafka-bridge:arm-0.16.0
+harbor-b.alauda.cn/tdsql/jmxtrans:arm-0.18.0
+
+docker tag strimzi/operator:latest harbor-b.alauda.cn/tdsql/operator:arm-0.18.0
+
+docker tag strimzi/kafka:build-kafka-2.4.0 harbor-b.alauda.cn/tdsql/kafka:arm-0.18.0-kafka-2.4.0
+
+docker tag strimzi/kafka:build-kafka-2.4.1 harbor-b.alauda.cn/tdsql/kafka:arm-0.18.0-kafka-2.4.1
+
+docker tag strimzi/kafka:build-kafka-2.5.0 harbor-b.alauda.cn/tdsql/kafka:arm-0.18.0-kafka-2.5.0
+
+docker tag strimzi/kafka-bridge:latest harbor-b.alauda.cn/tdsql/kafka-bridge:arm-0.16.0
+
+docker tag strimzi/jmxtrans:latest harbor-b.alauda.cn/tdsql/jmxtrans:arm-0.18.0
+
+
+docker tag strimzi/operator:latest lanzhiwang/operator:arm-0.18.0
+
+docker tag strimzi/kafka:build-kafka-2.4.0 lanzhiwang/kafka:arm-0.18.0-kafka-2.4.0
+
+docker tag strimzi/kafka:build-kafka-2.4.1 lanzhiwang/kafka:arm-0.18.0-kafka-2.4.1
+
+docker tag strimzi/kafka:build-kafka-2.5.0 lanzhiwang/kafka:arm-0.18.0-kafka-2.5.0
+
+docker tag strimzi/kafka-bridge:latest lanzhiwang/kafka-bridge:arm-0.16.0
+
+docker tag strimzi/jmxtrans:latest lanzhiwang/jmxtrans:arm-0.18.0
+
+
+
+docker tag harbor-b.alauda.cn/tdsql/operator:arm-0.18.0 192.168.34.233:60080/tdsql/operator:arm-0.18.0
+docker tag harbor-b.alauda.cn/tdsql/kafka:arm-0.18.0-kafka-2.4.0 192.168.34.233:60080/tdsql/kafka:arm-0.18.0-kafka-2.4.0
+docker tag harbor-b.alauda.cn/tdsql/kafka:arm-0.18.0-kafka-2.4.1 192.168.34.233:60080/tdsql/kafka:arm-0.18.0-kafka-2.4.1
+docker tag harbor-b.alauda.cn/tdsql/kafka:arm-0.18.0-kafka-2.5.0 192.168.34.233:60080/tdsql/kafka:arm-0.18.0-kafka-2.5.0
+docker tag harbor-b.alauda.cn/tdsql/kafka-bridge:arm-0.16.0 192.168.34.233:60080/tdsql/kafka-bridge:arm-0.16.0
+docker tag harbor-b.alauda.cn/tdsql/jmxtrans:arm-0.18.0 192.168.34.233:60080/tdsql/jmxtrans:arm-0.18.0
+
+
+192.168.34.233:60080/tdsql/operator:arm-0.18.0
+192.168.34.233:60080/tdsql/kafka:arm-0.18.0-kafka-2.4.0
+192.168.34.233:60080/tdsql/kafka:arm-0.18.0-kafka-2.4.1
+192.168.34.233:60080/tdsql/kafka:arm-0.18.0-kafka-2.5.0
+192.168.34.233:60080/tdsql/kafka-bridge:arm-0.16.0
+192.168.34.233:60080/tdsql/jmxtrans:arm-0.18.0
+
+
+
+
+docker tag harbor-b.alauda.cn/tdsql/operator:arm-0.18.0 192.168.34.81:60080/tdsql/operator:arm-0.18.0
+docker tag harbor-b.alauda.cn/tdsql/kafka:arm-0.18.0-kafka-2.4.0 192.168.34.81:60080/tdsql/kafka:arm-0.18.0-kafka-2.4.0
+docker tag harbor-b.alauda.cn/tdsql/kafka:arm-0.18.0-kafka-2.4.1 192.168.34.81:60080/tdsql/kafka:arm-0.18.0-kafka-2.4.1
+docker tag harbor-b.alauda.cn/tdsql/kafka:arm-0.18.0-kafka-2.5.0 192.168.34.81:60080/tdsql/kafka:arm-0.18.0-kafka-2.5.0
+docker tag harbor-b.alauda.cn/tdsql/kafka-bridge:arm-0.16.0 192.168.34.81:60080/tdsql/kafka-bridge:arm-0.16.0
+docker tag harbor-b.alauda.cn/tdsql/jmxtrans:arm-0.18.0 192.168.34.81:60080/tdsql/jmxtrans:arm-0.18.0
+
+
+helm --set image.repository=192.168.34.81:60080/tdsql --set zookeeper.image.repository=192.168.34.81:60080/tdsql --set kafka.image.repository=192.168.34.81:60080/tdsql --set kafkaConnect.image.repository=192.168.34.81:60080/tdsql --set kafkaConnects2i.image.repository=192.168.34.81:60080/tdsql --set topicOperator.image.repository=192.168.34.81:60080/tdsql --set userOperator.image.repository=192.168.34.81:60080/tdsql --set kafkaInit.image.repository=192.168.34.81:60080/tdsql --set tlsSidecarKafka.image.repository=192.168.34.81:60080/tdsql --set tlsSidecarEntityOperator.image.repository=192.168.34.81:60080/tdsql --set kafkaMirrorMaker.image.repository=192.168.34.81:60080/tdsql --set kafkaBridge.image.repository=192.168.34.81:60080/tdsql --set kafkaExporter.image.repository=192.168.34.81:60080/tdsql --set jmxTrans.image.repository=192.168.34.81:60080/tdsql --set kafkaMirrorMaker2.image.repository=192.168.34.81:60080/tdsql --set cruiseControl.image.repository=192.168.34.81:60080/tdsql --set tlsSidecarCruiseControl.image.repository=192.168.34.81:60080/tdsql install mystrimzi ./ --debug --dry-run
+
+
+
+docker inspect harbor-b.alauda.cn/3rdparty/operator@sha256:2857eec4b4c5eca0fbe342fa37497dcc9eee6fdbc06db53910c92136176ed34d
+
+docker inspect 192.168.34.81:60080/tdsql/operator:arm-0.18.0
+
+docker inspect harbor-b.alauda.cn/tdsql/operator:arm-0.18.0
+
+
+
+docker images harbor-b.alauda.cn/3rdparty/operator@sha256:2857eec4b4c5eca0fbe342fa37497dcc9eee6fdbc06db53910c92136176ed34d harbor-b.alauda.cn/tdsql/operator:arm-0.18.0
+
+
+docker manifest create harbor-b.alauda.cn/tdsql/operator:0.18.0 harbor-b.alauda.cn/3rdparty/operator@sha256:2857eec4b4c5eca0fbe342fa37497dcc9eee6fdbc06db53910c92136176ed34d harbor-b.alauda.cn/tdsql/operator:arm-0.18.0
+
+docker manifest inspect harbor-b.alauda.cn/tdsql/operator:0.18.0
+
+[root@hudi-arm-master-0001 ~]# docker manifest push  harbor-b.alauda.cn/tdsql/operator:0.18.0
+Pushed ref harbor-b.alauda.cn/tdsql/operator@sha256:2857eec4b4c5eca0fbe342fa37497dcc9eee6fdbc06db53910c92136176ed34d with digest: sha256:2857eec4b4c5eca0fbe342fa37497dcc9eee6fdbc06db53910c92136176ed34d
+sha256:404b3ce3b754cbfb7616110e5e2098dd724f625055c6ccb34aa2081166d73401
+[root@hudi-arm-master-0001 ~]#
+
+
+
+docker tag harbor-b.alauda.cn/3rdparty/operator@sha256:2857eec4b4c5eca0fbe342fa37497dcc9eee6fdbc06db53910c92136176ed34d 192.168.34.81:60080/3rdparty/operator@sha256:2857eec4b4c5eca0fbe342fa37497dcc9eee6fdbc06db53910c92136176ed34d
+
+
+docker tag harbor-b.alauda.cn/tdsql/operator:arm-0.18.0 192.168.34.81:60080/tdsql/operator:arm-0.18.0
+
+
+
+    
+####################
+
+
+
+$ kubectl create ns kafka
+namespace/kafka created
+
+$ helm --set image.repository=192.168.34.81:60080/tdsql --set zookeeper.image.repository=192.168.34.81:60080/tdsql --set kafka.image.repository=192.168.34.81:60080/tdsql --set kafkaConnect.image.repository=192.168.34.81:60080/tdsql --set kafkaConnects2i.image.repository=192.168.34.81:60080/tdsql --set topicOperator.image.repository=192.168.34.81:60080/tdsql --set userOperator.image.repository=192.168.34.81:60080/tdsql --set kafkaInit.image.repository=192.168.34.81:60080/tdsql --set tlsSidecarKafka.image.repository=192.168.34.81:60080/tdsql --set tlsSidecarEntityOperator.image.repository=192.168.34.81:60080/tdsql --set kafkaMirrorMaker.image.repository=192.168.34.81:60080/tdsql --set kafkaBridge.image.repository=192.168.34.81:60080/tdsql --set kafkaExporter.image.repository=192.168.34.81:60080/tdsql --set jmxTrans.image.repository=192.168.34.81:60080/tdsql --set kafkaMirrorMaker2.image.repository=192.168.34.81:60080/tdsql --set cruiseControl.image.repository=192.168.34.81:60080/tdsql --set tlsSidecarCruiseControl.image.repository=192.168.34.81:60080/tdsql -n kafka install mystrimzi ./
+NAME: mystrimzi
+LAST DEPLOYED: Fri Dec 25 13:42:30 2020
+NAMESPACE: kafka
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NOTES:
+Thank you for installing strimzi-kafka-operator-arm-0.18.0
+
+To create a Kafka cluster refer to the following documentation.
+
+https://strimzi.io/docs/0.18.0/#kafka-cluster-str
+
+$ helm list -n kafka
+NAME     	NAMESPACE	REVISION	UPDATED                                	STATUS  	CHART                            	APP VERSION
+mystrimzi	kafka    	1       	2020-12-25 13:42:30.169548335 +0800 CST	deployed	strimzi-kafka-operator-arm-0.18.0	0.18.0
+
+$ kubectl -n kafka get pods
+NAME                                        READY   STATUS    RESTARTS   AGE
+strimzi-cluster-operator-56d865b4d7-nnf2l   1/1     Running   0          43s
+
+
+[root@hudi-arm-master-0001 chart]# kubectl -n kafka get pvc
+NAME                                 STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+data-acp-kafka-cluster-kafka-0       Bound    pvc-30c5a1a2-e643-46b3-b4ad-6781195124f5   1Gi        RWO            local-path     6m15s
+data-acp-kafka-cluster-kafka-1       Bound    pvc-69b07fd6-2ebf-4146-b616-7794acf29cce   1Gi        RWO            local-path     6m15s
+data-acp-kafka-cluster-kafka-2       Bound    pvc-9a8d9a37-d2a5-4197-8469-31a394c54bb1   1Gi        RWO            local-path     6m15s
+data-acp-kafka-cluster-zookeeper-0   Bound    pvc-3e8fdee9-c905-4e42-b73b-feceb44bb9d9   1Gi        RWO            local-path     7m36s
+data-acp-kafka-cluster-zookeeper-1   Bound    pvc-19b70e64-85b7-4e29-84ac-f8f54f7257ca   1Gi        RWO            local-path     7m36s
+data-acp-kafka-cluster-zookeeper-2   Bound    pvc-fcf8bf88-6ff1-4317-a93b-fead9a2c54c5   1Gi        RWO            local-path     7m36s
+[root@hudi-arm-master-0001 chart]#
+
+
+kubectl get pv pvc-30c5a1a2-e643-46b3-b4ad-6781195124f5 pvc-69b07fd6-2ebf-4146-b616-7794acf29cce pvc-9a8d9a37-d2a5-4197-8469-31a394c54bb1 pvc-3e8fdee9-c905-4e42-b73b-feceb44bb9d9 pvc-19b70e64-85b7-4e29-84ac-f8f54f7257ca pvc-fcf8bf88-6ff1-4317-a93b-fead9a2c54c5
+
+
+[root@hudi-arm-master-0001 chart]# kubectl get pv pvc-30c5a1a2-e643-46b3-b4ad-6781195124f5 pvc-69b07fd6-2ebf-4146-b616-7794acf29cce pvc-9a8d9a37-d2a5-4197-8469-31a394c54bb1 pvc-3e8fdee9-c905-4e42-b73b-feceb44bb9d9 pvc-19b70e64-85b7-4e29-84ac-f8f54f7257ca pvc-fcf8bf88-6ff1-4317-a93b-fead9a2c54c5
+NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                                      STORAGECLASS   REASON   AGE
+pvc-30c5a1a2-e643-46b3-b4ad-6781195124f5   1Gi        RWO            Retain           Bound    kafka/data-acp-kafka-cluster-kafka-0       local-path              10m
+pvc-69b07fd6-2ebf-4146-b616-7794acf29cce   1Gi        RWO            Retain           Bound    kafka/data-acp-kafka-cluster-kafka-1       local-path              10m
+pvc-9a8d9a37-d2a5-4197-8469-31a394c54bb1   1Gi        RWO            Retain           Bound    kafka/data-acp-kafka-cluster-kafka-2       local-path              10m
+pvc-3e8fdee9-c905-4e42-b73b-feceb44bb9d9   1Gi        RWO            Retain           Bound    kafka/data-acp-kafka-cluster-zookeeper-0   local-path              11m
+pvc-19b70e64-85b7-4e29-84ac-f8f54f7257ca   1Gi        RWO            Retain           Bound    kafka/data-acp-kafka-cluster-zookeeper-1   local-path              11m
+pvc-fcf8bf88-6ff1-4317-a93b-fead9a2c54c5   1Gi        RWO            Retain           Bound    kafka/data-acp-kafka-cluster-zookeeper-2   local-path              11m
+[root@hudi-arm-master-0001 chart]#
+
+
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-acp-kafka-cluster-kafka-0
+  namespace: kafka
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: local-path
+  volumeMode: Filesystem
+  volumeName: pvc-30c5a1a2-e643-46b3-b4ad-6781195124f5
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-acp-kafka-cluster-kafka-1
+  namespace: kafka
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: local-path
+  volumeMode: Filesystem
+  volumeName: pvc-69b07fd6-2ebf-4146-b616-7794acf29cce
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-acp-kafka-cluster-kafka-2
+  namespace: kafka
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: local-path
+  volumeMode: Filesystem
+  volumeName: pvc-9a8d9a37-d2a5-4197-8469-31a394c54bb1
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-acp-kafka-cluster-zookeeper-0
+  namespace: kafka
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: local-path
+  volumeMode: Filesystem
+  volumeName: pvc-3e8fdee9-c905-4e42-b73b-feceb44bb9d9
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-acp-kafka-cluster-zookeeper-1
+  namespace: kafka
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: local-path
+  volumeMode: Filesystem
+  volumeName: pvc-19b70e64-85b7-4e29-84ac-f8f54f7257ca
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-acp-kafka-cluster-zookeeper-2
+  namespace: kafka
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: local-path
+  volumeMode: Filesystem
+  volumeName: pvc-fcf8bf88-6ff1-4317-a93b-fead9a2c54c5
+
+---
+
+
+
+
+
+
+
+
+
+
+kafka-producer-perf-test.sh --num-records 500 --topic my-topic --throughput -1 --record-size 1000 --producer-props bootstrap.servers=192.168.34.81:30011
+
+
+kafka-console-consumer.sh --bootstrap-server 192.168.34.81:30011 --topic my-topic --from-beginning --group my-group
+
+kafka-consumer-groups.sh --bootstrap-server 192.168.34.81:30011 --list
+
+[root@hudi-arm-master-0001 chart]# kafka-consumer-groups.sh --bootstrap-server 192.168.34.81:30011 --describe --group my-group
+
+Consumer group 'my-group' has no active members.
+
+GROUP           TOPIC           PARTITION  CURRENT-OFFSET  LOG-END-OFFSET  LAG             CONSUMER-ID     HOST            CLIENT-ID
+my-group        my-topic        0          144             144             0               -               -               -
+my-group        my-topic        1          148             148             0               -               -               -
+my-group        my-topic        2          208             208             0               -               -               -
+[root@hudi-arm-master-0001 chart]#
+
+
+
+apiVersion: kafka.strimzi.io/v1beta1
+kind: KafkaTopic
+metadata:
+  name: consumer-offsets---84e7a678d08f4bd226872e5cdd4eb527fadc1c6a
+  namespace: kafka
+spec:
+  config:
+    cleanup.policy: compact
+    compression.type: producer
+    segment.bytes: "104857600"
+  partitions: 50
+  replicas: 3
+  topicName: __consumer_offsets
+
+---
+
+apiVersion: kafka.strimzi.io/v1beta1
+kind: KafkaTopic
+metadata:
+  name: my-topic
+  namespace: kafka
+spec:
+  partitions: 3
+  replicas: 3
+
+
+
+
+
+
+
+
+1、删除命名空间
+
+[root@hudi-arm-master-0001 chart]# kubectl delete ns kafka
+namespace "kafka" deleted
+[root@hudi-arm-master-0001 chart]#
+
+2、确定 pv 存在且处于 Released 状态
+
+[root@hudi-arm-master-0001 chart]# kubectl get pv pvc-30c5a1a2-e643-46b3-b4ad-6781195124f5 pvc-69b07fd6-2ebf-4146-b616-7794acf29cce pvc-9a8d9a37-d2a5-4197-8469-31a394c54bb1 pvc-3e8fdee9-c905-4e42-b73b-feceb44bb9d9 pvc-19b70e64-85b7-4e29-84ac-f8f54f7257ca pvc-fcf8bf88-6ff1-4317-a93b-fead9a2c54c5
+NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS     CLAIM                                      STORAGECLASS   REASON   AGE
+pvc-30c5a1a2-e643-46b3-b4ad-6781195124f5   1Gi        RWO            Retain           Released   kafka/data-acp-kafka-cluster-kafka-0       local-path              22m
+pvc-69b07fd6-2ebf-4146-b616-7794acf29cce   1Gi        RWO            Retain           Released   kafka/data-acp-kafka-cluster-kafka-1       local-path              22m
+pvc-9a8d9a37-d2a5-4197-8469-31a394c54bb1   1Gi        RWO            Retain           Released   kafka/data-acp-kafka-cluster-kafka-2       local-path              21m
+pvc-3e8fdee9-c905-4e42-b73b-feceb44bb9d9   1Gi        RWO            Retain           Released   kafka/data-acp-kafka-cluster-zookeeper-0   local-path              23m
+pvc-19b70e64-85b7-4e29-84ac-f8f54f7257ca   1Gi        RWO            Retain           Released   kafka/data-acp-kafka-cluster-zookeeper-1   local-path              23m
+pvc-fcf8bf88-6ff1-4317-a93b-fead9a2c54c5   1Gi        RWO            Retain           Released   kafka/data-acp-kafka-cluster-zookeeper-2   local-path              23m
+[root@hudi-arm-master-0001 chart]#
+
+
+3、kubectl create ns kafka
+
+4、kubectl -n kafka apply -f  pvc.yaml
+
+5、重新使用 helm 安装 operator 
+
+6、恢复 topic
+
+7、恢复 kafka 集群
+
+[root@hudi-arm-master-0001 chart]# kafka-consumer-groups.sh --bootstrap-server 192.168.34.81:31546 --describe --group my-group
+
+Consumer group 'my-group' has no active members.
+
+GROUP           TOPIC           PARTITION  CURRENT-OFFSET  LOG-END-OFFSET  LAG             CONSUMER-ID     HOST            CLIENT-ID
+my-group        my-topic        0          144             144             0               -               -               -
+my-group        my-topic        1          148             148             0               -               -               -
+my-group        my-topic        2          208             208             0               -               -               -
+[root@hudi-arm-master-0001 chart]#
+
+
+
+
+
+
 ```
 
 
 
 
 
-
+cpaas-kafka:9092
 
 
 
@@ -222,7 +675,7 @@ Jenkins  配置
 
 
 
-helm install mystrimzi ./redis --debug --dry-run
+
 
 
 
@@ -625,4 +1078,12 @@ spec:
 ```
 
 
+
+第一次出现 java 
+
+
+
+https://github.com/lanzhiwang/strimzi-kafka-operator/commits/master?before=023e8cc92c0ab9e4d539da68a77df2f093c53770+3220&branch=master
+
+Make the Travis build script compatible with sh in order to avoid pus…
 

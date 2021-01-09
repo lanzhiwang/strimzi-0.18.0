@@ -281,7 +281,253 @@ kafka-producer-perf-test.sh --num-records 50 --topic my-topic --throughput -1 --
 
 
 
+
+[INFO] Final Memory: 15M/431M
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-checkstyle-plugin:3.1.0:check (validate) on project strimzi: Execution validate of goal org.apache.maven.plugins:maven-checkstyle-plugin:3.1.0:check failed: Plugin org.apache.maven.plugins:maven-checkstyle-plugin:3.1.0 or one of its dependencies could not be resolved: The following artifacts could not be resolved: com.google.guava:guava:jar:28.2-jre, net.sf.saxon:Saxon-HE:jar:9.9.1-6, org.apache.velocity:velocity-tools:jar:2.0: Could not transfer artifact com.google.guava:guava:jar:28.2-jre from/to central (https://repo.maven.apache.org/maven2): GET request of: com/google/guava/guava/28.2-jre/guava-28.2-jre.jar from central failed: Premature end of Content-Length delimited message body (expected: 2788302; received: 2339856 -> [Help 1]
+[ERROR]
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR]
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/PluginResolutionException
+make[1]: *** [java_install_root] Error 1
+make[1]: Leaving directory `/root/work/kafka-agent'
+make: *** [kafka-agent] Error 2
+The command '/bin/sh -c yum -y update     && yum -y install java-${JAVA_VERSION}-openjdk-headless openssl git maven     && yum -y clean all     && chmod +x ./Jenkinsfile-script/yq_linux_arm64     && mv ./Jenkinsfile-script/yq_linux_arm64 /usr/bin/yq     && MVN_ARGS="-Dmaven.javadoc.skip=true -DskipITs -DskipTests" make all' returned a non-zero code: 2
+[root@hudi-arm-master-0001 strimzi-kafka-operator]#
+[root@hudi-arm-master-0001 strimzi-kafka-operator]#
+[root@hudi-arm-master-0001 strimzi-kafka-operator]#
+
+
+
+
+
+
+strimzi/test-client
+strimzi/kafka
+strimzi/operator
+strimzi/jmxtrans
+strimzi/base
+
+
+
+
+tdsql/operator:arm-0.18.0
+tdsql/kafka:arm-0.18.0-kafka-2.4.0
+tdsql/kafka:arm-0.18.0-kafka-2.4.1
+tdsql/kafka:arm-0.18.0-kafka-2.5.0
+
+tdsql/kafka-bridge:0.16.0
+tdsql/jmxtrans:arm-0.18.0
+
+
+
+# Source: strimzi-kafka-operator/templates/050-Deployment-strimzi-cluster-operator.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: strimzi-cluster-operator
+  labels:
+    app: strimzi
+    chart: strimzi-kafka-operator-0.18.0
+    component: deployment
+    release: kafka-operator
+    heritage: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: strimzi-cluster-operator
+      strimzi.io/kind: cluster-operator
+  template:
+    metadata:
+      labels:
+        name: strimzi-cluster-operator
+        strimzi.io/kind: cluster-operator
+    spec:
+      serviceAccountName: strimzi-cluster-operator
+      containers:
+        - name: strimzi-cluster-operator
+          image: harbor-b.alauda.cn/tdsql/operator:arm-0.18.0
+          ports:
+            - containerPort: 8080
+              name: http
+          args:
+            - /opt/strimzi/bin/cluster_operator_run.sh
+          env:
+            - name: STRIMZI_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: STRIMZI_FULL_RECONCILIATION_INTERVAL_MS
+              value: "120000"
+            - name: STRIMZI_OPERATION_TIMEOUT_MS
+              value: "300000"
+            - name: STRIMZI_DEFAULT_TLS_SIDECAR_ENTITY_OPERATOR_IMAGE
+              value: harbor-b.alauda.cn/tdsql/kafka:arm-0.18.0-kafka-2.5.0
+            - name: STRIMZI_DEFAULT_TLS_SIDECAR_KAFKA_IMAGE
+              value: harbor-b.alauda.cn/tdsql/kafka:arm-0.18.0-kafka-2.5.0
+            - name: STRIMZI_DEFAULT_KAFKA_EXPORTER_IMAGE
+              value: harbor-b.alauda.cn/tdsql/kafka:arm-0.18.0-kafka-2.5.0
+            - name: STRIMZI_DEFAULT_CRUISE_CONTROL_IMAGE
+              value: harbor-b.alauda.cn/tdsql/kafka:arm-0.18.0-kafka-2.5.0
+            - name: STRIMZI_DEFAULT_TLS_SIDECAR_CRUISE_CONTROL_IMAGE
+              value: harbor-b.alauda.cn/tdsql/kafka:arm-0.18.0-kafka-2.5.0
+            - name: STRIMZI_KAFKA_IMAGES
+              value: |
+                2.4.0=harbor-b.alauda.cn/tdsql/kafka:arm-0.18.0-kafka-2.4.0
+                2.4.1=harbor-b.alauda.cn/tdsql/kafka:arm-0.18.0-kafka-2.4.1
+                2.5.0=harbor-b.alauda.cn/tdsql/kafka:arm-0.18.0-kafka-2.5.0
+            - name: STRIMZI_KAFKA_CONNECT_IMAGES
+              value: |
+                2.4.0=harbor-b.alauda.cn/tdsql/kafka:arm-0.18.0-kafka-2.4.0
+                2.4.1=harbor-b.alauda.cn/tdsql/kafka:arm-0.18.0-kafka-2.4.1
+                2.5.0=harbor-b.alauda.cn/tdsql/kafka:arm-0.18.0-kafka-2.5.0
+            - name: STRIMZI_KAFKA_CONNECT_S2I_IMAGES
+              value: |
+                2.4.0=harbor-b.alauda.cn/tdsql/kafka:arm-0.18.0-kafka-2.4.0
+                2.4.1=harbor-b.alauda.cn/tdsql/kafka:arm-0.18.0-kafka-2.4.1
+                2.5.0=harbor-b.alauda.cn/tdsql/kafka:arm-0.18.0-kafka-2.5.0
+            - name: STRIMZI_KAFKA_MIRROR_MAKER_IMAGES
+              value: |
+                2.4.0=harbor-b.alauda.cn/tdsql/kafka:arm-0.18.0-kafka-2.4.0
+                2.4.1=harbor-b.alauda.cn/tdsql/kafka:arm-0.18.0-kafka-2.4.1
+                2.5.0=harbor-b.alauda.cn/tdsql/kafka:arm-0.18.0-kafka-2.5.0
+            - name: STRIMZI_KAFKA_MIRROR_MAKER_2_IMAGES
+              value: |
+                2.4.0=harbor-b.alauda.cn/tdsql/kafka:arm-0.18.0-kafka-2.4.0
+                2.4.1=harbor-b.alauda.cn/tdsql/kafka:arm-0.18.0-kafka-2.4.1
+                2.5.0=harbor-b.alauda.cn/tdsql/kafka:arm-0.18.0-kafka-2.5.0
+            - name: STRIMZI_DEFAULT_TOPIC_OPERATOR_IMAGE
+              value: harbor-b.alauda.cn/tdsql/operator:arm-0.18.0
+            - name: STRIMZI_DEFAULT_USER_OPERATOR_IMAGE
+              value: harbor-b.alauda.cn/tdsql/operator:arm-0.18.0
+            - name: STRIMZI_DEFAULT_KAFKA_INIT_IMAGE
+              value: harbor-b.alauda.cn/tdsql/operator:arm-0.18.0
+            - name: STRIMZI_DEFAULT_KAFKA_BRIDGE_IMAGE
+              value: harbor-b.alauda.cn/tdsql/kafka-bridge:0.16.0
+            - name: STRIMZI_DEFAULT_JMXTRANS_IMAGE
+              value: harbor-b.alauda.cn/tdsql/jmxtrans:arm-0.18.0
+            - name: STRIMZI_LOG_LEVEL
+              value: "INFO"
+
+          livenessProbe:
+            httpGet:
+              path: /healthy
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 30
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 384Mi
+            requests:
+              cpu: 200m
+              memory: 384Mi
+  strategy:
+    type: Recreate
+
+NOTES:
+Thank you for installing strimzi-kafka-operator-0.18.0
+
+To create a Kafka cluster refer to the following documentation.
+
+https://strimzi.io/docs/0.18.0/#kafka-cluster-str
+huzhideMacBook-Pro:strimzi-kafka-operator huzhi$
+
+
+strimzi/test-client:build-kafka-2.5.0 strimzi/kafka:build-kafka-2.5.0 strimzi/kafka:latest strimzi/test-client:build-kafka-2.4.1 strimzi/kafka:build-kafka-2.4.1 strimzi/test-client:build-kafka-2.4.0 strimzi/kafka:build-kafka-2.4.0
+
+
+
+apt-get install openjdk-8-jdk maven
+
+docker run --rm -it --network=host  busybox sh
+
+
+docker run --rm -it --network=host harbor-b.alauda.cn/tdsql/kafka/release/0.18.0/kafka:0.18.0-kafka-2.5.0 bash
+
+
+
+
+
+
+docker           run            --rm -it   busybox sh
+kubectl -n kafka run kafka-test --rm -ti --network=host --image=harbor-b.alauda.cn/tdsql/kafka/release/0.18.0/kafka:0.18.0-kafka-2.5.0  --restart=Never bash
+
+
+
+192.168.34.81:60080/3rdparty/operators-index:v3.0.1-243.g8af9fcf
+
+harbor-b.alauda.cn/tdsql/kafka/release/0.18.0/kafka@sha256:37c46c8cf949a91c37f3ae090d022b39126f865c5b56dc8a730f017ceadc558f
+
+
+huzhideMacBook-Pro:bin huzhi$ ./kafka-topics.sh --bootstrap-server 192.168.64.44:32390 --list
+Error while executing topic command : org.apache.kafka.common.errors.TimeoutException: Call(callName=listTopics, deadlineMs=1610021201113) timed out at 9223372036854775807 after 1 attempt(s)
+[2021-01-07 20:05:41,348] ERROR java.util.concurrent.ExecutionException: org.apache.kafka.common.errors.TimeoutException: Call(callName=listTopics, deadlineMs=1610021201113) timed out at 9223372036854775807 after 1 attempt(s)
+	at org.apache.kafka.common.internals.KafkaFutureImpl.wrapAndThrow(KafkaFutureImpl.java:45)
+	at org.apache.kafka.common.internals.KafkaFutureImpl.access$000(KafkaFutureImpl.java:32)
+	at org.apache.kafka.common.internals.KafkaFutureImpl$SingleWaiter.await(KafkaFutureImpl.java:89)
+	at org.apache.kafka.common.internals.KafkaFutureImpl.get(KafkaFutureImpl.java:260)
+	at kafka.admin.TopicCommand$AdminClientTopicService.getTopics(TopicCommand.scala:333)
+	at kafka.admin.TopicCommand$AdminClientTopicService.listTopics(TopicCommand.scala:252)
+	at kafka.admin.TopicCommand$.main(TopicCommand.scala:66)
+	at kafka.admin.TopicCommand.main(TopicCommand.scala)
+Caused by: org.apache.kafka.common.errors.TimeoutException: Call(callName=listTopics, deadlineMs=1610021201113) timed out at 9223372036854775807 after 1 attempt(s)
+Caused by: org.apache.kafka.common.errors.TimeoutException: The AdminClient thread has exited.
+ (kafka.admin.TopicCommand$)
+[2021-01-07 20:05:41,349] ERROR Uncaught exception in thread 'kafka-admin-client-thread | adminclient-1': (org.apache.kafka.common.utils.KafkaThread)
+java.lang.OutOfMemoryError: Java heap space
+	at java.nio.HeapByteBuffer.<init>(HeapByteBuffer.java:57)
+	at java.nio.ByteBuffer.allocate(ByteBuffer.java:335)
+	at org.apache.kafka.common.memory.MemoryPool$1.tryAllocate(MemoryPool.java:30)
+	at org.apache.kafka.common.network.NetworkReceive.readFrom(NetworkReceive.java:113)
+	at org.apache.kafka.common.network.KafkaChannel.receive(KafkaChannel.java:448)
+	at org.apache.kafka.common.network.KafkaChannel.read(KafkaChannel.java:398)
+	at org.apache.kafka.common.network.Selector.attemptRead(Selector.java:678)
+	at org.apache.kafka.common.network.Selector.pollSelectionKeys(Selector.java:580)
+	at org.apache.kafka.common.network.Selector.poll(Selector.java:485)
+	at org.apache.kafka.clients.NetworkClient.poll(NetworkClient.java:549)
+	at org.apache.kafka.clients.admin.KafkaAdminClient$AdminClientRunnable.processRequests(KafkaAdminClient.java:1272)
+	at org.apache.kafka.clients.admin.KafkaAdminClient$AdminClientRunnable.run(KafkaAdminClient.java:1203)
+	at java.lang.Thread.run(Thread.java:748)
+huzhideMacBook-Pro:bin huzhi$
+
+
+
+
 ```
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
