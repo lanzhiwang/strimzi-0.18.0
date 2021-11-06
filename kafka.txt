@@ -1,0 +1,1537 @@
+[root@dataservice-master ~]# kubectl -n operators get pods strimzi-cluster-operator-5cd8fd6755-jmm6g -o yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: strimzi-cluster-operator-5cd8fd6755-jmm6g
+  namespace: operators
+spec:
+  containers:
+  - args:
+    - /opt/strimzi/bin/cluster_operator_run.sh
+    env:
+    - name: STRIMZI_NAMESPACE
+      valueFrom:
+        fieldRef:
+          apiVersion: v1
+          fieldPath: metadata.annotations['olm.targetNamespaces']
+    - name: STRIMZI_FULL_RECONCILIATION_INTERVAL_MS
+      value: "120000"
+    - name: STRIMZI_OPERATION_TIMEOUT_MS
+      value: "300000"
+    - name: STRIMZI_NETWORK_POLICY_GENERATION
+      value: "false"
+    - name: STRIMZI_DEFAULT_TLS_SIDECAR_ENTITY_OPERATOR_IMAGE
+      value: build-harbor.alauda.cn/middleware/kafka/release/0.18.0/kafka-2-5-0:tdsql-2156.2110081734
+    - name: STRIMZI_DEFAULT_TLS_SIDECAR_KAFKA_IMAGE
+      value: build-harbor.alauda.cn/middleware/kafka/release/0.18.0/kafka-2-5-0:tdsql-2156.2110081734
+    - name: STRIMZI_DEFAULT_KAFKA_EXPORTER_IMAGE
+      value: build-harbor.alauda.cn/middleware/kafka/release/0.18.0/kafka-2-5-0:tdsql-2156.2110081734
+    - name: STRIMZI_DEFAULT_CRUISE_CONTROL_IMAGE
+      value: build-harbor.alauda.cn/middleware/kafka/release/0.18.0/kafka-2-5-0:tdsql-2156.2110081734
+    - name: STRIMZI_DEFAULT_TLS_SIDECAR_CRUISE_CONTROL_IMAGE
+      value: build-harbor.alauda.cn/middleware/kafka/release/0.18.0/kafka-2-5-0:tdsql-2156.2110081734
+    - name: STRIMZI_KAFKA_IMAGES
+      value: |
+        2.4.0=build-harbor.alauda.cn/middleware/kafka/release/0.18.0/kafka-2-4-0:tdsql-2156.2110081734
+        2.4.1=build-harbor.alauda.cn/middleware/kafka/release/0.18.0/kafka-2-4-1:tdsql-2156.2110081734
+        2.5.0=build-harbor.alauda.cn/middleware/kafka/release/0.18.0/kafka-2-5-0:tdsql-2156.2110081734
+    - name: STRIMZI_KAFKA_CONNECT_IMAGES
+      value: |
+        2.4.0=build-harbor.alauda.cn/middleware/kafka/release/0.18.0/kafka-2-4-0:tdsql-2156.2110081734
+        2.4.1=build-harbor.alauda.cn/middleware/kafka/release/0.18.0/kafka-2-4-1:tdsql-2156.2110081734
+        2.5.0=build-harbor.alauda.cn/middleware/kafka/release/0.18.0/kafka-2-5-0:tdsql-2156.2110081734
+    - name: STRIMZI_KAFKA_CONNECT_S2I_IMAGES
+      value: |
+        2.4.0=build-harbor.alauda.cn/middleware/kafka/release/0.18.0/kafka-2-4-0:tdsql-2156.2110081734
+        2.4.1=build-harbor.alauda.cn/middleware/kafka/release/0.18.0/kafka-2-4-1:tdsql-2156.2110081734
+        2.5.0=build-harbor.alauda.cn/middleware/kafka/release/0.18.0/kafka-2-5-0:tdsql-2156.2110081734
+    - name: STRIMZI_KAFKA_MIRROR_MAKER_IMAGES
+      value: |
+        2.4.0=build-harbor.alauda.cn/middleware/kafka/release/0.18.0/kafka-2-4-0:tdsql-2156.2110081734
+        2.4.1=build-harbor.alauda.cn/middleware/kafka/release/0.18.0/kafka-2-4-1:tdsql-2156.2110081734
+        2.5.0=build-harbor.alauda.cn/middleware/kafka/release/0.18.0/kafka-2-5-0:tdsql-2156.2110081734
+    - name: STRIMZI_KAFKA_MIRROR_MAKER_2_IMAGES
+      value: |
+        2.4.0=build-harbor.alauda.cn/middleware/kafka/release/0.18.0/kafka-2-4-0:tdsql-2156.2110081734
+        2.4.1=build-harbor.alauda.cn/middleware/kafka/release/0.18.0/kafka-2-4-1:tdsql-2156.2110081734
+        2.5.0=build-harbor.alauda.cn/middleware/kafka/release/0.18.0/kafka-2-5-0:tdsql-2156.2110081734
+    - name: STRIMZI_DEFAULT_TOPIC_OPERATOR_IMAGE
+      value: build-harbor.alauda.cn/middleware/kafka/release/0.18.0/operator:tdsql-2156.2110081734
+    - name: STRIMZI_DEFAULT_USER_OPERATOR_IMAGE
+      value: build-harbor.alauda.cn/middleware/kafka/release/0.18.0/operator:tdsql-2156.2110081734
+    - name: STRIMZI_DEFAULT_KAFKA_INIT_IMAGE
+      value: build-harbor.alauda.cn/middleware/kafka/release/0.18.0/operator:tdsql-2156.2110081734
+    - name: STRIMZI_DEFAULT_KAFKA_BRIDGE_IMAGE
+      value: build-harbor.alauda.cn/middleware/kafka/release/0.16.0/kafka-bridge:v3.5.0
+    - name: STRIMZI_DEFAULT_JMXTRANS_IMAGE
+      value: build-harbor.alauda.cn/middleware/kafka/release/0.18.0/jmxtrans:tdsql-2156.2110081734
+    - name: STRIMZI_LOG_LEVEL
+      value: INFO
+    - name: OPERATOR_CONDITION_NAME
+      value: strimzi-kafka-operator.v3.7.0-tdsql-2156.2110081734
+    image: 192.168.131.207:60080/middleware/kafka/release/0.18.0/operator:tdsql-2156.2110081734
+    imagePullPolicy: IfNotPresent
+    livenessProbe:
+      failureThreshold: 3
+      httpGet:
+        path: /healthy
+        port: http
+        scheme: HTTP
+      initialDelaySeconds: 10
+      periodSeconds: 30
+      successThreshold: 1
+      timeoutSeconds: 1
+    name: strimzi-cluster-operator
+    ports:
+    - containerPort: 8080
+      name: http
+      protocol: TCP
+    readinessProbe:
+      failureThreshold: 3
+      httpGet:
+        path: /ready
+        port: http
+        scheme: HTTP
+      initialDelaySeconds: 10
+      periodSeconds: 30
+      successThreshold: 1
+      timeoutSeconds: 1
+    resources:
+      limits:
+        cpu: "1"
+        memory: 384Mi
+      requests:
+        cpu: 200m
+        memory: 384Mi
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-d4lx6
+      readOnly: true
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  nodeName: 192.168.131.208
+  preemptionPolicy: PreemptLowerPriority
+  priority: 0
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext: {}
+  serviceAccount: strimzi-cluster-operator
+  serviceAccountName: strimzi-cluster-operator
+  terminationGracePeriodSeconds: 30
+  tolerations:
+  - effect: NoExecute
+    key: node.kubernetes.io/not-ready
+    operator: Exists
+    tolerationSeconds: 30
+  - effect: NoExecute
+    key: node.kubernetes.io/unreachable
+    operator: Exists
+    tolerationSeconds: 30
+  volumes:
+  - name: kube-api-access-d4lx6
+    projected:
+      defaultMode: 420
+      sources:
+      - serviceAccountToken:
+          expirationSeconds: 3607
+          path: token
+      - configMap:
+          items:
+          - key: ca.crt
+            path: ca.crt
+          name: kube-root-ca.crt
+      - downwardAPI:
+          items:
+          - fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+            path: namespace
+
+
+
+
+usr/bin/tini
+-w
+-e 143 -- 
+java
+-Dvertx.cacheDirBase=/tmp
+-Djava.security.egd=file:/dev/./urandom
+-classpath
+lib/io.strimzi.cluster-operator-0.18.0.jar:
+lib/io.prometheus.simpleclient_common-0.7.0.jar:
+lib/io.strimzi.kafka-oauth-client-0.5.0.jar:
+lib/io.netty.netty-handler-4.1.45.Final.jar:
+lib/io.netty.netty-codec-http-4.1.45.Final.jar:
+lib/org.quartz-scheduler.quartz-2.2.1.jar:
+lib/org.bouncycastle.bcprov-jdk15on-1.60.jar:
+lib/com.squareup.okio.okio-1.15.0.jar:
+lib/org.keycloak.keycloak-core-10.0.0.jar:
+lib/io.netty.netty-buffer-4.1.45.Final.jar:
+lib/org.yaml.snakeyaml-1.24.jar:
+lib/io.fabric8.openshift-client-4.6.4.jar:
+lib/io.netty.netty-common-4.1.45.Final.jar:
+lib/org.apache.logging.log4j.log4j-api-2.13.0.jar:
+lib/org.xerial.snappy.snappy-java-1.1.7.3.jar:
+lib/org.hdrhistogram.HdrHistogram-2.1.11.jar:
+lib/io.prometheus.simpleclient-0.7.0.jar:
+lib/com.sun.activation.jakarta.activation-1.2.1.jar:
+lib/javax.xml.bind.jaxb-api-2.3.0.jar:
+lib/org.apache.yetus.audience-annotations-0.5.0.jar:
+lib/javax.annotation.javax.annotation-api-1.3.2.jar:
+lib/com.fasterxml.jackson.dataformat.jackson-dataformat-yaml-2.10.2.jar:
+lib/io.micrometer.micrometer-core-1.3.1.jar:
+lib/io.netty.netty-codec-4.1.45.Final.jar:
+lib/org.keycloak.keycloak-common-10.0.0.jar:
+lib/jakarta.activation.jakarta.activation-api-1.2.1.jar:
+lib/io.vertx.vertx-core-3.8.5.jar:
+lib/io.strimzi.certificate-manager-0.18.0.jar:
+lib/io.strimzi.kafka-oauth-common-0.5.0.jar:
+lib/io.strimzi.kafka-oauth-server-0.5.0.jar:
+lib/io.netty.netty-codec-dns-4.1.45.Final.jar:
+lib/io.fabric8.kubernetes-model-4.6.4.jar:
+lib/io.netty.netty-codec-socks-4.1.45.Final.jar:
+lib/com.github.mifmif.generex-1.0.2.jar:
+lib/io.netty.netty-resolver-4.1.45.Final.jar:
+lib/com.github.luben.zstd-jni-1.4.4-7.jar:
+lib/io.netty.netty-handler-proxy-4.1.45.Final.jar:
+lib/com.squareup.okhttp3.logging-interceptor-3.12.6.jar:
+lib/io.strimzi.operator-common-0.18.0.jar:
+lib/org.bouncycastle.bcpkix-jdk15on-1.62.jar:
+lib/org.lz4.lz4-java-1.7.1.jar:
+lib/io.netty.netty-transport-native-epoll-4.1.45.Final-linux-x86_64.jar:
+lib/io.netty.netty-transport-native-unix-common-4.1.45.Final.jar:
+lib/dk.brics.automaton.automaton-1.11-8.jar:
+lib/io.vertx.vertx-micrometer-metrics-3.8.5.jar:
+lib/org.apache.kafka.kafka-clients-2.5.0.jar:
+lib/com.fasterxml.jackson.core.jackson-core-2.10.2.jar:
+lib/org.apache.zookeeper.zookeeper-jute-3.5.7.jar:
+lib/io.netty.netty-transport-4.1.45.Final.jar:
+lib/io.netty.netty-transport-native-epoll-4.1.45.Final.jar:
+lib/jakarta.xml.bind.jakarta.xml.bind-api-2.3.2.jar:
+lib/org.apache.logging.log4j.log4j-slf4j-impl-2.13.0.jar:
+lib/com.fasterxml.jackson.core.jackson-annotations-2.10.2.jar:
+lib/io.fabric8.zjsonpatch-0.3.0.jar:
+lib/org.apache.zookeeper.zookeeper-3.5.7.jar:
+lib/io.strimzi.api-0.18.0.jar:
+lib/io.fabric8.kubernetes-client-4.6.4.jar:
+lib/com.fasterxml.jackson.module.jackson-module-jaxb-annotations-2.10.2.jar:
+lib/com.squareup.okhttp3.okhttp-3.12.6.jar:
+lib/io.netty.netty-codec-http2-4.1.45.Final.jar:
+lib/io.strimzi.config-model-0.18.0.jar:
+lib/org.apache.logging.log4j.log4j-core-2.13.0.jar:
+lib/io.fabric8.kubernetes-model-common-4.6.4.jar:
+lib/com.fasterxml.jackson.core.jackson-databind-2.10.2.jar:
+lib/io.strimzi.crd-annotations-0.18.0.jar:
+lib/io.netty.netty-resolver-dns-4.1.45.Final.jar:
+lib/org.slf4j.slf4j-api-1.7.25.jar:
+lib/org.latencyutils.LatencyUtils-2.0.3.jar:
+lib/io.micrometer.micrometer-registry-prometheus-1.3.1.jar
+
+io.strimzi.operator.cluster.Main
+
+
+####################################################################################################
+
+
+
+apiVersion: kafka.strimzi.io/v1beta1
+kind: Kafka
+metadata:
+  name: my-cluster
+  namespace: hz-kafka
+spec:
+  entityOperator:
+    topicOperator: {}
+    userOperator: {}
+  kafka:
+    config:
+      log.message.format.version: '2.5'
+      offsets.topic.replication.factor: 3
+      transaction.state.log.min.isr: 2
+      transaction.state.log.replication.factor: 3
+    jmxOptions:
+      '-Xms': 8192m
+      '-Xmx': 8192m
+    listeners:
+      external:
+        tls: false
+        type: nodeport
+      plain: {}
+      tls: {}
+    livenessProbe:
+      initialDelaySeconds: 15
+      timeoutSeconds: 5
+    metrics: {}
+    readinessProbe:
+      initialDelaySeconds: 15
+      timeoutSeconds: 5
+    replicas: 3
+    storage:
+      type: ephemeral
+    version: 2.5.0
+  kafkaExporter:
+    groupRegex: .*
+    topicRegex: .*
+  zookeeper:
+    jmxOptions:
+      '-Xms': 4096m
+      '-Xmx': 4096m
+    livenessProbe:
+      initialDelaySeconds: 15
+      timeoutSeconds: 5
+    metrics: {}
+    readinessProbe:
+      initialDelaySeconds: 15
+      timeoutSeconds: 5
+    replicas: 3
+    storage:
+      type: ephemeral
+
+
+####################################################################################################
+
+
+
+[root@dataservice-master ~]# kubectl -n hz-kafka get pods my-cluster-kafka-0 -o yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-cluster-kafka-0
+  namespace: hz-kafka
+spec:
+  affinity: {}
+  containers:
+  - command:
+    - /opt/kafka/kafka_run.sh
+    env:
+    - name: KAFKA_METRICS_ENABLED
+      value: "true"
+    - name: STRIMZI_KAFKA_GC_LOG_ENABLED
+      value: "false"
+    - name: KAFKA_HEAP_OPTS
+      value: -Xms128M
+    - name: KAFKA_JMX_ENABLED
+      value: "true"
+    image: 192.168.131.207:60080/middleware/kafka/release/0.18.0/kafka-2-5-0:tdsql-2156.2110081734
+    imagePullPolicy: IfNotPresent
+    livenessProbe:
+      exec:
+        command:
+        - /opt/kafka/kafka_liveness.sh
+      failureThreshold: 3
+      initialDelaySeconds: 15
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 5
+    name: kafka
+    ports:
+    - containerPort: 9091
+      name: tcp-replication
+      protocol: TCP
+    - containerPort: 9092
+      name: tcp-clients
+      protocol: TCP
+    - containerPort: 9093
+      name: tcp-clientstls
+      protocol: TCP
+    - containerPort: 9094
+      name: tcp-external
+      protocol: TCP
+    - containerPort: 9404
+      name: tcp-prometheus
+      protocol: TCP
+    readinessProbe:
+      exec:
+        command:
+        - test
+        - -f
+        - /var/opt/kafka/kafka-ready
+      failureThreshold: 3
+      initialDelaySeconds: 15
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 5
+    resources: {}
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /var/lib/kafka/data
+      name: data
+    - mountPath: /opt/kafka/cluster-ca-certs
+      name: cluster-ca
+    - mountPath: /opt/kafka/broker-certs
+      name: broker-certs
+    - mountPath: /opt/kafka/client-ca-certs
+      name: client-ca-cert
+    - mountPath: /opt/kafka/custom-config/
+      name: kafka-metrics-and-logging
+    - mountPath: /var/opt/kafka
+      name: ready-files
+    - mountPath: /opt/kafka/init
+      name: rack-volume
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-2j6zv
+      readOnly: true
+  - command:
+    - /opt/stunnel/kafka_stunnel_run.sh
+    env:
+    - name: KAFKA_ZOOKEEPER_CONNECT
+      value: my-cluster-zookeeper-client:2181
+    - name: TLS_SIDECAR_LOG_LEVEL
+      value: notice
+    image: 192.168.131.207:60080/middleware/kafka/release/0.18.0/kafka-2-5-0:tdsql-2156.2110081734
+    imagePullPolicy: IfNotPresent
+    lifecycle:
+      preStop:
+        exec:
+          command:
+          - /opt/stunnel/kafka_stunnel_pre_stop.sh
+    livenessProbe:
+      exec:
+        command:
+        - /opt/stunnel/stunnel_healthcheck.sh
+        - "2181"
+      failureThreshold: 3
+      initialDelaySeconds: 15
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 5
+    name: tls-sidecar
+    readinessProbe:
+      exec:
+        command:
+        - /opt/stunnel/stunnel_healthcheck.sh
+        - "2181"
+      failureThreshold: 3
+      initialDelaySeconds: 15
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 5
+    resources: {}
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /etc/tls-sidecar/kafka-brokers/
+      name: broker-certs
+    - mountPath: /etc/tls-sidecar/cluster-ca-certs/
+      name: cluster-ca
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-2j6zv
+      readOnly: true
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  hostname: my-cluster-kafka-0
+  initContainers:
+  - args:
+    - /opt/strimzi/bin/kafka_init_run.sh
+    env:
+    - name: NODE_NAME
+      valueFrom:
+        fieldRef:
+          apiVersion: v1
+          fieldPath: spec.nodeName
+    - name: EXTERNAL_ADDRESS
+      value: "TRUE"
+    image: 192.168.131.207:60080/middleware/kafka/release/0.18.0/operator:tdsql-2156.2110081734
+    imagePullPolicy: IfNotPresent
+    name: kafka-init
+    resources:
+      limits:
+        cpu: "1"
+        memory: 256Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /opt/kafka/init
+      name: rack-volume
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-2j6zv
+      readOnly: true
+  nodeName: 192.168.131.208
+  preemptionPolicy: PreemptLowerPriority
+  priority: 0
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext: {}
+  serviceAccount: my-cluster-kafka
+  serviceAccountName: my-cluster-kafka
+  subdomain: my-cluster-kafka-brokers
+  terminationGracePeriodSeconds: 30
+  tolerations:
+  - effect: NoExecute
+    key: node.kubernetes.io/not-ready
+    operator: Exists
+    tolerationSeconds: 30
+  - effect: NoExecute
+    key: node.kubernetes.io/unreachable
+    operator: Exists
+    tolerationSeconds: 30
+  volumes:
+  - emptyDir: {}
+    name: data
+  - emptyDir: {}
+    name: rack-volume
+  - name: cluster-ca
+    secret:
+      defaultMode: 292
+      secretName: my-cluster-cluster-ca-cert
+  - name: broker-certs
+    secret:
+      defaultMode: 292
+      secretName: my-cluster-kafka-brokers
+  - name: client-ca-cert
+    secret:
+      defaultMode: 292
+      secretName: my-cluster-clients-ca-cert
+  - configMap:
+      defaultMode: 420
+      name: my-cluster-kafka-config
+    name: kafka-metrics-and-logging
+  - emptyDir:
+      medium: Memory
+    name: ready-files
+  - name: kube-api-access-2j6zv
+    projected:
+      defaultMode: 420
+      sources:
+      - serviceAccountToken:
+          expirationSeconds: 3607
+          path: token
+      - configMap:
+          items:
+          - key: ca.crt
+            path: ca.crt
+          name: kube-root-ca.crt
+      - downwardAPI:
+          items:
+          - fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+            path: namespace
+
+
+
+
+/usr/local/openjdk-8/bin/java
+-Xms128M
+-server
+-XX:+UseG1GC
+-XX:MaxGCPauseMillis=20
+-XX:InitiatingHeapOccupancyPercent=35
+-XX:+ExplicitGCInvokesConcurrent
+-XX:MaxInlineLevel=15
+-Djava.awt.headless=true
+-Dcom.sun.management.jmxremote
+-Dcom.sun.management.jmxremote.authenticate=false
+-Dcom.sun.management.jmxremote.ssl=false
+-Dkafka.logs.dir=/opt/kafka
+-Dlog4j.configuration=file:/opt/kafka/custom-config/log4j.properties
+-cp
+/opt/kafka/bin/../libs/activation-1.1.1.jar:
+/opt/kafka/bin/../libs/annotations-13.0.jar:
+/opt/kafka/bin/../libs/aopalliance-repackaged-2.5.0.jar:
+/opt/kafka/bin/../libs/argparse4j-0.7.0.jar:
+/opt/kafka/bin/../libs/audience-annotations-0.5.0.jar:
+/opt/kafka/bin/../libs/bcpkix-jdk15on-1.62.jar:
+/opt/kafka/bin/../libs/bcprov-jdk15on-1.60.jar:
+/opt/kafka/bin/../libs/commons-cli-1.4.jar:
+/opt/kafka/bin/../libs/commons-lang-2.6.jar:
+/opt/kafka/bin/../libs/commons-lang3-3.8.1.jar:
+/opt/kafka/bin/../libs/connect-api-2.5.0.jar:
+/opt/kafka/bin/../libs/connect-basic-auth-extension-2.5.0.jar:
+/opt/kafka/bin/../libs/connect-file-2.5.0.jar:
+/opt/kafka/bin/../libs/connect-json-2.5.0.jar:
+/opt/kafka/bin/../libs/connect-mirror-2.5.0.jar:
+/opt/kafka/bin/../libs/connect-mirror-client-2.5.0.jar:
+/opt/kafka/bin/../libs/connect-runtime-2.5.0.jar:
+/opt/kafka/bin/../libs/connect-transforms-2.5.0.jar:
+/opt/kafka/bin/../libs/cruise-control-metrics-reporter-2.0.103.jar:
+/opt/kafka/bin/../libs/gson-2.8.6.jar:
+/opt/kafka/bin/../libs/hk2-api-2.5.0.jar:
+/opt/kafka/bin/../libs/hk2-locator-2.5.0.jar:
+/opt/kafka/bin/../libs/hk2-utils-2.5.0.jar:
+/opt/kafka/bin/../libs/jackson-annotations-2.10.2.jar:
+/opt/kafka/bin/../libs/jackson-core-2.10.2.jar:
+/opt/kafka/bin/../libs/jackson-databind-2.10.2.jar:
+/opt/kafka/bin/../libs/jackson-dataformat-csv-2.10.2.jar:
+/opt/kafka/bin/../libs/jackson-datatype-jdk8-2.10.2.jar:
+/opt/kafka/bin/../libs/jackson-jaxrs-base-2.10.2.jar:
+/opt/kafka/bin/../libs/jackson-jaxrs-json-provider-2.10.2.jar:
+/opt/kafka/bin/../libs/jackson-module-jaxb-annotations-2.10.2.jar:
+/opt/kafka/bin/../libs/jackson-module-paranamer-2.10.2.jar:
+/opt/kafka/bin/../libs/jackson-module-scala_2.12-2.10.2.jar:
+/opt/kafka/bin/../libs/jaeger-client-1.1.0.jar:
+/opt/kafka/bin/../libs/jaeger-core-1.1.0.jar:
+/opt/kafka/bin/../libs/jaeger-thrift-1.1.0.jar:
+/opt/kafka/bin/../libs/jaeger-tracerresolver-1.1.0.jar:
+/opt/kafka/bin/../libs/jakarta.activation-api-1.2.1.jar:
+/opt/kafka/bin/../libs/jakarta.annotation-api-1.3.4.jar:
+/opt/kafka/bin/../libs/jakarta.inject-2.5.0.jar:
+/opt/kafka/bin/../libs/jakarta.ws.rs-api-2.1.5.jar:
+/opt/kafka/bin/../libs/jakarta.xml.bind-api-2.3.2.jar:
+/opt/kafka/bin/../libs/javassist-3.22.0-CR2.jar:
+/opt/kafka/bin/../libs/javassist-3.26.0-GA.jar:
+/opt/kafka/bin/../libs/javax.servlet-api-3.1.0.jar:
+/opt/kafka/bin/../libs/javax.ws.rs-api-2.1.1.jar:
+/opt/kafka/bin/../libs/jaxb-api-2.3.0.jar:
+/opt/kafka/bin/../libs/jersey-client-2.28.jar:
+/opt/kafka/bin/../libs/jersey-common-2.28.jar:
+/opt/kafka/bin/../libs/jersey-container-servlet-2.28.jar:
+/opt/kafka/bin/../libs/jersey-container-servlet-core-2.28.jar:
+/opt/kafka/bin/../libs/jersey-hk2-2.28.jar:
+/opt/kafka/bin/../libs/jersey-media-jaxb-2.28.jar:
+/opt/kafka/bin/../libs/jersey-server-2.28.jar:
+/opt/kafka/bin/../libs/jetty-client-9.4.24.v20191120.jar:
+/opt/kafka/bin/../libs/jetty-continuation-9.4.24.v20191120.jar:
+/opt/kafka/bin/../libs/jetty-http-9.4.24.v20191120.jar:
+/opt/kafka/bin/../libs/jetty-io-9.4.24.v20191120.jar:
+/opt/kafka/bin/../libs/jetty-security-9.4.24.v20191120.jar:
+/opt/kafka/bin/../libs/jetty-server-9.4.24.v20191120.jar:
+/opt/kafka/bin/../libs/jetty-servlet-9.4.24.v20191120.jar:
+/opt/kafka/bin/../libs/jetty-servlets-9.4.24.v20191120.jar:
+/opt/kafka/bin/../libs/jetty-util-9.4.24.v20191120.jar:
+/opt/kafka/bin/../libs/jmx_prometheus_javaagent-0.12.0.jar:
+/opt/kafka/bin/../libs/jopt-simple-5.0.4.jar:
+/opt/kafka/bin/../libs/json-smart-1.1.1.jar:
+/opt/kafka/bin/../libs/jsonevent-layout-1.7.jar:
+/opt/kafka/bin/../libs/kafka-agent.jar:
+/opt/kafka/bin/../libs/kafka-clients-2.5.0.jar:
+/opt/kafka/bin/../libs/kafka-log4j-appender-2.5.0.jar:
+/opt/kafka/bin/../libs/kafka-oauth-client-0.5.0.jar:
+/opt/kafka/bin/../libs/kafka-oauth-common-0.5.0.jar:
+/opt/kafka/bin/../libs/kafka-oauth-keycloak-authorizer-0.5.0.jar:
+/opt/kafka/bin/../libs/kafka-oauth-server-0.5.0.jar:
+/opt/kafka/bin/../libs/kafka-streams-2.5.0.jar:
+/opt/kafka/bin/../libs/kafka-streams-examples-2.5.0.jar:
+/opt/kafka/bin/../libs/kafka-streams-scala_2.12-2.5.0.jar:
+/opt/kafka/bin/../libs/kafka-streams-test-utils-2.5.0.jar:
+/opt/kafka/bin/../libs/kafka-tools-2.5.0.jar:
+/opt/kafka/bin/../libs/kafka_2.12-2.5.0-sources.jar:
+/opt/kafka/bin/../libs/kafka_2.12-2.5.0.jar:
+/opt/kafka/bin/../libs/keycloak-common-10.0.0.jar:
+/opt/kafka/bin/../libs/keycloak-core-10.0.0.jar:
+/opt/kafka/bin/../libs/kotlin-stdlib-1.3.50.jar:
+/opt/kafka/bin/../libs/kotlin-stdlib-common-1.3.50.jar:
+/opt/kafka/bin/../libs/libthrift-0.13.0.jar:
+/opt/kafka/bin/../libs/log4j-1.2.17.jar:
+/opt/kafka/bin/../libs/lz4-java-1.7.1.jar:
+/opt/kafka/bin/../libs/maven-artifact-3.6.3.jar:
+/opt/kafka/bin/../libs/metrics-core-2.2.0.jar:
+/opt/kafka/bin/../libs/mirror-maker-agent.jar:
+/opt/kafka/bin/../libs/netty-buffer-4.1.45.Final.jar:
+/opt/kafka/bin/../libs/netty-codec-4.1.45.Final.jar:
+/opt/kafka/bin/../libs/netty-common-4.1.45.Final.jar:
+/opt/kafka/bin/../libs/netty-handler-4.1.45.Final.jar:
+/opt/kafka/bin/../libs/netty-resolver-4.1.45.Final.jar:
+/opt/kafka/bin/../libs/netty-transport-4.1.45.Final.jar:
+/opt/kafka/bin/../libs/netty-transport-native-epoll-4.1.45.Final.jar:
+/opt/kafka/bin/../libs/netty-transport-native-unix-common-4.1.45.Final.jar:
+/opt/kafka/bin/../libs/okhttp-4.2.2.jar:
+/opt/kafka/bin/../libs/okio-2.2.2.jar:
+/opt/kafka/bin/../libs/opentracing-api-0.33.0.jar:
+/opt/kafka/bin/../libs/opentracing-kafka-client-0.1.12.jar:
+/opt/kafka/bin/../libs/opentracing-noop-0.33.0.jar:
+/opt/kafka/bin/../libs/opentracing-tracerresolver-0.1.8.jar:
+/opt/kafka/bin/../libs/opentracing-util-0.33.0.jar:
+/opt/kafka/bin/../libs/osgi-resource-locator-1.0.1.jar:
+/opt/kafka/bin/../libs/paranamer-2.8.jar:
+/opt/kafka/bin/../libs/plexus-utils-3.2.1.jar:
+/opt/kafka/bin/../libs/reflections-0.9.12.jar:
+/opt/kafka/bin/../libs/rocksdbjni-5.18.3.jar:
+/opt/kafka/bin/../libs/scala-collection-compat_2.12-2.1.3.jar:
+/opt/kafka/bin/../libs/scala-java8-compat_2.12-0.9.0.jar:
+/opt/kafka/bin/../libs/scala-library-2.12.10.jar:
+/opt/kafka/bin/../libs/scala-logging_2.12-3.9.2.jar:
+/opt/kafka/bin/../libs/scala-reflect-2.12.10.jar:
+/opt/kafka/bin/../libs/slf4j-api-1.7.30.jar:
+/opt/kafka/bin/../libs/slf4j-log4j12-1.7.30.jar:
+/opt/kafka/bin/../libs/snappy-java-1.1.7.3.jar:
+/opt/kafka/bin/../libs/tracing-agent.jar:
+/opt/kafka/bin/../libs/validation-api-2.0.1.Final.jar:
+/opt/kafka/bin/../libs/zookeeper-3.5.7.jar:
+/opt/kafka/bin/../libs/zookeeper-jute-3.5.7.jar:
+/opt/kafka/bin/../libs/zstd-jni-1.4.4-7.jar
+-javaagent:/opt/kafka/libs/kafka-agent.jar=/var/opt/kafka/kafka-ready:/var/opt/kafka/zk-connected
+-Dcom.sun.management.jmxremote.port=9999
+-Dcom.sun.management.jmxremote.rmi.port=9999
+-Dcom.sun.management.jmxremote=true
+-Djava.rmi.server.hostname=10.5.0.244
+-Djava.net.preferIPv4Stack=true
+-Dcom.sun.management.jmxremote.authenticate=false
+-javaagent:/opt/kafka/libs/jmx_prometheus_javaagent-0.12.0.jar=9404:/opt/kafka/custom-config/metrics-config.yml
+kafka.Kafka /tmp/strimzi.properties
+
+
+
+
+tls-sidecar
+
+/usr/bin/stunnel /tmp/stunnel.conf
+
+$ cat /tmp/stunnel.conf
+pid = /usr/local/var/run/stunnel.pid
+foreground = yes
+debug = notice
+sslVersion = TLSv1.2
+[zookeeper-2181]
+client = yes
+CAfile = /tmp/cluster-ca.crt
+cert = /etc/tls-sidecar/kafka-brokers/my-cluster-kafka-0.crt
+key = /etc/tls-sidecar/kafka-brokers/my-cluster-kafka-0.key
+accept = 127.0.0.1:2181
+connect = my-cluster-zookeeper-client:2181
+delay = yes
+verify = 2
+
+
+
+####################################################################################################
+
+
+
+
+[root@dataservice-master ~]# kubectl -n hz-kafka get pods my-cluster-zookeeper-0 -o yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-cluster-zookeeper-0
+  namespace: hz-kafka
+spec:
+  containers:
+  - command:
+    - /opt/kafka/zookeeper_run.sh
+    env:
+    - name: ZOOKEEPER_METRICS_ENABLED
+      value: "true"
+    - name: ZOOKEEPER_SNAPSHOT_CHECK_ENABLED
+      value: "true"
+    - name: STRIMZI_KAFKA_GC_LOG_ENABLED
+      value: "false"
+    - name: KAFKA_HEAP_OPTS
+      value: -Xms128M
+    - name: ZOOKEEPER_CONFIGURATION
+      value: |
+        tickTime=2000
+        initLimit=5
+        syncLimit=2
+        autopurge.purgeInterval=1
+    image: 192.168.131.207:60080/middleware/kafka/release/0.18.0/kafka-2-5-0:tdsql-2156.2110081734
+    imagePullPolicy: IfNotPresent
+    livenessProbe:
+      exec:
+        command:
+        - /opt/kafka/zookeeper_healthcheck.sh
+      failureThreshold: 3
+      initialDelaySeconds: 15
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 5
+    name: zookeeper
+    ports:
+    - containerPort: 2888
+      name: tcp-clustering
+      protocol: TCP
+    - containerPort: 3888
+      name: tcp-election
+      protocol: TCP
+    - containerPort: 2181
+      name: tcp-clients
+      protocol: TCP
+    - containerPort: 9404
+      name: tcp-prometheus
+      protocol: TCP
+    readinessProbe:
+      exec:
+        command:
+        - /opt/kafka/zookeeper_healthcheck.sh
+      failureThreshold: 3
+      initialDelaySeconds: 15
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 5
+    resources: {}
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /var/lib/zookeeper
+      name: data
+    - mountPath: /opt/kafka/custom-config/
+      name: zookeeper-metrics-and-logging
+    - mountPath: /opt/kafka/zookeeper-node-certs/
+      name: zookeeper-nodes
+    - mountPath: /opt/kafka/cluster-ca-certs/
+      name: cluster-ca-certs
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-f4zwr
+      readOnly: true
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  hostname: my-cluster-zookeeper-0
+  nodeName: 192.168.131.208
+  preemptionPolicy: PreemptLowerPriority
+  priority: 0
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext: {}
+  serviceAccount: my-cluster-zookeeper
+  serviceAccountName: my-cluster-zookeeper
+  subdomain: my-cluster-zookeeper-nodes
+  terminationGracePeriodSeconds: 30
+  tolerations:
+  - effect: NoExecute
+    key: node.kubernetes.io/not-ready
+    operator: Exists
+    tolerationSeconds: 30
+  - effect: NoExecute
+    key: node.kubernetes.io/unreachable
+    operator: Exists
+    tolerationSeconds: 30
+  volumes:
+  - emptyDir: {}
+    name: data
+  - configMap:
+      defaultMode: 420
+      name: my-cluster-zookeeper-config
+    name: zookeeper-metrics-and-logging
+  - name: zookeeper-nodes
+    secret:
+      defaultMode: 292
+      secretName: my-cluster-zookeeper-nodes
+  - name: cluster-ca-certs
+    secret:
+      defaultMode: 292
+      secretName: my-cluster-cluster-ca-cert
+  - name: kube-api-access-f4zwr
+    projected:
+      defaultMode: 420
+      sources:
+      - serviceAccountToken:
+          expirationSeconds: 3607
+          path: token
+      - configMap:
+          items:
+          - key: ca.crt
+            path: ca.crt
+          name: kube-root-ca.crt
+      - downwardAPI:
+          items:
+          - fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+            path: namespace
+
+
+
+/usr/local/openjdk-8/bin/java
+-Xms128M
+-server
+-XX:+UseG1GC
+-XX:MaxGCPauseMillis=20
+-XX:InitiatingHeapOccupancyPercent=35
+-XX:+ExplicitGCInvokesConcurrent
+-XX:MaxInlineLevel=15
+-Djava.awt.headless=true
+-Dcom.sun.management.jmxremote
+-Dcom.sun.management.jmxremote.authenticate=false
+-Dcom.sun.management.jmxremote.ssl=false
+-Dkafka.logs.dir=/var/lib/zookeeper/logs
+-Dlog4j.configuration=file:/opt/kafka/custom-config/log4j.properties
+-cp
+/opt/kafka/bin/../libs/activation-1.1.1.jar:
+/opt/kafka/bin/../libs/annotations-13.0.jar:
+/opt/kafka/bin/../libs/aopalliance-repackaged-2.5.0.jar:
+/opt/kafka/bin/../libs/argparse4j-0.7.0.jar:
+/opt/kafka/bin/../libs/audience-annotations-0.5.0.jar:
+/opt/kafka/bin/../libs/bcpkix-jdk15on-1.62.jar:
+/opt/kafka/bin/../libs/bcprov-jdk15on-1.60.jar:
+/opt/kafka/bin/../libs/commons-cli-1.4.jar:
+/opt/kafka/bin/../libs/commons-lang-2.6.jar:
+/opt/kafka/bin/../libs/commons-lang3-3.8.1.jar:
+/opt/kafka/bin/../libs/connect-api-2.5.0.jar:
+/opt/kafka/bin/../libs/connect-basic-auth-extension-2.5.0.jar:
+/opt/kafka/bin/../libs/connect-file-2.5.0.jar:
+/opt/kafka/bin/../libs/connect-json-2.5.0.jar:
+/opt/kafka/bin/../libs/connect-mirror-2.5.0.jar:
+/opt/kafka/bin/../libs/connect-mirror-client-2.5.0.jar:
+/opt/kafka/bin/../libs/connect-runtime-2.5.0.jar:
+/opt/kafka/bin/../libs/connect-transforms-2.5.0.jar:
+/opt/kafka/bin/../libs/cruise-control-metrics-reporter-2.0.103.jar:
+/opt/kafka/bin/../libs/gson-2.8.6.jar:
+/opt/kafka/bin/../libs/hk2-api-2.5.0.jar:
+/opt/kafka/bin/../libs/hk2-locator-2.5.0.jar:
+/opt/kafka/bin/../libs/hk2-utils-2.5.0.jar:
+/opt/kafka/bin/../libs/jackson-annotations-2.10.2.jar:
+/opt/kafka/bin/../libs/jackson-core-2.10.2.jar:
+/opt/kafka/bin/../libs/jackson-databind-2.10.2.jar:
+/opt/kafka/bin/../libs/jackson-dataformat-csv-2.10.2.jar:
+/opt/kafka/bin/../libs/jackson-datatype-jdk8-2.10.2.jar:
+/opt/kafka/bin/../libs/jackson-jaxrs-base-2.10.2.jar:
+/opt/kafka/bin/../libs/jackson-jaxrs-json-provider-2.10.2.jar:
+/opt/kafka/bin/../libs/jackson-module-jaxb-annotations-2.10.2.jar:
+/opt/kafka/bin/../libs/jackson-module-paranamer-2.10.2.jar:
+/opt/kafka/bin/../libs/jackson-module-scala_2.12-2.10.2.jar:
+/opt/kafka/bin/../libs/jaeger-client-1.1.0.jar:
+/opt/kafka/bin/../libs/jaeger-core-1.1.0.jar:
+/opt/kafka/bin/../libs/jaeger-thrift-1.1.0.jar:
+/opt/kafka/bin/../libs/jaeger-tracerresolver-1.1.0.jar:
+/opt/kafka/bin/../libs/jakarta.activation-api-1.2.1.jar:
+/opt/kafka/bin/../libs/jakarta.annotation-api-1.3.4.jar:
+/opt/kafka/bin/../libs/jakarta.inject-2.5.0.jar:
+/opt/kafka/bin/../libs/jakarta.ws.rs-api-2.1.5.jar:
+/opt/kafka/bin/../libs/jakarta.xml.bind-api-2.3.2.jar:
+/opt/kafka/bin/../libs/javassist-3.22.0-CR2.jar:
+/opt/kafka/bin/../libs/javassist-3.26.0-GA.jar:
+/opt/kafka/bin/../libs/javax.servlet-api-3.1.0.jar:
+/opt/kafka/bin/../libs/javax.ws.rs-api-2.1.1.jar:
+/opt/kafka/bin/../libs/jaxb-api-2.3.0.jar:
+/opt/kafka/bin/../libs/jersey-client-2.28.jar:
+/opt/kafka/bin/../libs/jersey-common-2.28.jar:
+/opt/kafka/bin/../libs/jersey-container-servlet-2.28.jar:
+/opt/kafka/bin/../libs/jersey-container-servlet-core-2.28.jar:
+/opt/kafka/bin/../libs/jersey-hk2-2.28.jar:
+/opt/kafka/bin/../libs/jersey-media-jaxb-2.28.jar:
+/opt/kafka/bin/../libs/jersey-server-2.28.jar:
+/opt/kafka/bin/../libs/jetty-client-9.4.24.v20191120.jar:
+/opt/kafka/bin/../libs/jetty-continuation-9.4.24.v20191120.jar:
+/opt/kafka/bin/../libs/jetty-http-9.4.24.v20191120.jar:
+/opt/kafka/bin/../libs/jetty-io-9.4.24.v20191120.jar:
+/opt/kafka/bin/../libs/jetty-security-9.4.24.v20191120.jar:
+/opt/kafka/bin/../libs/jetty-server-9.4.24.v20191120.jar:
+/opt/kafka/bin/../libs/jetty-servlet-9.4.24.v20191120.jar:
+/opt/kafka/bin/../libs/jetty-servlets-9.4.24.v20191120.jar:
+/opt/kafka/bin/../libs/jetty-util-9.4.24.v20191120.jar:
+/opt/kafka/bin/../libs/jmx_prometheus_javaagent-0.12.0.jar:
+/opt/kafka/bin/../libs/jopt-simple-5.0.4.jar:
+/opt/kafka/bin/../libs/json-smart-1.1.1.jar:
+/opt/kafka/bin/../libs/jsonevent-layout-1.7.jar:
+/opt/kafka/bin/../libs/kafka-agent.jar:
+/opt/kafka/bin/../libs/kafka-clients-2.5.0.jar:
+/opt/kafka/bin/../libs/kafka-log4j-appender-2.5.0.jar:
+/opt/kafka/bin/../libs/kafka-oauth-client-0.5.0.jar:
+/opt/kafka/bin/../libs/kafka-oauth-common-0.5.0.jar:
+/opt/kafka/bin/../libs/kafka-oauth-keycloak-authorizer-0.5.0.jar:
+/opt/kafka/bin/../libs/kafka-oauth-server-0.5.0.jar:
+/opt/kafka/bin/../libs/kafka-streams-2.5.0.jar:
+/opt/kafka/bin/../libs/kafka-streams-examples-2.5.0.jar:
+/opt/kafka/bin/../libs/kafka-streams-scala_2.12-2.5.0.jar:
+/opt/kafka/bin/../libs/kafka-streams-test-utils-2.5.0.jar:
+/opt/kafka/bin/../libs/kafka-tools-2.5.0.jar:
+/opt/kafka/bin/../libs/kafka_2.12-2.5.0-sources.jar:
+/opt/kafka/bin/../libs/kafka_2.12-2.5.0.jar:
+/opt/kafka/bin/../libs/keycloak-common-10.0.0.jar:
+/opt/kafka/bin/../libs/keycloak-core-10.0.0.jar:
+/opt/kafka/bin/../libs/kotlin-stdlib-1.3.50.jar:
+/opt/kafka/bin/../libs/kotlin-stdlib-common-1.3.50.jar:
+/opt/kafka/bin/../libs/libthrift-0.13.0.jar:
+/opt/kafka/bin/../libs/log4j-1.2.17.jar:
+/opt/kafka/bin/../libs/lz4-java-1.7.1.jar:
+/opt/kafka/bin/../libs/maven-artifact-3.6.3.jar:
+/opt/kafka/bin/../libs/metrics-core-2.2.0.jar:
+/opt/kafka/bin/../libs/mirror-maker-agent.jar:
+/opt/kafka/bin/../libs/netty-buffer-4.1.45.Final.jar:
+/opt/kafka/bin/../libs/netty-codec-4.1.45.Final.jar:
+/opt/kafka/bin/../libs/netty-common-4.1.45.Final.jar:
+/opt/kafka/bin/../libs/netty-handler-4.1.45.Final.jar:
+/opt/kafka/bin/../libs/netty-resolver-4.1.45.Final.jar:
+/opt/kafka/bin/../libs/netty-transport-4.1.45.Final.jar:
+/opt/kafka/bin/../libs/netty-transport-native-epoll-4.1.45.Final.jar:
+/opt/kafka/bin/../libs/netty-transport-native-unix-common-4.1.45.Final.jar:
+/opt/kafka/bin/../libs/okhttp-4.2.2.jar:
+/opt/kafka/bin/../libs/okio-2.2.2.jar:
+/opt/kafka/bin/../libs/opentracing-api-0.33.0.jar:
+/opt/kafka/bin/../libs/opentracing-kafka-client-0.1.12.jar:
+/opt/kafka/bin/../libs/opentracing-noop-0.33.0.jar:
+/opt/kafka/bin/../libs/opentracing-tracerresolver-0.1.8.jar:
+/opt/kafka/bin/../libs/opentracing-util-0.33.0.jar:
+/opt/kafka/bin/../libs/osgi-resource-locator-1.0.1.jar:
+/opt/kafka/bin/../libs/paranamer-2.8.jar:
+/opt/kafka/bin/../libs/plexus-utils-3.2.1.jar:
+/opt/kafka/bin/../libs/reflections-0.9.12.jar:
+/opt/kafka/bin/../libs/rocksdbjni-5.18.3.jar:
+/opt/kafka/bin/../libs/scala-collection-compat_2.12-2.1.3.jar:
+/opt/kafka/bin/../libs/scala-java8-compat_2.12-0.9.0.jar:
+/opt/kafka/bin/../libs/scala-library-2.12.10.jar:
+/opt/kafka/bin/../libs/scala-logging_2.12-3.9.2.jar:
+/opt/kafka/bin/../libs/scala-reflect-2.12.10.jar:
+/opt/kafka/bin/../libs/slf4j-api-1.7.30.jar:
+/opt/kafka/bin/../libs/slf4j-log4j12-1.7.30.jar:
+/opt/kafka/bin/../libs/snappy-java-1.1.7.3.jar:
+/opt/kafka/bin/../libs/tracing-agent.jar:
+/opt/kafka/bin/../libs/validation-api-2.0.1.Final.jar:
+/opt/kafka/bin/../libs/zookeeper-3.5.7.jar:
+/opt/kafka/bin/../libs/zookeeper-jute-3.5.7.jar:
+/opt/kafka/bin/../libs/zstd-jni-1.4.4-7.jar
+
+-javaagent:/opt/kafka/libs/jmx_prometheus_javaagent-0.12.0.jar=9404:/opt/kafka/custom-config/metrics-config.yml
+-Dzookeeper.skipACL=yes
+org.apache.zookeeper.server.quorum.QuorumPeerMain /tmp/zookeeper.properties
+
+
+
+####################################################################################################
+
+
+
+[root@dataservice-master ~]# kubectl -n hz-kafka get pods my-cluster-entity-operator-6c5cb6499d-7chx2 -o yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-cluster-entity-operator-6c5cb6499d-7chx2
+  namespace: hz-kafka
+spec:
+  containers:
+  - args:
+    - /opt/strimzi/bin/topic_operator_run.sh
+    env:
+    - name: STRIMZI_RESOURCE_LABELS
+      value: strimzi.io/cluster=my-cluster
+    - name: STRIMZI_KAFKA_BOOTSTRAP_SERVERS
+      value: my-cluster-kafka-bootstrap:9091
+    - name: STRIMZI_ZOOKEEPER_CONNECT
+      value: localhost:2181
+    - name: STRIMZI_NAMESPACE
+      value: hz-kafka
+    - name: STRIMZI_FULL_RECONCILIATION_INTERVAL_MS
+      value: "90000"
+    - name: STRIMZI_ZOOKEEPER_SESSION_TIMEOUT_MS
+      value: "20000"
+    - name: STRIMZI_TOPIC_METADATA_MAX_ATTEMPTS
+      value: "6"
+    - name: STRIMZI_TLS_ENABLED
+      value: "true"
+    - name: STRIMZI_GC_LOG_ENABLED
+      value: "false"
+    image: 192.168.131.207:60080/middleware/kafka/release/0.18.0/operator:tdsql-2156.2110081734
+    imagePullPolicy: IfNotPresent
+    livenessProbe:
+      failureThreshold: 3
+      httpGet:
+        path: /healthy
+        port: healthcheck
+        scheme: HTTP
+      initialDelaySeconds: 10
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 5
+    name: topic-operator
+    ports:
+    - containerPort: 8080
+      name: healthcheck
+      protocol: TCP
+    readinessProbe:
+      failureThreshold: 3
+      httpGet:
+        path: /ready
+        port: healthcheck
+        scheme: HTTP
+      initialDelaySeconds: 10
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 5
+    resources: {}
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /opt/topic-operator/custom-config/
+      name: entity-topic-operator-metrics-and-logging
+    - mountPath: /etc/tls-sidecar/eo-certs/
+      name: eo-certs
+    - mountPath: /etc/tls-sidecar/cluster-ca-certs/
+      name: cluster-ca-certs
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-w4tl5
+      readOnly: true
+  - args:
+    - /opt/strimzi/bin/user_operator_run.sh
+    env:
+    - name: STRIMZI_ZOOKEEPER_CONNECT
+      value: localhost:2181
+    - name: STRIMZI_KAFKA_BOOTSTRAP_SERVERS
+      value: my-cluster-kafka-bootstrap:9091
+    - name: STRIMZI_NAMESPACE
+      value: hz-kafka
+    - name: STRIMZI_LABELS
+      value: strimzi.io/cluster=my-cluster
+    - name: STRIMZI_FULL_RECONCILIATION_INTERVAL_MS
+      value: "120000"
+    - name: STRIMZI_ZOOKEEPER_SESSION_TIMEOUT_MS
+      value: "6000"
+    - name: STRIMZI_CA_KEY_NAME
+      value: my-cluster-clients-ca
+    - name: STRIMZI_CA_CERT_NAME
+      value: my-cluster-clients-ca-cert
+    - name: STRIMZI_CA_NAMESPACE
+      value: hz-kafka
+    - name: STRIMZI_CA_VALIDITY
+      value: "365"
+    - name: STRIMZI_CA_RENEWAL
+      value: "30"
+    - name: STRIMZI_CLUSTER_CA_CERT_SECRET_NAME
+      value: my-cluster-cluster-ca-cert
+    - name: STRIMZI_EO_KEY_SECRET_NAME
+      value: my-cluster-entity-operator-certs
+    - name: STRIMZI_GC_LOG_ENABLED
+      value: "false"
+    image: 192.168.131.207:60080/middleware/kafka/release/0.18.0/operator:tdsql-2156.2110081734
+    imagePullPolicy: IfNotPresent
+    livenessProbe:
+      failureThreshold: 3
+      httpGet:
+        path: /healthy
+        port: healthcheck
+        scheme: HTTP
+      initialDelaySeconds: 10
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 5
+    name: user-operator
+    ports:
+    - containerPort: 8081
+      name: healthcheck
+      protocol: TCP
+    readinessProbe:
+      failureThreshold: 3
+      httpGet:
+        path: /ready
+        port: healthcheck
+        scheme: HTTP
+      initialDelaySeconds: 10
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 5
+    resources: {}
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /opt/user-operator/custom-config/
+      name: entity-user-operator-metrics-and-logging
+    - mountPath: /etc/tls-sidecar/eo-certs/
+      name: eo-certs
+    - mountPath: /etc/tls-sidecar/cluster-ca-certs/
+      name: cluster-ca-certs
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-w4tl5
+      readOnly: true
+  - command:
+    - /opt/stunnel/entity_operator_stunnel_run.sh
+    env:
+    - name: TLS_SIDECAR_LOG_LEVEL
+      value: notice
+    - name: STRIMZI_ZOOKEEPER_CONNECT
+      value: my-cluster-zookeeper-client:2181
+    image: 192.168.131.207:60080/middleware/kafka/release/0.18.0/kafka-2-5-0:tdsql-2156.2110081734
+    imagePullPolicy: IfNotPresent
+    lifecycle:
+      preStop:
+        exec:
+          command:
+          - /opt/stunnel/entity_operator_stunnel_pre_stop.sh
+    livenessProbe:
+      exec:
+        command:
+        - /opt/stunnel/stunnel_healthcheck.sh
+        - "2181"
+      failureThreshold: 3
+      initialDelaySeconds: 15
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 5
+    name: tls-sidecar
+    readinessProbe:
+      exec:
+        command:
+        - /opt/stunnel/stunnel_healthcheck.sh
+        - "2181"
+      failureThreshold: 3
+      initialDelaySeconds: 15
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 5
+    resources: {}
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /etc/tls-sidecar/eo-certs/
+      name: eo-certs
+    - mountPath: /etc/tls-sidecar/cluster-ca-certs/
+      name: cluster-ca-certs
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-w4tl5
+      readOnly: true
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  nodeName: 192.168.131.208
+  preemptionPolicy: PreemptLowerPriority
+  priority: 0
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext: {}
+  serviceAccount: my-cluster-entity-operator
+  serviceAccountName: my-cluster-entity-operator
+  terminationGracePeriodSeconds: 30
+  tolerations:
+  - effect: NoExecute
+    key: node.kubernetes.io/not-ready
+    operator: Exists
+    tolerationSeconds: 30
+  - effect: NoExecute
+    key: node.kubernetes.io/unreachable
+    operator: Exists
+    tolerationSeconds: 30
+  volumes:
+  - configMap:
+      defaultMode: 420
+      name: my-cluster-entity-topic-operator-config
+    name: entity-topic-operator-metrics-and-logging
+  - configMap:
+      defaultMode: 420
+      name: my-cluster-entity-user-operator-config
+    name: entity-user-operator-metrics-and-logging
+  - name: eo-certs
+    secret:
+      defaultMode: 292
+      secretName: my-cluster-entity-operator-certs
+  - name: cluster-ca-certs
+    secret:
+      defaultMode: 292
+      secretName: my-cluster-cluster-ca-cert
+  - name: kube-api-access-w4tl5
+    projected:
+      defaultMode: 420
+      sources:
+      - serviceAccountToken:
+          expirationSeconds: 3607
+          path: token
+      - configMap:
+          items:
+          - key: ca.crt
+            path: ca.crt
+          name: kube-root-ca.crt
+      - downwardAPI:
+          items:
+          - fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+            path: namespace
+
+
+
+
+
+
+topic-operator
+
+usr/bin/tini
+-w
+-e 143 -- 
+java
+-Dlog4j2.configurationFile=file:/opt/topic-operator/custom-config/log4j2.properties
+-Dvertx.cacheDirBase=/tmp
+-Djava.security.egd=file:/dev/./urandom
+-classpath
+lib/io.strimzi.topic-operator-0.18.0.jar:
+lib/io.prometheus.simpleclient_common-0.7.0.jar:
+lib/io.netty.netty-handler-4.1.45.Final.jar:
+lib/com.101tec.zkclient-0.11.jar:
+lib/io.netty.netty-codec-http-4.1.45.Final.jar:
+lib/com.squareup.okio.okio-1.15.0.jar:
+lib/io.netty.netty-buffer-4.1.45.Final.jar:
+lib/org.yaml.snakeyaml-1.24.jar:
+lib/io.fabric8.openshift-client-4.6.4.jar:
+lib/io.netty.netty-common-4.1.45.Final.jar:
+lib/org.apache.logging.log4j.log4j-api-2.13.0.jar:
+lib/org.xerial.snappy.snappy-java-1.1.7.3.jar:
+lib/org.hdrhistogram.HdrHistogram-2.1.11.jar:
+lib/io.prometheus.simpleclient-0.7.0.jar:
+lib/javax.xml.bind.jaxb-api-2.3.0.jar:
+lib/org.apache.yetus.audience-annotations-0.5.0.jar:
+lib/com.fasterxml.jackson.dataformat.jackson-dataformat-yaml-2.10.2.jar:
+lib/javax.annotation.javax.annotation-api-1.3.2.jar:
+lib/io.netty.netty-codec-4.1.45.Final.jar:
+lib/io.micrometer.micrometer-core-1.3.1.jar:
+lib/jakarta.activation.jakarta.activation-api-1.2.1.jar:
+lib/io.vertx.vertx-core-3.8.5.jar:
+lib/io.strimzi.certificate-manager-0.18.0.jar:
+lib/io.netty.netty-codec-dns-4.1.45.Final.jar:
+lib/io.fabric8.kubernetes-model-4.6.4.jar:
+lib/io.netty.netty-codec-socks-4.1.45.Final.jar:
+lib/com.github.mifmif.generex-1.0.2.jar:
+lib/io.netty.netty-resolver-4.1.45.Final.jar:
+lib/com.github.luben.zstd-jni-1.4.4-7.jar:
+lib/io.netty.netty-handler-proxy-4.1.45.Final.jar:
+lib/com.squareup.okhttp3.logging-interceptor-3.12.6.jar:
+lib/io.strimzi.operator-common-0.18.0.jar:
+lib/org.lz4.lz4-java-1.7.1.jar:
+lib/io.netty.netty-transport-native-unix-common-4.1.45.Final.jar:
+lib/dk.brics.automaton.automaton-1.11-8.jar:
+lib/io.vertx.vertx-micrometer-metrics-3.8.5.jar:
+lib/org.apache.kafka.kafka-clients-2.5.0.jar:
+lib/com.fasterxml.jackson.core.jackson-core-2.10.2.jar:
+lib/org.apache.zookeeper.zookeeper-jute-3.5.7.jar:
+lib/io.netty.netty-transport-4.1.45.Final.jar:
+lib/io.netty.netty-transport-native-epoll-4.1.45.Final.jar:
+lib/jakarta.xml.bind.jakarta.xml.bind-api-2.3.2.jar:
+lib/org.apache.logging.log4j.log4j-slf4j-impl-2.13.0.jar:
+lib/com.fasterxml.jackson.core.jackson-annotations-2.10.2.jar:
+lib/io.fabric8.zjsonpatch-0.3.0.jar:
+lib/org.apache.zookeeper.zookeeper-3.5.7.jar:
+lib/io.strimzi.api-0.18.0.jar:
+lib/io.fabric8.kubernetes-client-4.6.4.jar:
+lib/com.fasterxml.jackson.module.jackson-module-jaxb-annotations-2.10.2.jar:
+lib/com.squareup.okhttp3.okhttp-3.12.6.jar:
+lib/io.netty.netty-codec-http2-4.1.45.Final.jar:
+lib/org.apache.logging.log4j.log4j-core-2.13.0.jar:
+lib/io.fabric8.kubernetes-model-common-4.6.4.jar:
+lib/com.fasterxml.jackson.core.jackson-databind-2.10.2.jar:
+lib/io.netty.netty-resolver-dns-4.1.45.Final.jar:
+lib/io.strimzi.crd-annotations-0.18.0.jar:
+lib/org.slf4j.slf4j-api-1.7.25.jar:
+lib/org.latencyutils.LatencyUtils-2.0.3.jar:
+lib/io.micrometer.micrometer-registry-prometheus-1.3.1.jar
+
+io.strimzi.operator.topic.Main
+
+
+
+
+user-operator
+
+/usr/bin/tini
+-w
+-e 143 -- 
+java
+-Dlog4j2.configurationFile=file:/opt/user-operator/custom-config/log4j2.properties
+-Dvertx.cacheDirBase=/tmp
+-Djava.security.egd=file:/dev/./urandom
+-classpath
+lib/io.strimzi.user-operator-0.18.0.jar:
+lib/io.prometheus.simpleclient_common-0.7.0.jar:
+lib/io.netty.netty-handler-4.1.45.Final.jar:
+lib/com.101tec.zkclient-0.11.jar:
+lib/io.netty.netty-codec-http-4.1.45.Final.jar:
+lib/com.squareup.okio.okio-1.15.0.jar:
+lib/io.netty.netty-buffer-4.1.45.Final.jar:
+lib/org.yaml.snakeyaml-1.24.jar:
+lib/io.fabric8.openshift-client-4.6.4.jar:
+lib/io.netty.netty-common-4.1.45.Final.jar:
+lib/org.apache.logging.log4j.log4j-api-2.13.0.jar:
+lib/org.xerial.snappy.snappy-java-1.1.7.3.jar:
+lib/org.hdrhistogram.HdrHistogram-2.1.11.jar:
+lib/io.prometheus.simpleclient-0.7.0.jar:
+lib/javax.xml.bind.jaxb-api-2.3.0.jar:
+lib/org.apache.yetus.audience-annotations-0.5.0.jar:
+lib/com.fasterxml.jackson.dataformat.jackson-dataformat-yaml-2.10.2.jar:
+lib/javax.annotation.javax.annotation-api-1.3.2.jar:
+lib/io.netty.netty-codec-4.1.45.Final.jar:
+lib/io.micrometer.micrometer-core-1.3.1.jar:
+lib/jakarta.activation.jakarta.activation-api-1.2.1.jar:
+lib/io.vertx.vertx-core-3.8.5.jar:
+lib/io.strimzi.certificate-manager-0.18.0.jar:
+lib/io.netty.netty-codec-dns-4.1.45.Final.jar:
+lib/io.fabric8.kubernetes-model-4.6.4.jar:
+lib/io.netty.netty-codec-socks-4.1.45.Final.jar:
+lib/com.github.mifmif.generex-1.0.2.jar:
+lib/io.netty.netty-resolver-4.1.45.Final.jar:
+lib/com.github.luben.zstd-jni-1.4.4-7.jar:
+lib/io.netty.netty-handler-proxy-4.1.45.Final.jar:
+lib/com.squareup.okhttp3.logging-interceptor-3.12.6.jar:
+lib/io.strimzi.operator-common-0.18.0.jar:
+lib/org.lz4.lz4-java-1.7.1.jar:
+lib/io.netty.netty-transport-native-unix-common-4.1.45.Final.jar:
+lib/dk.brics.automaton.automaton-1.11-8.jar:
+lib/io.vertx.vertx-micrometer-metrics-3.8.5.jar:
+lib/org.apache.kafka.kafka-clients-2.5.0.jar:
+lib/com.fasterxml.jackson.core.jackson-core-2.10.2.jar:
+lib/io.netty.netty-transport-4.1.45.Final.jar:
+lib/org.apache.zookeeper.zookeeper-jute-3.5.7.jar:
+lib/io.netty.netty-transport-native-epoll-4.1.45.Final.jar:
+lib/jakarta.xml.bind.jakarta.xml.bind-api-2.3.2.jar:
+lib/org.apache.logging.log4j.log4j-slf4j-impl-2.13.0.jar:
+lib/com.fasterxml.jackson.core.jackson-annotations-2.10.2.jar:
+lib/io.fabric8.zjsonpatch-0.3.0.jar:
+lib/org.apache.zookeeper.zookeeper-3.5.7.jar:
+lib/io.strimzi.api-0.18.0.jar:
+lib/io.fabric8.kubernetes-client-4.6.4.jar:
+lib/com.fasterxml.jackson.module.jackson-module-jaxb-annotations-2.10.2.jar:
+lib/com.squareup.okhttp3.okhttp-3.12.6.jar:
+lib/io.netty.netty-codec-http2-4.1.45.Final.jar:
+lib/org.apache.logging.log4j.log4j-core-2.13.0.jar:
+lib/io.fabric8.kubernetes-model-common-4.6.4.jar:
+lib/com.fasterxml.jackson.core.jackson-databind-2.10.2.jar:
+lib/io.strimzi.crd-annotations-0.18.0.jar:
+lib/io.netty.netty-resolver-dns-4.1.45.Final.jar:
+lib/org.slf4j.slf4j-api-1.7.25.jar:
+lib/org.latencyutils.LatencyUtils-2.0.3.jar:
+lib/io.micrometer.micrometer-registry-prometheus-1.3.1.jar
+
+io.strimzi.operator.user.Main
+
+
+
+tls-sidecar
+
+/usr/bin/stunnel /tmp/stunnel.conf
+
+$ cat /tmp/stunnel.conf
+pid = /usr/local/var/run/stunnel.pid
+foreground = yes
+debug = notice
+sslVersion = TLSv1.2
+[zookeeper-2181]
+client = yes
+CAfile = /tmp/cluster-ca.crt
+cert = /etc/tls-sidecar/eo-certs/entity-operator.crt
+key = /etc/tls-sidecar/eo-certs/entity-operator.key
+accept = 127.0.0.1:2181
+connect = my-cluster-zookeeper-client:2181
+delay = yes
+verify = 2
+
+
+
+
+####################################################################################################
+
+
+
+
+
+
+
+[root@dataservice-master ~]# kubectl -n hz-kafka get pods my-cluster-kafka-exporter-666d5948dd-955fg -o yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-cluster-kafka-exporter-666d5948dd-955fg
+  namespace: hz-kafka
+spec:
+  containers:
+  - command:
+    - /opt/kafka-exporter/kafka_exporter_run.sh
+    env:
+    - name: KAFKA_EXPORTER_LOGGING
+      value: info
+    - name: KAFKA_EXPORTER_KAFKA_VERSION
+      value: 2.5.0
+    - name: KAFKA_EXPORTER_GROUP_REGEX
+      value: .*
+    - name: KAFKA_EXPORTER_TOPIC_REGEX
+      value: .*
+    - name: KAFKA_EXPORTER_KAFKA_SERVER
+      value: my-cluster-kafka-bootstrap:9091
+    - name: KAFKA_EXPORTER_ENABLE_SARAMA
+      value: "false"
+    image: 192.168.131.207:60080/middleware/kafka/release/0.18.0/kafka-2-5-0:tdsql-2156.2110081734
+    imagePullPolicy: IfNotPresent
+    livenessProbe:
+      failureThreshold: 3
+      httpGet:
+        path: /metrics
+        port: tcp-prometheus
+        scheme: HTTP
+      initialDelaySeconds: 15
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 5
+    name: my-cluster-kafka-exporter
+    ports:
+    - containerPort: 9404
+      name: tcp-prometheus
+      protocol: TCP
+    readinessProbe:
+      failureThreshold: 3
+      httpGet:
+        path: /metrics
+        port: tcp-prometheus
+        scheme: HTTP
+      initialDelaySeconds: 15
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 5
+    resources: {}
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /etc/kafka-exporter/kafka-exporter-certs/
+      name: kafka-exporter-certs
+    - mountPath: /etc/kafka-exporter/cluster-ca-certs/
+      name: cluster-ca-certs
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-dlwsx
+      readOnly: true
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  nodeName: 192.168.131.210
+  preemptionPolicy: PreemptLowerPriority
+  priority: 0
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext: {}
+  serviceAccount: my-cluster-kafka-exporter
+  serviceAccountName: my-cluster-kafka-exporter
+  terminationGracePeriodSeconds: 30
+  tolerations:
+  - effect: NoExecute
+    key: node.kubernetes.io/not-ready
+    operator: Exists
+    tolerationSeconds: 30
+  - effect: NoExecute
+    key: node.kubernetes.io/unreachable
+    operator: Exists
+    tolerationSeconds: 30
+  volumes:
+  - name: kafka-exporter-certs
+    secret:
+      defaultMode: 292
+      secretName: my-cluster-kafka-exporter-certs
+  - name: cluster-ca-certs
+    secret:
+      defaultMode: 292
+      secretName: my-cluster-cluster-ca-cert
+  - name: kube-api-access-dlwsx
+    projected:
+      defaultMode: 420
+      sources:
+      - serviceAccountToken:
+          expirationSeconds: 3607
+          path: token
+      - configMap:
+          items:
+          - key: ca.crt
+            path: ca.crt
+          name: kube-root-ca.crt
+      - downwardAPI:
+          items:
+          - fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+            path: namespace
+
+
+
+/opt/kafka-exporter/kafka_exporter
+--group.filter=.*
+--topic.filter=.*
+--tls.enabled
+--tls.ca-file=/etc/kafka-exporter/cluster-ca-certs/ca.crt
+--tls.cert-file=/etc/kafka-exporter/kafka-exporter-certs/kafka-exporter.crt
+--tls.key-file=/etc/kafka-exporter/kafka-exporter-certs/kafka-exporter.key
+--kafka.server=my-cluster-kafka-bootstrap:9091
+--web.listen-address=:9404
+--log.level=info
+--no-sasl.handshake
+--kafka.version=2.5.0
+
+
+
+####################################################################################################
+
+
+
+
+

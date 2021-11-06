@@ -563,3 +563,256 @@ $ opm index add --bundles lanzhiwang/memcached-operator.v0.1.0:latest --from-ind
 ```
 
 
+
+
+
+
+
+
+
+
+
+```json
+
+
+
+{
+    "apiVersion": "operators.coreos.com/v1alpha1",
+    "kind": "Subscription",
+    "metadata": {
+        "creationTimestamp": "2021-09-29T04:15:09Z",
+        "generation": 1,
+        "labels": {
+            "catalog": "platform"
+        },
+        "managedFields": [
+            {
+                "apiVersion": "operators.coreos.com/v1alpha1",
+                "fieldsType": "FieldsV1",
+                "fieldsV1": {
+                    "f:metadata": {
+                        "f:labels": {
+                            ".": {},
+                            "f:catalog": {}
+                        }
+                    },
+                    "f:spec": {
+                        ".": {},
+                        "f:channel": {},
+                        "f:installPlanApproval": {},
+                        "f:name": {},
+                        "f:source": {},
+                        "f:sourceNamespace": {},
+                        "f:startingCSV": {}
+                    }
+                },
+                "manager": "Mozilla",
+                "operation": "Update",
+                "time": "2021-09-29T04:15:09Z"
+            }
+        ],
+        "name": "strimzi-kafka-operator",
+        "namespace": "operators",
+        "resourceVersion": "72079212",
+        "selfLink": "/apis/operators.coreos.com/v1alpha1/namespaces/operators/subscriptions/strimzi-kafka-operator",
+        "uid": "9b2364b0-5537-4676-ac8e-afbfbf29b438"
+    },
+    "spec": {
+        "channel": "stable",
+        "installPlanApproval": "Automatic",
+        "name": "strimzi-kafka-operator",
+        "source": "platform",
+        "sourceNamespace": "cpaas-system",
+        "startingCSV": "strimzi-kafka-operator.v3.6.1"
+    }
+}
+
+
+
+{
+    "apiVersion": "operators.coreos.com/v1alpha1",
+    "kind": "InstallPlan",
+    "metadata": {
+        "creationTimestamp": "2021-09-29T04:24:50Z",
+        "generateName": "install-",
+        "generation": 2,
+        "labels": {
+            "operators.coreos.com/strimzi-kafka-operator.operators": ""
+        },
+        "managedFields": [
+            {
+                "apiVersion": "operators.coreos.com/v1alpha1",
+                "fieldsType": "FieldsV1",
+                "fieldsV1": {
+                    "f:metadata": {
+                        "f:generateName": {},
+                        "f:ownerReferences": {
+                            ".": {},
+                            "k:{\"uid\":\"3bdbc1ef-a7b2-457a-9b24-c7c056545388\"}": {
+                                ".": {},
+                                "f:apiVersion": {},
+                                "f:blockOwnerDeletion": {},
+                                "f:controller": {},
+                                "f:kind": {},
+                                "f:name": {},
+                                "f:uid": {}
+                            },
+                            "k:{\"uid\":\"4163a69b-975b-4403-a8b5-043d2fcc6214\"}": {
+                                ".": {},
+                                "f:apiVersion": {},
+                                "f:blockOwnerDeletion": {},
+                                "f:controller": {},
+                                "f:kind": {},
+                                "f:name": {},
+                                "f:uid": {}
+                            },
+                            "k:{\"uid\":\"5f1c2227-de20-4bcc-bc5d-c8f71e46cc87\"}": {
+                                ".": {},
+                                "f:apiVersion": {},
+                                "f:blockOwnerDeletion": {},
+                                "f:controller": {},
+                                "f:kind": {},
+                                "f:name": {},
+                                "f:uid": {}
+                            },
+                            "k:{\"uid\":\"a5b1d1e9-6837-4a25-b649-bcaded73bf60\"}": {
+                                ".": {},
+                                "f:apiVersion": {},
+                                "f:blockOwnerDeletion": {},
+                                "f:controller": {},
+                                "f:kind": {},
+                                "f:name": {},
+                                "f:uid": {}
+                            },
+                            "k:{\"uid\":\"ae2c5942-bfef-4348-844d-70a0aae33d17\"}": {
+                                ".": {},
+                                "f:apiVersion": {},
+                                "f:blockOwnerDeletion": {},
+                                "f:controller": {},
+                                "f:kind": {},
+                                "f:name": {},
+                                "f:uid": {}
+                            },
+                            "k:{\"uid\":\"bf5b5faf-c539-4574-9085-6d5bc3c2d4b6\"}": {
+                                ".": {},
+                                "f:apiVersion": {},
+                                "f:blockOwnerDeletion": {},
+                                "f:controller": {},
+                                "f:kind": {},
+                                "f:name": {},
+                                "f:uid": {}
+                            }
+                        }
+                    },
+                    "f:spec": {
+                        ".": {},
+                        "f:approval": {},
+                        "f:clusterServiceVersionNames": {},
+                        "f:generation": {}
+                    },
+                    "f:status": {
+                        ".": {},
+                        "f:catalogSources": {},
+                        "f:phase": {},
+                        "f:plan": {}
+                    }
+                },
+                "manager": "catalog",
+                "operation": "Update",
+                "time": "2021-09-29T04:24:50Z"
+            },
+            {
+                "apiVersion": "operators.coreos.com/v1alpha1",
+                "fieldsType": "FieldsV1",
+                "fieldsV1": {
+                    "f:metadata": {
+                        "f:labels": {
+                            ".": {},
+                            "f:operators.coreos.com/strimzi-kafka-operator.operators": {}
+                        }
+                    }
+                },
+                "manager": "olm",
+                "operation": "Update",
+                "time": "2021-09-29T04:24:51Z"
+            },
+            {
+                "apiVersion": "operators.coreos.com/v1alpha1",
+                "fieldsType": "FieldsV1",
+                "fieldsV1": {
+                    "f:spec": {
+                        "f:approved": {}
+                    }
+                },
+                "manager": "Mozilla",
+                "operation": "Update",
+                "time": "2021-09-29T04:25:10Z"
+            }
+        ],
+        "name": "install-jw86h",
+        "namespace": "operators",
+        "ownerReferences": [
+            {
+                "apiVersion": "operators.coreos.com/v1alpha1",
+                "blockOwnerDeletion": false,
+                "controller": false,
+                "kind": "Subscription",
+                "name": "mysql-mgr-operator",
+                "uid": "bf5b5faf-c539-4574-9085-6d5bc3c2d4b6"
+            },
+            {
+                "apiVersion": "operators.coreos.com/v1alpha1",
+                "blockOwnerDeletion": false,
+                "controller": false,
+                "kind": "Subscription",
+                "name": "percona-xtradb-cluster-operator",
+                "uid": "5f1c2227-de20-4bcc-bc5d-c8f71e46cc87"
+            },
+            {
+                "apiVersion": "operators.coreos.com/v1alpha1",
+                "blockOwnerDeletion": false,
+                "controller": false,
+                "kind": "Subscription",
+                "name": "pmm-operator-alpha-platform-cpaas-system",
+                "uid": "3bdbc1ef-a7b2-457a-9b24-c7c056545388"
+            },
+            {
+                "apiVersion": "operators.coreos.com/v1alpha1",
+                "blockOwnerDeletion": false,
+                "controller": false,
+                "kind": "Subscription",
+                "name": "rds-operator",
+                "uid": "a5b1d1e9-6837-4a25-b649-bcaded73bf60"
+            },
+            {
+                "apiVersion": "operators.coreos.com/v1alpha1",
+                "blockOwnerDeletion": false,
+                "controller": false,
+                "kind": "Subscription",
+                "name": "redis-operator",
+                "uid": "4163a69b-975b-4403-a8b5-043d2fcc6214"
+            },
+            {
+                "apiVersion": "operators.coreos.com/v1alpha1",
+                "blockOwnerDeletion": false,
+                "controller": false,
+                "kind": "Subscription",
+                "name": "strimzi-kafka-operator",
+                "uid": "ae2c5942-bfef-4348-844d-70a0aae33d17"
+            }
+        ],
+        "resourceVersion": "72084609",
+        "selfLink": "/apis/operators.coreos.com/v1alpha1/namespaces/operators/installplans/install-jw86h",
+        "uid": "2cbe3ae7-6fb3-46fa-87ba-bfde5c75ff71"
+    },
+    "spec": {
+        "approval": "Manual",
+        "approved": true,
+        "clusterServiceVersionNames": [
+            "strimzi-kafka-operator.v3.6.1"
+        ],
+        "generation": 103
+    }
+}
+```
+

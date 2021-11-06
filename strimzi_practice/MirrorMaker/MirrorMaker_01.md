@@ -6,6 +6,33 @@
 
 Kafka 默认提供了一个工具 MirrorMaker，用来帮助用户实现数据在两个 Kafka 集群间的拷贝。就具体实现而言，MirrorMaker 是一个 consumer + producer 的混合体。对于源 kafka 集群而言，它是一个 consumer；而对于目标 kafka 集群而言，它又是一个producer。MirrorMaker 读取源 kafka 集群指定 topic 的数据，然后写入目标 kafka 集群中的`同名 topic` 下。
 
+## MirrorMake2 部署方式
+
+目前主要支持三种部署方式：
+
+1. mm2 专用集群部署：无需依赖 kafka connect，mm2 已经提供了一个 driver 可以单独部署mm2 集群，仅需一条命令就可以启动：**./bin/connect-mirror-maker.sh mm2.properties**
+
+2. 依赖 kafka connect 集群部署：需要先启动 kafka connect 集群模式，然后手动启动每个 mm2 相关的 connector，相对比较繁琐。适合已经有 kafka connect 集群的场景。
+
+3. 依赖 kafka connect 单机部署：需要在配置文件中配置好各个 connector，然后启动 Kafka connect 单机服务。不过这种方式便捷性不如 mm2 专用集群模式，稳定性不如 kafka connect 集群模式，适合测试环境下部署。
+
+mm2 相关的配置参照 [KIP-382](https://cwiki.apache.org/confluence/display/KAFKA/KIP-382%3A+MirrorMaker+2.0)，主要配置包括 source 和 target 的 broker 配置，hearbeat，checkpoint 功能是否启用，同步时间间隔等。
+
+
+```bash
+$ kafka-mirror-maker.sh
+$ kafka-run-class.sh kafka.tools.MirrorMaker
+$ connect-mirror-maker.sh
+$ cat connect-mirror-maker.properties
+
+```
+
+
+
+https://blog.csdn.net/dxy1999/article/details/106614363
+
+
+
 ## MirrorMake 实践
 
 实践思路如下：

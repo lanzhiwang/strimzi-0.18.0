@@ -1,0 +1,87 @@
+apiVersion: kafka.strimzi.io/v1beta1
+kind: KafkaMirrorMaker
+metadata:
+  name: my-mirror-maker
+spec:
+  replicas:
+  image:
+  whitelist:
+  resources:
+  affinity:
+  tolerations:
+  jvmOptions:
+  logging:
+  metrics:
+  tracing:
+  template:
+  livenessProbe:
+  readinessProbe:
+  version:
+  #
+  consumer:
+    numStreams: Specifies the number of consumer stream threads to create.
+    offsetCommitInterval: Specifies the offset auto-commit interval in ms. Default value is 60000.
+    groupId:
+    bootstrapServers:
+    authentication:
+    config: "The MirrorMaker consumer config. Properties with the following prefixes cannot be set: ssl., bootstrap.servers, group.id, sasl., security., interceptor.classes (with the exception of: ssl.endpoint.identification.algorithm, ssl.cipher.suites, ssl.protocol, ssl.enabled.protocols)."
+    tls:
+  producer:
+    bootstrapServers:
+    abortOnSendFailure: Flag to set the MirrorMaker to exit on a failed send. Default value is true.
+    authentication:
+    config: "The MirrorMaker producer config. Properties with the following prefixes cannot be set: ssl., bootstrap.servers, sasl., security., interceptor.classes (with the exception of: ssl.endpoint.identification.algorithm, ssl.cipher.suites, ssl.protocol, ssl.enabled.protocols)."
+    tls:
+
+---
+
+apiVersion: kafka.strimzi.io/v1alpha1
+kind: KafkaMirrorMaker2
+metadata:
+  name: my-mm2-cluster
+spec:
+  replicas:
+  version: The Kafka Connect version. Defaults to 2.5.0. Consult the user documentation to understand the process required to upgrade or downgrade the version.
+  image:
+  resources:
+  livenessProbe:
+  readinessProbe:
+  jvmOptions:
+  affinity:
+  tolerations:
+  logging:
+  metrics:
+  tracing:
+  template:
+  #
+  connectCluster:
+  clusters:
+    - alias:
+      bootstrapServers:
+      config:
+      tls:
+      authentication:
+  mirrors:
+    - sourceCluster:
+      targetCluster:
+      sourceConnector:
+        tasksMax:
+        config:
+        pause:
+      checkpointConnector:
+        tasksMax:
+        config:
+        pause:
+      heartbeatConnector:
+        tasksMax:
+        config:
+        pause:
+      topicsPattern:
+      topicsBlacklistPattern:
+      groupsPattern:
+      groupsBlacklistPattern:
+  externalConfiguration:
+    # Pass data from Secrets or ConfigMaps to the Kafka Connect pods and use them to configure connectors.
+    env:
+    volumes:
+

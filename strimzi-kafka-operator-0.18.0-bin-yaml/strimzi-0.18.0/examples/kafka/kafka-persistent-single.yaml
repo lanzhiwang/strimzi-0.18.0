@@ -4,6 +4,9 @@ metadata:
   name: my-cluster
 spec:
   kafka:
+    jmxOptions:
+      "-Xms": 8192m
+      "-Xmx": 8192m
     version: 2.5.0
     replicas: 1
     listeners:
@@ -17,10 +20,10 @@ spec:
     storage:
       type: jbod
       volumes:
-      - id: 0
-        type: persistent-claim
-        size: 100Gi
-        deleteClaim: false
+        - id: 0
+          type: persistent-claim
+          size: 100Gi
+          deleteClaim: false
   zookeeper:
     replicas: 1
     storage:
@@ -30,4 +33,3 @@ spec:
   entityOperator:
     topicOperator: {}
     userOperator: {}
-

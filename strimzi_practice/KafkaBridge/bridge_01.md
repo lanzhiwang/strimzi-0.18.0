@@ -231,7 +231,7 @@ spec:
 3. 获取 Strimzi HTTP Bridge 提供的 API
 
 ```bash
-$ kubectl -n kafka run kafka-test -ti --image=10.0.129.0:60080/3rdparty/strimzi/kafka:latest --rm=true --restart=Never bash
+$ kubectl -n kafka run kafka-test -ti --image=harbor-b.alauda.cn/tdsql/kafka/release/0.18.0/kafka:0.18.0-kafka-2.5.0-v3.4.0 --rm=true --restart=Never bash
 
 $ curl -i -X GET -H "Content-Type: application/json" http://my-bridge-bridge-service:8080/openapi
 

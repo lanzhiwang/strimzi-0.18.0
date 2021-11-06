@@ -285,32 +285,60 @@ usage: producer-performance [-h] --topic TOPIC --num-records NUM-RECORDS [--payl
 This tool is used to verify the producer performance.
 
 optional arguments:
-  -h, --help             show this help message and exit
-  --topic TOPIC          produce messages to this topic
-  --num-records NUM-RECORDS
-                         number of messages to produce  # 发送的消息数量
-  --payload-delimiter PAYLOAD-DELIMITER
-                         provides delimiter to be used when --payload-file is provided. Defaults to new line. Note that this parameter will be ignored if --payload-file is not provided. (default: \n)
-  --throughput THROUGHPUT
-                         throttle maximum message throughput to *approximately* THROUGHPUT messages/sec. Set this to -1 to disable throttling.  # 每秒的吞吐量，即每秒发送多少条消息, -1 表示没有限制
-  --producer-props PROP-NAME=PROP-VALUE [PROP-NAME=PROP-VALUE ...]
-                         kafka producer related configuration properties like bootstrap.servers,client.id etc. These configs take precedence over those passed via --producer.config.
-  --producer.config CONFIG-FILE
-                         producer config properties file.
-  --print-metrics        print out metrics at the end of the test. (default: false)
-  --transactional-id TRANSACTIONAL-ID
-                         The transactionalId to use if transaction-duration-ms is > 0. Useful when testing the performance of concurrent transactions. (default: performance-producer-default-transactional-id)
-  --transaction-duration-ms TRANSACTION-DURATION
-                         The max age of each transaction. The commitTransaction will be called after this time has elapsed. Transactions are only enabled if this value is positive. (default: 0)  # 多长时间后调用 commitTransaction
 
-  either --record-size or --payload-file must be specified but not both.
+-h, --help
+show this help message and exit
 
-  --record-size RECORD-SIZE
-                         message size in bytes. Note that you must provide exactly one of --record-size or --payload-file.  # 单条信息大小，字节单位
-  --payload-file PAYLOAD-FILE
-                         file to read the message payloads from. This works only for UTF-8 encoded text files.  Payloads  will  be  read from this file and a payload will be randomly selected when sending messages.
-                         Note that you must provide exactly one of --record-size or --payload-file.
+--topic TOPIC
+produce messages to this topic
 
+--num-records NUM-RECORDS
+number of messages to produce  # 发送的消息数量
+
+--payload-delimiter PAYLOAD-DELIMITER
+provides delimiter to be used when --payload-file is provided. Defaults to new line. Note that this parameter will be ignored if --payload-file is not provided. (default: \n)
+
+--throughput THROUGHPUT
+throttle maximum message throughput to *approximately* THROUGHPUT messages/sec. Set this to -1 to disable throttling.  # 每秒的吞吐量，即每秒发送多少条消息, -1 表示没有限制
+
+--producer-props PROP-NAME=PROP-VALUE [PROP-NAME=PROP-VALUE ...]
+kafka producer related configuration properties like bootstrap.servers,client.id etc. These configs take precedence over those passed via --producer.config.  # kafka 生产者相关的配置属性，如 bootstrap.servers、client.id 等。这些配置优先于通过 --producer.config 传递的那些。
+
+--producer.config CONFIG-FILE
+producer config properties file.
+
+--print-metrics
+print out metrics at the end of the test. (default: false)
+
+--transactional-id TRANSACTIONAL-ID
+The transactionalId to use if transaction-duration-ms is > 0. Useful when testing the performance of concurrent transactions. (default: performance-producer-default-transactional-id)
+
+--transaction-duration-ms TRANSACTION-DURATION
+The max age of each transaction. The commitTransaction will be called after this time has elapsed. Transactions are only enabled if this value is positive. (default: 0)  # 多长时间后调用 commitTransaction
+# 每笔交易的最大年龄。 在这段时间过后，将调用 commitTransaction。 仅当此值为正时才启用事务。 （默认值：0）
+
+either --record-size or --payload-file must be specified but not both.
+
+--record-size RECORD-SIZE
+message size in bytes. Note that you must provide exactly one of --record-size or --payload-file.  # 单条信息大小，字节单位
+
+--payload-file PAYLOAD-FILE
+file to read the message payloads from. This works only for UTF-8 encoded text files.  Payloads  will  be  read from this file and a payload will be randomly selected when sending messages. Note that you must provide exactly one of --record-size or --payload-file.
+
+
+usage:
+producer-performance
+[-h]
+--topic TOPIC
+--num-records NUM-RECORDS
+[--payload-delimiter PAYLOAD-DELIMITER]
+--throughput THROUGHPUT
+[--producer-props PROP-NAME=PROP-VALUE [PROP-NAME=PROP-VALUE ...]]
+[--producer.config CONFIG-FILE]
+[--print-metrics]
+[--transactional-id TRANSACTIONAL-ID]
+[--transaction-duration-ms TRANSACTION-DURATION]
+(--record-size RECORD-SIZE | -payload-file PAYLOAD-FILE)
 
 
 # kafka-producer-perf-test 基本使用方法
@@ -338,50 +366,63 @@ $ ./kafka-consumer-perf-test.sh --help
 This tool helps in performance test for the full zookeeper consumer
 Option                                   Description
 ------                                   -----------
---bootstrap-server <String: server to    REQUIRED unless --broker-list
-  connect to>                              (deprecated) is specified. The server
-                                           (s) to connect to.
---broker-list <String: broker-list>      DEPRECATED, use --bootstrap-server
-                                           instead; ignored if --bootstrap-
-                                           server is specified.  The broker
-                                           list string in the form HOST1:PORT1,
-                                           HOST2:PORT2.
---consumer.config <String: config file>  Consumer config properties file.
---date-format <String: date format>      The date format to use for formatting
-                                           the time field. See java.text.
-                                           SimpleDateFormat for options.
-                                           (default: yyyy-MM-dd HH:mm:ss:SSS)
---fetch-size <Integer: size>             The amount of data to fetch in a
-                                           single request. (default: 1048576)  # 每次请求的消息数量
---from-latest                            If the consumer does not already have
-                                           an established offset to consume
-                                           from, start with the latest message
-                                           present in the log rather than the
-                                           earliest message.  # 如果消费者还没有建立偏移量，则从最新的消息开始消费，而不是最早的消息
---group <String: gid>                    The group id to consume on. (default:
-                                           perf-consumer-3655)
---help                                   Print usage information.
---hide-header                            If set, skips printing the header for
-                                           the stats
---messages <Long: count>                 REQUIRED: The number of messages to
-                                           send or consume  # 请求消息的总数
---num-fetch-threads <Integer: count>     Number of fetcher threads. (default: 1)  # 请求消息的线程数
---print-metrics                          Print out the metrics.
---reporting-interval <Integer:           Interval in milliseconds at which to
-  interval_ms>                             print progress info. (default: 5000)
---show-detailed-stats                    If set, stats are reported for each
-                                           reporting interval as configured by
-                                           reporting-interval
---socket-buffer-size <Integer: size>     The size of the tcp RECV size.
-                                           (default: 2097152)
---threads <Integer: count>               Number of processing threads.
-                                           (default: 10)  # 处理消息的线程数
---timeout [Long: milliseconds]           The maximum allowed time in
-                                           milliseconds between returned
-                                           records. (default: 10000)  # 允许返回数据的最大超时时间
---topic <String: topic>                  REQUIRED: The topic to consume from.
---version                                Display Kafka version.
 
+--bootstrap-server <String: server to connect to>
+REQUIRED unless --broker-list (deprecated) is specified. The server(s) to connect to.
+
+--broker-list <String: broker-list>
+DEPRECATED, use --bootstrap-server instead; ignored if --bootstrap-server is specified.  The broker list string in the form HOST1:PORT1,HOST2:PORT2.
+
+--consumer.config <String: config file>
+Consumer config properties file.
+
+--date-format <String: date format>
+The date format to use for formatting the time field. See java.text.SimpleDateFormat for options. (default: yyyy-MM-dd HH:mm:ss:SSS)
+
+--fetch-size <Integer: size>
+The amount of data to fetch in a single request. (default: 1048576)  # 每次请求的消息数量，单位：字节
+
+--from-latest
+If the consumer does not already have an established offset to consume from, start with the latest message present in the log rather than the earliest message.  # 如果消费者还没有建立偏移量，则从最新的消息开始消费，而不是最早的消息
+
+--group <String: gid>
+The group id to consume on. (default:perf-consumer-3655)
+
+--help
+Print usage information.
+
+--hide-header
+If set, skips printing the header for the stats
+
+--messages <Long: count>
+REQUIRED: The number of messages to send or consume  # 请求消息的总数
+
+--num-fetch-threads <Integer: count>
+Number of fetcher threads. (default: 1)  # 请求消息的线程数
+
+--print-metrics
+Print out the metrics.
+
+--reporting-interval <Integer: interval_ms>
+Interval in milliseconds at which to print progress info. (default: 5000)
+
+--show-detailed-stats
+If set, stats are reported for each reporting interval as configured by reporting-interval
+
+--socket-buffer-size <Integer: size>
+The size of the tcp RECV size.(default: 2097152)
+
+--threads <Integer: count> 
+Number of processing threads. (default: 10)  # 处理消息的线程数
+
+--timeout [Long: milliseconds]
+The maximum allowed time in milliseconds between returned records. (default: 10000)  # 允许返回数据的最大超时时间
+
+--topic <String: topic>
+REQUIRED: The topic to consume from.
+
+--version
+Display Kafka version.
 
 # 定义连接参数
 zookeeper_link="localhost:2181"

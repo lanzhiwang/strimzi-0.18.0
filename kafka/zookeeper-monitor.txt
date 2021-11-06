@@ -1,0 +1,655 @@
+# HELP jvm_buffer_pool_used_bytes Used bytes of a given JVM buffer pool.
+# TYPE jvm_buffer_pool_used_bytes gauge
+jvm_buffer_pool_used_bytes{pool="direct",} 149954.0
+jvm_buffer_pool_used_bytes{pool="mapped",} 0.0
+# HELP jvm_buffer_pool_capacity_bytes Bytes capacity of a given JVM buffer pool.
+# TYPE jvm_buffer_pool_capacity_bytes gauge
+jvm_buffer_pool_capacity_bytes{pool="direct",} 149953.0
+jvm_buffer_pool_capacity_bytes{pool="mapped",} 0.0
+# HELP jvm_buffer_pool_used_buffers Used buffers of a given JVM buffer pool.
+# TYPE jvm_buffer_pool_used_buffers gauge
+jvm_buffer_pool_used_buffers{pool="direct",} 8.0
+jvm_buffer_pool_used_buffers{pool="mapped",} 0.0
+# HELP jvm_threads_current Current thread count of a JVM
+# TYPE jvm_threads_current gauge
+jvm_threads_current 40.0
+# HELP jvm_threads_daemon Daemon thread count of a JVM
+# TYPE jvm_threads_daemon gauge
+jvm_threads_daemon 15.0
+# HELP jvm_threads_peak Peak thread count of a JVM
+# TYPE jvm_threads_peak gauge
+jvm_threads_peak 40.0
+# HELP jvm_threads_started_total Started thread count of a JVM
+# TYPE jvm_threads_started_total counter
+jvm_threads_started_total 45.0
+# HELP jvm_threads_deadlocked Cycles of JVM-threads that are in deadlock waiting to acquire object monitors or ownable synchronizers
+# TYPE jvm_threads_deadlocked gauge
+jvm_threads_deadlocked 0.0
+# HELP jvm_threads_deadlocked_monitor Cycles of JVM-threads that are in deadlock waiting to acquire object monitors
+# TYPE jvm_threads_deadlocked_monitor gauge
+jvm_threads_deadlocked_monitor 0.0
+# HELP jmx_config_reload_success_total Number of times configuration have successfully been reloaded.
+# TYPE jmx_config_reload_success_total counter
+jmx_config_reload_success_total 0.0
+# HELP jmx_exporter_build_info A metric with a constant '1' value labeled with the version of the JMX exporter.
+# TYPE jmx_exporter_build_info gauge
+jmx_exporter_build_info{version="0.12.0",name="jmx_prometheus_javaagent",} 1.0
+# HELP jvm_memory_bytes_used Used bytes of a given JVM memory area.
+# TYPE jvm_memory_bytes_used gauge
+jvm_memory_bytes_used{area="heap",} 5.3206832E7
+jvm_memory_bytes_used{area="nonheap",} 4.2537152E7
+# HELP jvm_memory_bytes_committed Committed (bytes) of a given JVM memory area.
+# TYPE jvm_memory_bytes_committed gauge
+jvm_memory_bytes_committed{area="heap",} 1.34217728E8
+jvm_memory_bytes_committed{area="nonheap",} 4.3712512E7
+# HELP jvm_memory_bytes_max Max (bytes) of a given JVM memory area.
+# TYPE jvm_memory_bytes_max gauge
+jvm_memory_bytes_max{area="heap",} 3.902799872E9
+jvm_memory_bytes_max{area="nonheap",} -1.0
+# HELP jvm_memory_bytes_init Initial bytes of a given JVM memory area.
+# TYPE jvm_memory_bytes_init gauge
+jvm_memory_bytes_init{area="heap",} 1.34217728E8
+jvm_memory_bytes_init{area="nonheap",} 2555904.0
+# HELP jvm_memory_pool_bytes_used Used bytes of a given JVM memory pool.
+# TYPE jvm_memory_pool_bytes_used gauge
+jvm_memory_pool_bytes_used{pool="Code Cache",} 1.2610368E7
+jvm_memory_pool_bytes_used{pool="Metaspace",} 2.6773168E7
+jvm_memory_pool_bytes_used{pool="Compressed Class Space",} 3153616.0
+jvm_memory_pool_bytes_used{pool="G1 Eden Space",} 0.0
+jvm_memory_pool_bytes_used{pool="G1 Survivor Space",} 1048576.0
+jvm_memory_pool_bytes_used{pool="G1 Old Gen",} 5.2158256E7
+# HELP jvm_memory_pool_bytes_committed Committed bytes of a given JVM memory pool.
+# TYPE jvm_memory_pool_bytes_committed gauge
+jvm_memory_pool_bytes_committed{pool="Code Cache",} 1.277952E7
+jvm_memory_pool_bytes_committed{pool="Metaspace",} 2.752512E7
+jvm_memory_pool_bytes_committed{pool="Compressed Class Space",} 3407872.0
+jvm_memory_pool_bytes_committed{pool="G1 Eden Space",} 4.718592E7
+jvm_memory_pool_bytes_committed{pool="G1 Survivor Space",} 1048576.0
+jvm_memory_pool_bytes_committed{pool="G1 Old Gen",} 8.5983232E7
+# HELP jvm_memory_pool_bytes_max Max bytes of a given JVM memory pool.
+# TYPE jvm_memory_pool_bytes_max gauge
+jvm_memory_pool_bytes_max{pool="Code Cache",} 2.5165824E8
+jvm_memory_pool_bytes_max{pool="Metaspace",} -1.0
+jvm_memory_pool_bytes_max{pool="Compressed Class Space",} 1.073741824E9
+jvm_memory_pool_bytes_max{pool="G1 Eden Space",} -1.0
+jvm_memory_pool_bytes_max{pool="G1 Survivor Space",} -1.0
+jvm_memory_pool_bytes_max{pool="G1 Old Gen",} 3.902799872E9
+# HELP jvm_memory_pool_bytes_init Initial bytes of a given JVM memory pool.
+# TYPE jvm_memory_pool_bytes_init gauge
+jvm_memory_pool_bytes_init{pool="Code Cache",} 2555904.0
+jvm_memory_pool_bytes_init{pool="Metaspace",} 0.0
+jvm_memory_pool_bytes_init{pool="Compressed Class Space",} 0.0
+jvm_memory_pool_bytes_init{pool="G1 Eden Space",} 7340032.0
+jvm_memory_pool_bytes_init{pool="G1 Survivor Space",} 0.0
+jvm_memory_pool_bytes_init{pool="G1 Old Gen",} 1.26877696E8
+# HELP jmx_config_reload_failure_total Number of times configuration have failed to be reloaded.
+# TYPE jmx_config_reload_failure_total counter
+jmx_config_reload_failure_total 0.0
+# HELP jvm_classes_loaded The number of classes that are currently loaded in the JVM
+# TYPE jvm_classes_loaded gauge
+jvm_classes_loaded 4556.0
+# HELP jvm_classes_loaded_total The total number of classes that have been loaded since the JVM has started execution
+# TYPE jvm_classes_loaded_total counter
+jvm_classes_loaded_total 4576.0
+# HELP jvm_classes_unloaded_total The total number of classes that have been unloaded since the JVM has started execution
+# TYPE jvm_classes_unloaded_total counter
+jvm_classes_unloaded_total 20.0
+# HELP jvm_info JVM version info
+# TYPE jvm_info gauge
+jvm_info{version="1.8.0_302-b08",vendor="Oracle Corporation",runtime="OpenJDK Runtime Environment",} 1.0
+# HELP java_lang_GarbageCollector_LastGcInfo_memoryUsageAfterGc_used java.lang.management.MemoryUsage (java.lang<type=GarbageCollector, name=G1 Young Generation, key=G1 Survivor Space><LastGcInfo, memoryUsageAfterGc>used)
+# TYPE java_lang_GarbageCollector_LastGcInfo_memoryUsageAfterGc_used untyped
+java_lang_GarbageCollector_LastGcInfo_memoryUsageAfterGc_used{name="G1 Young Generation",key="G1 Survivor Space",} 1048576.0
+java_lang_GarbageCollector_LastGcInfo_memoryUsageAfterGc_used{name="G1 Young Generation",key="Compressed Class Space",} 3153616.0
+java_lang_GarbageCollector_LastGcInfo_memoryUsageAfterGc_used{name="G1 Young Generation",key="Metaspace",} 2.6771768E7
+java_lang_GarbageCollector_LastGcInfo_memoryUsageAfterGc_used{name="G1 Young Generation",key="G1 Old Gen",} 5.1109664E7
+java_lang_GarbageCollector_LastGcInfo_memoryUsageAfterGc_used{name="G1 Young Generation",key="G1 Eden Space",} 0.0
+java_lang_GarbageCollector_LastGcInfo_memoryUsageAfterGc_used{name="G1 Young Generation",key="Code Cache",} 1.2610368E7
+# HELP java_lang_OperatingSystem_TotalSwapSpaceSize TotalSwapSpaceSize (java.lang<type=OperatingSystem><>TotalSwapSpaceSize)
+# TYPE java_lang_OperatingSystem_TotalSwapSpaceSize untyped
+java_lang_OperatingSystem_TotalSwapSpaceSize 0.0
+# HELP java_lang_Threading_ThreadContentionMonitoringSupported ThreadContentionMonitoringSupported (java.lang<type=Threading><>ThreadContentionMonitoringSupported)
+# TYPE java_lang_Threading_ThreadContentionMonitoringSupported untyped
+java_lang_Threading_ThreadContentionMonitoringSupported 1.0
+# HELP java_lang_Memory_HeapMemoryUsage_committed java.lang.management.MemoryUsage (java.lang<type=Memory><HeapMemoryUsage>committed)
+# TYPE java_lang_Memory_HeapMemoryUsage_committed untyped
+java_lang_Memory_HeapMemoryUsage_committed 1.34217728E8
+# HELP java_lang_Runtime_StartTime StartTime (java.lang<type=Runtime><>StartTime)
+# TYPE java_lang_Runtime_StartTime untyped
+java_lang_Runtime_StartTime 1.633763938643E12
+# HELP java_lang_MemoryPool_UsageThreshold UsageThreshold (java.lang<type=MemoryPool, name=Code Cache><>UsageThreshold)
+# TYPE java_lang_MemoryPool_UsageThreshold untyped
+java_lang_MemoryPool_UsageThreshold{name="Code Cache",} 0.0
+java_lang_MemoryPool_UsageThreshold{name="Metaspace",} 0.0
+java_lang_MemoryPool_UsageThreshold{name="G1 Old Gen",} 0.0
+java_lang_MemoryPool_UsageThreshold{name="Compressed Class Space",} 0.0
+# HELP org_apache_ZooKeeperService_ReplicatedServer_id1_WatchCount WatchCount (org.apache.ZooKeeperService<name0=ReplicatedServer_id1, name1=replica.1, name2=Follower, name3=InMemoryDataTree><>WatchCount)
+# TYPE org_apache_ZooKeeperService_ReplicatedServer_id1_WatchCount untyped
+org_apache_ZooKeeperService_ReplicatedServer_id1_WatchCount{name1="replica.1",name2="Follower",name3="InMemoryDataTree",} 2.0
+# HELP org_apache_ZooKeeperService_ReplicatedServer_id1_MaxSessionTimeout MaxSessionTimeout (org.apache.ZooKeeperService<name0=ReplicatedServer_id1, name1=replica.1, name2=Follower><>MaxSessionTimeout)
+# TYPE org_apache_ZooKeeperService_ReplicatedServer_id1_MaxSessionTimeout untyped
+org_apache_ZooKeeperService_ReplicatedServer_id1_MaxSessionTimeout{name1="replica.1",name2="Follower",} 40000.0
+org_apache_ZooKeeperService_ReplicatedServer_id1_MaxSessionTimeout{name1="replica.1",} 40000.0
+# HELP java_lang_Memory_NonHeapMemoryUsage_used java.lang.management.MemoryUsage (java.lang<type=Memory><NonHeapMemoryUsage>used)
+# TYPE java_lang_Memory_NonHeapMemoryUsage_used untyped
+java_lang_Memory_NonHeapMemoryUsage_used 4.2570832E7
+# HELP java_lang_Threading_PeakThreadCount PeakThreadCount (java.lang<type=Threading><>PeakThreadCount)
+# TYPE java_lang_Threading_PeakThreadCount untyped
+java_lang_Threading_PeakThreadCount 40.0
+# HELP java_lang_ClassLoading_TotalLoadedClassCount TotalLoadedClassCount (java.lang<type=ClassLoading><>TotalLoadedClassCount)
+# TYPE java_lang_ClassLoading_TotalLoadedClassCount untyped
+java_lang_ClassLoading_TotalLoadedClassCount 4576.0
+# HELP java_lang_ClassLoading_Verbose Verbose (java.lang<type=ClassLoading><>Verbose)
+# TYPE java_lang_ClassLoading_Verbose untyped
+java_lang_ClassLoading_Verbose 0.0
+# HELP org_apache_ZooKeeperService_ReplicatedServer_id1_LastClientResponseSize LastClientResponseSize (org.apache.ZooKeeperService<name0=ReplicatedServer_id1, name1=replica.1, name2=Follower><>LastClientResponseSize)
+# TYPE org_apache_ZooKeeperService_ReplicatedServer_id1_LastClientResponseSize untyped
+org_apache_ZooKeeperService_ReplicatedServer_id1_LastClientResponseSize{name1="replica.1",name2="Follower",} 16.0
+# HELP java_lang_GarbageCollector_LastGcInfo_id CompositeType for GC info for G1 Young Generation (java.lang<type=GarbageCollector, name=G1 Young Generation><LastGcInfo>id)
+# TYPE java_lang_GarbageCollector_LastGcInfo_id untyped
+java_lang_GarbageCollector_LastGcInfo_id{name="G1 Young Generation",} 20.0
+# HELP java_lang_MemoryPool_PeakUsage_committed java.lang.management.MemoryUsage (java.lang<type=MemoryPool, name=Code Cache><PeakUsage>committed)
+# TYPE java_lang_MemoryPool_PeakUsage_committed untyped
+java_lang_MemoryPool_PeakUsage_committed{name="Code Cache",} 1.277952E7
+java_lang_MemoryPool_PeakUsage_committed{name="G1 Survivor Space",} 4194304.0
+java_lang_MemoryPool_PeakUsage_committed{name="Metaspace",} 2.752512E7
+java_lang_MemoryPool_PeakUsage_committed{name="G1 Old Gen",} 1.26877696E8
+java_lang_MemoryPool_PeakUsage_committed{name="Compressed Class Space",} 3407872.0
+java_lang_MemoryPool_PeakUsage_committed{name="G1 Eden Space",} 7.1303168E7
+# HELP java_lang_Runtime_BootClassPathSupported BootClassPathSupported (java.lang<type=Runtime><>BootClassPathSupported)
+# TYPE java_lang_Runtime_BootClassPathSupported untyped
+java_lang_Runtime_BootClassPathSupported 1.0
+# HELP org_apache_ZooKeeperService_ReplicatedServer_id1_SyncLimit SyncLimit (org.apache.ZooKeeperService<name0=ReplicatedServer_id1, name1=replica.1><>SyncLimit)
+# TYPE org_apache_ZooKeeperService_ReplicatedServer_id1_SyncLimit untyped
+org_apache_ZooKeeperService_ReplicatedServer_id1_SyncLimit{name1="replica.1",} 2.0
+# HELP java_nio_BufferPool_Count Count (java.nio<type=BufferPool, name=direct><>Count)
+# TYPE java_nio_BufferPool_Count untyped
+java_nio_BufferPool_Count{name="direct",} 8.0
+java_nio_BufferPool_Count{name="mapped",} 0.0
+# HELP java_lang_MemoryPool_CollectionUsage_init java.lang.management.MemoryUsage (java.lang<type=MemoryPool, name=G1 Survivor Space><CollectionUsage>init)
+# TYPE java_lang_MemoryPool_CollectionUsage_init untyped
+java_lang_MemoryPool_CollectionUsage_init{name="G1 Survivor Space",} 0.0
+java_lang_MemoryPool_CollectionUsage_init{name="G1 Old Gen",} 1.26877696E8
+java_lang_MemoryPool_CollectionUsage_init{name="G1 Eden Space",} 7340032.0
+# HELP log4j_CONSOLE_immediateFlush Dynamic (log4j<appender=CONSOLE><>immediateFlush)
+# TYPE log4j_CONSOLE_immediateFlush untyped
+log4j_CONSOLE_immediateFlush 1.0
+# HELP java_lang_Threading_ThreadAllocatedMemoryEnabled ThreadAllocatedMemoryEnabled (java.lang<type=Threading><>ThreadAllocatedMemoryEnabled)
+# TYPE java_lang_Threading_ThreadAllocatedMemoryEnabled untyped
+java_lang_Threading_ThreadAllocatedMemoryEnabled 1.0
+# HELP java_lang_OperatingSystem_ProcessCpuLoad ProcessCpuLoad (java.lang<type=OperatingSystem><>ProcessCpuLoad)
+# TYPE java_lang_OperatingSystem_ProcessCpuLoad untyped
+java_lang_OperatingSystem_ProcessCpuLoad 0.0014928891333385714
+# HELP java_lang_MemoryPool_CollectionUsage_committed java.lang.management.MemoryUsage (java.lang<type=MemoryPool, name=G1 Survivor Space><CollectionUsage>committed)
+# TYPE java_lang_MemoryPool_CollectionUsage_committed untyped
+java_lang_MemoryPool_CollectionUsage_committed{name="G1 Survivor Space",} 1048576.0
+java_lang_MemoryPool_CollectionUsage_committed{name="G1 Old Gen",} 1.2058624E8
+java_lang_MemoryPool_CollectionUsage_committed{name="G1 Eden Space",} 4.718592E7
+# HELP java_lang_OperatingSystem_TotalPhysicalMemorySize TotalPhysicalMemorySize (java.lang<type=OperatingSystem><>TotalPhysicalMemorySize)
+# TYPE java_lang_OperatingSystem_TotalPhysicalMemorySize untyped
+java_lang_OperatingSystem_TotalPhysicalMemorySize 1.560748032E10
+# HELP java_lang_Memory_NonHeapMemoryUsage_committed java.lang.management.MemoryUsage (java.lang<type=Memory><NonHeapMemoryUsage>committed)
+# TYPE java_lang_Memory_NonHeapMemoryUsage_committed untyped
+java_lang_Memory_NonHeapMemoryUsage_committed 4.3712512E7
+# HELP java_lang_Threading_CurrentThreadAllocatedBytes CurrentThreadAllocatedBytes (java.lang<type=Threading><>CurrentThreadAllocatedBytes)
+# TYPE java_lang_Threading_CurrentThreadAllocatedBytes untyped
+java_lang_Threading_CurrentThreadAllocatedBytes 2310568.0
+# HELP java_lang_Memory_Verbose Verbose (java.lang<type=Memory><>Verbose)
+# TYPE java_lang_Memory_Verbose untyped
+java_lang_Memory_Verbose 0.0
+# HELP java_lang_MemoryPool_Valid Valid (java.lang<type=MemoryPool, name=Code Cache><>Valid)
+# TYPE java_lang_MemoryPool_Valid untyped
+java_lang_MemoryPool_Valid{name="Code Cache",} 1.0
+java_lang_MemoryPool_Valid{name="G1 Survivor Space",} 1.0
+java_lang_MemoryPool_Valid{name="Metaspace",} 1.0
+java_lang_MemoryPool_Valid{name="G1 Old Gen",} 1.0
+java_lang_MemoryPool_Valid{name="Compressed Class Space",} 1.0
+java_lang_MemoryPool_Valid{name="G1 Eden Space",} 1.0
+# HELP java_lang_OperatingSystem_FreeSwapSpaceSize FreeSwapSpaceSize (java.lang<type=OperatingSystem><>FreeSwapSpaceSize)
+# TYPE java_lang_OperatingSystem_FreeSwapSpaceSize untyped
+java_lang_OperatingSystem_FreeSwapSpaceSize 0.0
+# HELP java_lang_Threading_CurrentThreadCpuTime CurrentThreadCpuTime (java.lang<type=Threading><>CurrentThreadCpuTime)
+# TYPE java_lang_Threading_CurrentThreadCpuTime untyped
+java_lang_Threading_CurrentThreadCpuTime 1.1412304E7
+# HELP java_lang_MemoryPool_CollectionUsageThreshold CollectionUsageThreshold (java.lang<type=MemoryPool, name=G1 Survivor Space><>CollectionUsageThreshold)
+# TYPE java_lang_MemoryPool_CollectionUsageThreshold untyped
+java_lang_MemoryPool_CollectionUsageThreshold{name="G1 Survivor Space",} 0.0
+java_lang_MemoryPool_CollectionUsageThreshold{name="G1 Old Gen",} 0.0
+java_lang_MemoryPool_CollectionUsageThreshold{name="G1 Eden Space",} 0.0
+# HELP org_apache_ZooKeeperService_ReplicatedServer_id1_ConfigVersion ConfigVersion (org.apache.ZooKeeperService<name0=ReplicatedServer_id1, name1=replica.1><>ConfigVersion)
+# TYPE org_apache_ZooKeeperService_ReplicatedServer_id1_ConfigVersion untyped
+org_apache_ZooKeeperService_ReplicatedServer_id1_ConfigVersion{name1="replica.1",} 4.294967296E9
+# HELP java_lang_GarbageCollector_CollectionTime CollectionTime (java.lang<type=GarbageCollector, name=G1 Young Generation><>CollectionTime)
+# TYPE java_lang_GarbageCollector_CollectionTime untyped
+java_lang_GarbageCollector_CollectionTime{name="G1 Young Generation",} 188.0
+java_lang_GarbageCollector_CollectionTime{name="G1 Old Generation",} 0.0
+# HELP java_lang_MemoryPool_Usage_committed java.lang.management.MemoryUsage (java.lang<type=MemoryPool, name=Code Cache><Usage>committed)
+# TYPE java_lang_MemoryPool_Usage_committed untyped
+java_lang_MemoryPool_Usage_committed{name="Code Cache",} 1.277952E7
+java_lang_MemoryPool_Usage_committed{name="G1 Survivor Space",} 1048576.0
+java_lang_MemoryPool_Usage_committed{name="Metaspace",} 2.752512E7
+java_lang_MemoryPool_Usage_committed{name="G1 Old Gen",} 8.5983232E7
+java_lang_MemoryPool_Usage_committed{name="Compressed Class Space",} 3407872.0
+java_lang_MemoryPool_Usage_committed{name="G1 Eden Space",} 4.718592E7
+# HELP java_lang_Memory_NonHeapMemoryUsage_init java.lang.management.MemoryUsage (java.lang<type=Memory><NonHeapMemoryUsage>init)
+# TYPE java_lang_Memory_NonHeapMemoryUsage_init untyped
+java_lang_Memory_NonHeapMemoryUsage_init 2555904.0
+# HELP java_lang_MemoryPool_PeakUsage_init java.lang.management.MemoryUsage (java.lang<type=MemoryPool, name=Code Cache><PeakUsage>init)
+# TYPE java_lang_MemoryPool_PeakUsage_init untyped
+java_lang_MemoryPool_PeakUsage_init{name="Code Cache",} 2555904.0
+java_lang_MemoryPool_PeakUsage_init{name="G1 Survivor Space",} 0.0
+java_lang_MemoryPool_PeakUsage_init{name="Metaspace",} 0.0
+java_lang_MemoryPool_PeakUsage_init{name="G1 Old Gen",} 1.26877696E8
+java_lang_MemoryPool_PeakUsage_init{name="Compressed Class Space",} 0.0
+java_lang_MemoryPool_PeakUsage_init{name="G1 Eden Space",} 7340032.0
+# HELP java_lang_ClassLoading_UnloadedClassCount UnloadedClassCount (java.lang<type=ClassLoading><>UnloadedClassCount)
+# TYPE java_lang_ClassLoading_UnloadedClassCount untyped
+java_lang_ClassLoading_UnloadedClassCount 20.0
+# HELP org_apache_ZooKeeperService_ReplicatedServer_id1_PortUnification PortUnification (org.apache.ZooKeeperService<name0=ReplicatedServer_id1><>PortUnification)
+# TYPE org_apache_ZooKeeperService_ReplicatedServer_id1_PortUnification untyped
+org_apache_ZooKeeperService_ReplicatedServer_id1_PortUnification 0.0
+# HELP org_apache_ZooKeeperService_ReplicatedServer_id1_MaxRequestLatency MaxRequestLatency (org.apache.ZooKeeperService<name0=ReplicatedServer_id1, name1=replica.1, name2=Follower><>MaxRequestLatency)
+# TYPE org_apache_ZooKeeperService_ReplicatedServer_id1_MaxRequestLatency untyped
+org_apache_ZooKeeperService_ReplicatedServer_id1_MaxRequestLatency{name1="replica.1",name2="Follower",} 194.0
+# HELP org_apache_ZooKeeperService_ReplicatedServer_id1_TickTime TickTime (org.apache.ZooKeeperService<name0=ReplicatedServer_id1, name1=replica.1, name2=Follower><>TickTime)
+# TYPE org_apache_ZooKeeperService_ReplicatedServer_id1_TickTime untyped
+org_apache_ZooKeeperService_ReplicatedServer_id1_TickTime{name1="replica.1",name2="Follower",} 2000.0
+org_apache_ZooKeeperService_ReplicatedServer_id1_TickTime{name1="replica.1",} 2000.0
+# HELP org_apache_ZooKeeperService_ReplicatedServer_id1_SslQuorum SslQuorum (org.apache.ZooKeeperService<name0=ReplicatedServer_id1><>SslQuorum)
+# TYPE org_apache_ZooKeeperService_ReplicatedServer_id1_SslQuorum untyped
+org_apache_ZooKeeperService_ReplicatedServer_id1_SslQuorum 1.0
+# HELP java_lang_Memory_HeapMemoryUsage_init java.lang.management.MemoryUsage (java.lang<type=Memory><HeapMemoryUsage>init)
+# TYPE java_lang_Memory_HeapMemoryUsage_init untyped
+java_lang_Memory_HeapMemoryUsage_init 1.34217728E8
+# HELP org_apache_ZooKeeperService_ReplicatedServer_id1_OutstandingRequests OutstandingRequests (org.apache.ZooKeeperService<name0=ReplicatedServer_id1, name1=replica.1, name2=Follower><>OutstandingRequests)
+# TYPE org_apache_ZooKeeperService_ReplicatedServer_id1_OutstandingRequests untyped
+org_apache_ZooKeeperService_ReplicatedServer_id1_OutstandingRequests{name1="replica.1",name2="Follower",} 0.0
+org_apache_ZooKeeperService_ReplicatedServer_id1_OutstandingRequests{name1="replica.1",name2="Follower",name3="Connections",name4="10.5.0.247",name5="0x100051907340001",} 2994.0
+org_apache_ZooKeeperService_ReplicatedServer_id1_OutstandingRequests{name1="replica.1",name2="Follower",name3="Connections",name4="10.5.0.246",name5="0x100051907340000",} 1000.0
+# HELP java_lang_GarbageCollector_LastGcInfo_memoryUsageAfterGc_init java.lang.management.MemoryUsage (java.lang<type=GarbageCollector, name=G1 Young Generation, key=G1 Survivor Space><LastGcInfo, memoryUsageAfterGc>init)
+# TYPE java_lang_GarbageCollector_LastGcInfo_memoryUsageAfterGc_init untyped
+java_lang_GarbageCollector_LastGcInfo_memoryUsageAfterGc_init{name="G1 Young Generation",key="G1 Survivor Space",} 0.0
+java_lang_GarbageCollector_LastGcInfo_memoryUsageAfterGc_init{name="G1 Young Generation",key="Compressed Class Space",} 0.0
+java_lang_GarbageCollector_LastGcInfo_memoryUsageAfterGc_init{name="G1 Young Generation",key="Metaspace",} 0.0
+java_lang_GarbageCollector_LastGcInfo_memoryUsageAfterGc_init{name="G1 Young Generation",key="G1 Old Gen",} 1.26877696E8
+java_lang_GarbageCollector_LastGcInfo_memoryUsageAfterGc_init{name="G1 Young Generation",key="G1 Eden Space",} 7340032.0
+java_lang_GarbageCollector_LastGcInfo_memoryUsageAfterGc_init{name="G1 Young Generation",key="Code Cache",} 2555904.0
+# HELP java_lang_GarbageCollector_LastGcInfo_memoryUsageBeforeGc_init java.lang.management.MemoryUsage (java.lang<type=GarbageCollector, name=G1 Young Generation, key=G1 Survivor Space><LastGcInfo, memoryUsageBeforeGc>init)
+# TYPE java_lang_GarbageCollector_LastGcInfo_memoryUsageBeforeGc_init untyped
+java_lang_GarbageCollector_LastGcInfo_memoryUsageBeforeGc_init{name="G1 Young Generation",key="G1 Survivor Space",} 0.0
+java_lang_GarbageCollector_LastGcInfo_memoryUsageBeforeGc_init{name="G1 Young Generation",key="Compressed Class Space",} 0.0
+java_lang_GarbageCollector_LastGcInfo_memoryUsageBeforeGc_init{name="G1 Young Generation",key="Metaspace",} 0.0
+java_lang_GarbageCollector_LastGcInfo_memoryUsageBeforeGc_init{name="G1 Young Generation",key="G1 Old Gen",} 1.26877696E8
+java_lang_GarbageCollector_LastGcInfo_memoryUsageBeforeGc_init{name="G1 Young Generation",key="G1 Eden Space",} 7340032.0
+java_lang_GarbageCollector_LastGcInfo_memoryUsageBeforeGc_init{name="G1 Young Generation",key="Code Cache",} 2555904.0
+# HELP java_lang_Memory_NonHeapMemoryUsage_max java.lang.management.MemoryUsage (java.lang<type=Memory><NonHeapMemoryUsage>max)
+# TYPE java_lang_Memory_NonHeapMemoryUsage_max untyped
+java_lang_Memory_NonHeapMemoryUsage_max -1.0
+# HELP org_apache_ZooKeeperService_ReplicatedServer_id1_Leader Leader (org.apache.ZooKeeperService<name0=ReplicatedServer_id1, name1=replica.2><>Leader)
+# TYPE org_apache_ZooKeeperService_ReplicatedServer_id1_Leader untyped
+org_apache_ZooKeeperService_ReplicatedServer_id1_Leader{name1="replica.2",} 1.0
+org_apache_ZooKeeperService_ReplicatedServer_id1_Leader{name1="replica.1",} 0.0
+org_apache_ZooKeeperService_ReplicatedServer_id1_Leader{name1="replica.3",} 0.0
+# HELP java_lang_OperatingSystem_ProcessCpuTime ProcessCpuTime (java.lang<type=OperatingSystem><>ProcessCpuTime)
+# TYPE java_lang_OperatingSystem_ProcessCpuTime untyped
+java_lang_OperatingSystem_ProcessCpuTime 3.181E10
+# HELP org_apache_ZooKeeperService_ReplicatedServer_id1_MinLatency MinLatency (org.apache.ZooKeeperService<name0=ReplicatedServer_id1, name1=replica.1, name2=Follower, name3=Connections, name4=10.5.0.247, name5=0x100051907340001><>MinLatency)
+# TYPE org_apache_ZooKeeperService_ReplicatedServer_id1_MinLatency untyped
+org_apache_ZooKeeperService_ReplicatedServer_id1_MinLatency{name1="replica.1",name2="Follower",name3="Connections",name4="10.5.0.247",name5="0x100051907340001",} 0.0
+org_apache_ZooKeeperService_ReplicatedServer_id1_MinLatency{name1="replica.1",name2="Follower",name3="Connections",name4="10.5.0.246",name5="0x100051907340000",} 0.0
+# HELP java_lang_OperatingSystem_FreePhysicalMemorySize FreePhysicalMemorySize (java.lang<type=OperatingSystem><>FreePhysicalMemorySize)
+# TYPE java_lang_OperatingSystem_FreePhysicalMemorySize untyped
+java_lang_OperatingSystem_FreePhysicalMemorySize 1.5390896128E10
+# HELP java_lang_Runtime_Uptime Uptime (java.lang<type=Runtime><>Uptime)
+# TYPE java_lang_Runtime_Uptime untyped
+java_lang_Runtime_Uptime 6043375.0
+# HELP java_lang_MemoryPool_CollectionUsageThresholdExceeded CollectionUsageThresholdExceeded (java.lang<type=MemoryPool, name=G1 Survivor Space><>CollectionUsageThresholdExceeded)
+# TYPE java_lang_MemoryPool_CollectionUsageThresholdExceeded untyped
+java_lang_MemoryPool_CollectionUsageThresholdExceeded{name="G1 Survivor Space",} 0.0
+java_lang_MemoryPool_CollectionUsageThresholdExceeded{name="G1 Old Gen",} 0.0
+java_lang_MemoryPool_CollectionUsageThresholdExceeded{name="G1 Eden Space",} 0.0
+# HELP java_lang_MemoryPool_UsageThresholdCount UsageThresholdCount (java.lang<type=MemoryPool, name=Code Cache><>UsageThresholdCount)
+# TYPE java_lang_MemoryPool_UsageThresholdCount untyped
+java_lang_MemoryPool_UsageThresholdCount{name="Code Cache",} 0.0
+java_lang_MemoryPool_UsageThresholdCount{name="Metaspace",} 0.0
+java_lang_MemoryPool_UsageThresholdCount{name="G1 Old Gen",} 0.0
+java_lang_MemoryPool_UsageThresholdCount{name="Compressed Class Space",} 0.0
+# HELP java_lang_MemoryPool_UsageThresholdSupported UsageThresholdSupported (java.lang<type=MemoryPool, name=Code Cache><>UsageThresholdSupported)
+# TYPE java_lang_MemoryPool_UsageThresholdSupported untyped
+java_lang_MemoryPool_UsageThresholdSupported{name="Code Cache",} 1.0
+java_lang_MemoryPool_UsageThresholdSupported{name="G1 Survivor Space",} 0.0
+java_lang_MemoryPool_UsageThresholdSupported{name="Metaspace",} 1.0
+java_lang_MemoryPool_UsageThresholdSupported{name="G1 Old Gen",} 1.0
+java_lang_MemoryPool_UsageThresholdSupported{name="Compressed Class Space",} 1.0
+java_lang_MemoryPool_UsageThresholdSupported{name="G1 Eden Space",} 0.0
+# HELP java_lang_Threading_ThreadContentionMonitoringEnabled ThreadContentionMonitoringEnabled (java.lang<type=Threading><>ThreadContentionMonitoringEnabled)
+# TYPE java_lang_Threading_ThreadContentionMonitoringEnabled untyped
+java_lang_Threading_ThreadContentionMonitoringEnabled 0.0
+# HELP java_lang_OperatingSystem_CommittedVirtualMemorySize CommittedVirtualMemorySize (java.lang<type=OperatingSystem><>CommittedVirtualMemorySize)
+# TYPE java_lang_OperatingSystem_CommittedVirtualMemorySize untyped
+java_lang_OperatingSystem_CommittedVirtualMemorySize 9.006239744E9
+# HELP org_apache_ZooKeeperService_ReplicatedServer_id1_SessionTimeout SessionTimeout (org.apache.ZooKeeperService<name0=ReplicatedServer_id1, name1=replica.1, name2=Follower, name3=Connections, name4=10.5.0.247, name5=0x100051907340001><>SessionTimeout)
+# TYPE org_apache_ZooKeeperService_ReplicatedServer_id1_SessionTimeout untyped
+org_apache_ZooKeeperService_ReplicatedServer_id1_SessionTimeout{name1="replica.1",name2="Follower",name3="Connections",name4="10.5.0.247",name5="0x100051907340001",} 6000.0
+org_apache_ZooKeeperService_ReplicatedServer_id1_SessionTimeout{name1="replica.1",name2="Follower",name3="Connections",name4="10.5.0.246",name5="0x100051907340000",} 18000.0
+# HELP org_apache_ZooKeeperService_ReplicatedServer_id1_JuteMaxBufferSize JuteMaxBufferSize (org.apache.ZooKeeperService<name0=ReplicatedServer_id1, name1=replica.1, name2=Follower><>JuteMaxBufferSize)
+# TYPE org_apache_ZooKeeperService_ReplicatedServer_id1_JuteMaxBufferSize untyped
+org_apache_ZooKeeperService_ReplicatedServer_id1_JuteMaxBufferSize{name1="replica.1",name2="Follower",} 1048575.0
+# HELP java_lang_MemoryPool_CollectionUsage_max java.lang.management.MemoryUsage (java.lang<type=MemoryPool, name=G1 Survivor Space><CollectionUsage>max)
+# TYPE java_lang_MemoryPool_CollectionUsage_max untyped
+java_lang_MemoryPool_CollectionUsage_max{name="G1 Survivor Space",} -1.0
+java_lang_MemoryPool_CollectionUsage_max{name="G1 Old Gen",} 3.902799872E9
+java_lang_MemoryPool_CollectionUsage_max{name="G1 Eden Space",} -1.0
+# HELP org_apache_ZooKeeperService_ReplicatedServer_id1_PacketsReceived PacketsReceived (org.apache.ZooKeeperService<name0=ReplicatedServer_id1, name1=replica.1, name2=Follower><>PacketsReceived)
+# TYPE org_apache_ZooKeeperService_ReplicatedServer_id1_PacketsReceived untyped
+org_apache_ZooKeeperService_ReplicatedServer_id1_PacketsReceived{name1="replica.1",name2="Follower",} 5391.0
+org_apache_ZooKeeperService_ReplicatedServer_id1_PacketsReceived{name1="replica.1",name2="Follower",name3="Connections",name4="10.5.0.247",name5="0x100051907340001",} 3093.0
+org_apache_ZooKeeperService_ReplicatedServer_id1_PacketsReceived{name1="replica.1",name2="Follower",name3="Connections",name4="10.5.0.246",name5="0x100051907340000",} 1035.0
+# HELP org_apache_ZooKeeperService_ReplicatedServer_id1_InitLimit InitLimit (org.apache.ZooKeeperService<name0=ReplicatedServer_id1, name1=replica.1><>InitLimit)
+# TYPE org_apache_ZooKeeperService_ReplicatedServer_id1_InitLimit untyped
+org_apache_ZooKeeperService_ReplicatedServer_id1_InitLimit{name1="replica.1",} 5.0
+# HELP java_lang_GarbageCollector_LastGcInfo_endTime CompositeType for GC info for G1 Young Generation (java.lang<type=GarbageCollector, name=G1 Young Generation><LastGcInfo>endTime)
+# TYPE java_lang_GarbageCollector_LastGcInfo_endTime untyped
+java_lang_GarbageCollector_LastGcInfo_endTime{name="G1 Young Generation",} 6043309.0
+# HELP java_lang_Memory_HeapMemoryUsage_max java.lang.management.MemoryUsage (java.lang<type=Memory><HeapMemoryUsage>max)
+# TYPE java_lang_Memory_HeapMemoryUsage_max untyped
+java_lang_Memory_HeapMemoryUsage_max 3.902799872E9
+# HELP org_apache_ZooKeeperService_ReplicatedServer_id1_NodeCount NodeCount (org.apache.ZooKeeperService<name0=ReplicatedServer_id1, name1=replica.1, name2=Follower, name3=InMemoryDataTree><>NodeCount)
+# TYPE org_apache_ZooKeeperService_ReplicatedServer_id1_NodeCount untyped
+org_apache_ZooKeeperService_ReplicatedServer_id1_NodeCount{name1="replica.1",name2="Follower",name3="InMemoryDataTree",} 30.0
+# HELP java_lang_MemoryPool_CollectionUsageThresholdCount CollectionUsageThresholdCount (java.lang<type=MemoryPool, name=G1 Survivor Space><>CollectionUsageThresholdCount)
+# TYPE java_lang_MemoryPool_CollectionUsageThresholdCount untyped
+java_lang_MemoryPool_CollectionUsageThresholdCount{name="G1 Survivor Space",} 0.0
+java_lang_MemoryPool_CollectionUsageThresholdCount{name="G1 Old Gen",} 0.0
+java_lang_MemoryPool_CollectionUsageThresholdCount{name="G1 Eden Space",} 0.0
+# HELP java_lang_MemoryPool_PeakUsage_used java.lang.management.MemoryUsage (java.lang<type=MemoryPool, name=Code Cache><PeakUsage>used)
+# TYPE java_lang_MemoryPool_PeakUsage_used untyped
+java_lang_MemoryPool_PeakUsage_used{name="Code Cache",} 1.2615744E7
+java_lang_MemoryPool_PeakUsage_used{name="G1 Survivor Space",} 4194304.0
+java_lang_MemoryPool_PeakUsage_used{name="Metaspace",} 2.677604E7
+java_lang_MemoryPool_PeakUsage_used{name="G1 Old Gen",} 5.1380272E7
+java_lang_MemoryPool_PeakUsage_used{name="Compressed Class Space",} 3162136.0
+java_lang_MemoryPool_PeakUsage_used{name="G1 Eden Space",} 5.767168E7
+# HELP org_apache_ZooKeeperService_ReplicatedServer_id1_DataDirSize DataDirSize (org.apache.ZooKeeperService<name0=ReplicatedServer_id1, name1=replica.1, name2=Follower><>DataDirSize)
+# TYPE org_apache_ZooKeeperService_ReplicatedServer_id1_DataDirSize untyped
+org_apache_ZooKeeperService_ReplicatedServer_id1_DataDirSize{name1="replica.1",name2="Follower",} 6.7109645E7
+# HELP org_apache_ZooKeeperService_ReplicatedServer_id1_TxnLogElapsedSyncTime TxnLogElapsedSyncTime (org.apache.ZooKeeperService<name0=ReplicatedServer_id1, name1=replica.1, name2=Follower><>TxnLogElapsedSyncTime)
+# TYPE org_apache_ZooKeeperService_ReplicatedServer_id1_TxnLogElapsedSyncTime untyped
+org_apache_ZooKeeperService_ReplicatedServer_id1_TxnLogElapsedSyncTime{name1="replica.1",name2="Follower",} 4.0
+# HELP java_lang_OperatingSystem_MaxFileDescriptorCount MaxFileDescriptorCount (java.lang<type=OperatingSystem><>MaxFileDescriptorCount)
+# TYPE java_lang_OperatingSystem_MaxFileDescriptorCount untyped
+java_lang_OperatingSystem_MaxFileDescriptorCount 1048576.0
+# HELP org_apache_ZooKeeperService_ReplicatedServer_id1_MaxClientCnxnsPerHost MaxClientCnxnsPerHost (org.apache.ZooKeeperService<name0=ReplicatedServer_id1, name1=replica.1, name2=Follower><>MaxClientCnxnsPerHost)
+# TYPE org_apache_ZooKeeperService_ReplicatedServer_id1_MaxClientCnxnsPerHost untyped
+org_apache_ZooKeeperService_ReplicatedServer_id1_MaxClientCnxnsPerHost{name1="replica.1",name2="Follower",} 60.0
+org_apache_ZooKeeperService_ReplicatedServer_id1_MaxClientCnxnsPerHost{name1="replica.1",} 60.0
+# HELP java_lang_Threading_CurrentThreadUserTime CurrentThreadUserTime (java.lang<type=Threading><>CurrentThreadUserTime)
+# TYPE java_lang_Threading_CurrentThreadUserTime untyped
+java_lang_Threading_CurrentThreadUserTime 1.0E7
+# HELP java_lang_Threading_ThreadCount ThreadCount (java.lang<type=Threading><>ThreadCount)
+# TYPE java_lang_Threading_ThreadCount untyped
+java_lang_Threading_ThreadCount 40.0
+# HELP java_lang_GarbageCollector_LastGcInfo_memoryUsageAfterGc_committed java.lang.management.MemoryUsage (java.lang<type=GarbageCollector, name=G1 Young Generation, key=G1 Survivor Space><LastGcInfo, memoryUsageAfterGc>committed)
+# TYPE java_lang_GarbageCollector_LastGcInfo_memoryUsageAfterGc_committed untyped
+java_lang_GarbageCollector_LastGcInfo_memoryUsageAfterGc_committed{name="G1 Young Generation",key="G1 Survivor Space",} 1048576.0
+java_lang_GarbageCollector_LastGcInfo_memoryUsageAfterGc_committed{name="G1 Young Generation",key="Compressed Class Space",} 3407872.0
+java_lang_GarbageCollector_LastGcInfo_memoryUsageAfterGc_committed{name="G1 Young Generation",key="Metaspace",} 2.752512E7
+java_lang_GarbageCollector_LastGcInfo_memoryUsageAfterGc_committed{name="G1 Young Generation",key="G1 Old Gen",} 8.5983232E7
+java_lang_GarbageCollector_LastGcInfo_memoryUsageAfterGc_committed{name="G1 Young Generation",key="G1 Eden Space",} 4.718592E7
+java_lang_GarbageCollector_LastGcInfo_memoryUsageAfterGc_committed{name="G1 Young Generation",key="Code Cache",} 1.277952E7
+# HELP java_lang_Memory_ObjectPendingFinalizationCount ObjectPendingFinalizationCount (java.lang<type=Memory><>ObjectPendingFinalizationCount)
+# TYPE java_lang_Memory_ObjectPendingFinalizationCount untyped
+java_lang_Memory_ObjectPendingFinalizationCount 0.0
+# HELP java_lang_MemoryPool_Usage_used java.lang.management.MemoryUsage (java.lang<type=MemoryPool, name=Code Cache><Usage>used)
+# TYPE java_lang_MemoryPool_Usage_used untyped
+java_lang_MemoryPool_Usage_used{name="Code Cache",} 1.2567744E7
+java_lang_MemoryPool_Usage_used{name="G1 Survivor Space",} 1048576.0
+java_lang_MemoryPool_Usage_used{name="Metaspace",} 2.677604E7
+java_lang_MemoryPool_Usage_used{name="G1 Old Gen",} 5.110968E7
+java_lang_MemoryPool_Usage_used{name="Compressed Class Space",} 3162136.0
+java_lang_MemoryPool_Usage_used{name="G1 Eden Space",} 6291456.0
+# HELP java_lang_GarbageCollector_CollectionCount CollectionCount (java.lang<type=GarbageCollector, name=G1 Young Generation><>CollectionCount)
+# TYPE java_lang_GarbageCollector_CollectionCount untyped
+java_lang_GarbageCollector_CollectionCount{name="G1 Young Generation",} 20.0
+java_lang_GarbageCollector_CollectionCount{name="G1 Old Generation",} 0.0
+# HELP java_lang_Threading_SynchronizerUsageSupported SynchronizerUsageSupported (java.lang<type=Threading><>SynchronizerUsageSupported)
+# TYPE java_lang_Threading_SynchronizerUsageSupported untyped
+java_lang_Threading_SynchronizerUsageSupported 1.0
+# HELP org_apache_ZooKeeperService_ReplicatedServer_id1_LastLatency LastLatency (org.apache.ZooKeeperService<name0=ReplicatedServer_id1, name1=replica.1, name2=Follower, name3=Connections, name4=10.5.0.247, name5=0x100051907340001><>LastLatency)
+# TYPE org_apache_ZooKeeperService_ReplicatedServer_id1_LastLatency untyped
+org_apache_ZooKeeperService_ReplicatedServer_id1_LastLatency{name1="replica.1",name2="Follower",name3="Connections",name4="10.5.0.247",name5="0x100051907340001",} 0.0
+org_apache_ZooKeeperService_ReplicatedServer_id1_LastLatency{name1="replica.1",name2="Follower",name3="Connections",name4="10.5.0.246",name5="0x100051907340000",} 2.0
+# HELP java_lang_GarbageCollector_LastGcInfo_GcThreadCount CompositeType for GC info for G1 Young Generation (java.lang<type=GarbageCollector, name=G1 Young Generation><LastGcInfo>GcThreadCount)
+# TYPE java_lang_GarbageCollector_LastGcInfo_GcThreadCount untyped
+java_lang_GarbageCollector_LastGcInfo_GcThreadCount{name="G1 Young Generation",} 4.0
+# HELP java_lang_GarbageCollector_LastGcInfo_memoryUsageBeforeGc_committed java.lang.management.MemoryUsage (java.lang<type=GarbageCollector, name=G1 Young Generation, key=G1 Survivor Space><LastGcInfo, memoryUsageBeforeGc>committed)
+# TYPE java_lang_GarbageCollector_LastGcInfo_memoryUsageBeforeGc_committed untyped
+java_lang_GarbageCollector_LastGcInfo_memoryUsageBeforeGc_committed{name="G1 Young Generation",key="G1 Survivor Space",} 1048576.0
+java_lang_GarbageCollector_LastGcInfo_memoryUsageBeforeGc_committed{name="G1 Young Generation",key="Compressed Class Space",} 3407872.0
+java_lang_GarbageCollector_LastGcInfo_memoryUsageBeforeGc_committed{name="G1 Young Generation",key="Metaspace",} 2.752512E7
+java_lang_GarbageCollector_LastGcInfo_memoryUsageBeforeGc_committed{name="G1 Young Generation",key="G1 Old Gen",} 1.2058624E8
+java_lang_GarbageCollector_LastGcInfo_memoryUsageBeforeGc_committed{name="G1 Young Generation",key="G1 Eden Space",} 1.2582912E7
+java_lang_GarbageCollector_LastGcInfo_memoryUsageBeforeGc_committed{name="G1 Young Generation",key="Code Cache",} 1.277952E7
+# HELP java_lang_Threading_CurrentThreadCpuTimeSupported CurrentThreadCpuTimeSupported (java.lang<type=Threading><>CurrentThreadCpuTimeSupported)
+# TYPE java_lang_Threading_CurrentThreadCpuTimeSupported untyped
+java_lang_Threading_CurrentThreadCpuTimeSupported 1.0
+# HELP java_lang_ClassLoading_LoadedClassCount LoadedClassCount (java.lang<type=ClassLoading><>LoadedClassCount)
+# TYPE java_lang_ClassLoading_LoadedClassCount untyped
+java_lang_ClassLoading_LoadedClassCount 4556.0
+# HELP org_apache_ZooKeeperService_ReplicatedServer_id1_MaxClientResponseSize MaxClientResponseSize (org.apache.ZooKeeperService<name0=ReplicatedServer_id1, name1=replica.1, name2=Follower><>MaxClientResponseSize)
+# TYPE org_apache_ZooKeeperService_ReplicatedServer_id1_MaxClientResponseSize untyped
+org_apache_ZooKeeperService_ReplicatedServer_id1_MaxClientResponseSize{name1="replica.1",name2="Follower",} 642.0
+# HELP org_apache_ZooKeeperService_ReplicatedServer_id1_MinSessionTimeout MinSessionTimeout (org.apache.ZooKeeperService<name0=ReplicatedServer_id1, name1=replica.1, name2=Follower><>MinSessionTimeout)
+# TYPE org_apache_ZooKeeperService_ReplicatedServer_id1_MinSessionTimeout untyped
+org_apache_ZooKeeperService_ReplicatedServer_id1_MinSessionTimeout{name1="replica.1",name2="Follower",} 4000.0
+org_apache_ZooKeeperService_ReplicatedServer_id1_MinSessionTimeout{name1="replica.1",} 4000.0
+# HELP java_lang_MemoryPool_PeakUsage_max java.lang.management.MemoryUsage (java.lang<type=MemoryPool, name=Code Cache><PeakUsage>max)
+# TYPE java_lang_MemoryPool_PeakUsage_max untyped
+java_lang_MemoryPool_PeakUsage_max{name="Code Cache",} 2.5165824E8
+java_lang_MemoryPool_PeakUsage_max{name="G1 Survivor Space",} -1.0
+java_lang_MemoryPool_PeakUsage_max{name="Metaspace",} -1.0
+java_lang_MemoryPool_PeakUsage_max{name="G1 Old Gen",} 3.902799872E9
+java_lang_MemoryPool_PeakUsage_max{name="Compressed Class Space",} 1.073741824E9
+java_lang_MemoryPool_PeakUsage_max{name="G1 Eden Space",} -1.0
+# HELP java_lang_MemoryPool_Usage_max java.lang.management.MemoryUsage (java.lang<type=MemoryPool, name=Code Cache><Usage>max)
+# TYPE java_lang_MemoryPool_Usage_max untyped
+java_lang_MemoryPool_Usage_max{name="Code Cache",} 2.5165824E8
+java_lang_MemoryPool_Usage_max{name="G1 Survivor Space",} -1.0
+java_lang_MemoryPool_Usage_max{name="Metaspace",} -1.0
+java_lang_MemoryPool_Usage_max{name="G1 Old Gen",} 3.902799872E9
+java_lang_MemoryPool_Usage_max{name="Compressed Class Space",} 1.073741824E9
+java_lang_MemoryPool_Usage_max{name="G1 Eden Space",} -1.0
+# HELP java_lang_GarbageCollector_Valid Valid (java.lang<type=GarbageCollector, name=G1 Young Generation><>Valid)
+# TYPE java_lang_GarbageCollector_Valid untyped
+java_lang_GarbageCollector_Valid{name="G1 Young Generation",} 1.0
+java_lang_GarbageCollector_Valid{name="G1 Old Generation",} 1.0
+# HELP java_lang_GarbageCollector_LastGcInfo_memoryUsageBeforeGc_used java.lang.management.MemoryUsage (java.lang<type=GarbageCollector, name=G1 Young Generation, key=G1 Survivor Space><LastGcInfo, memoryUsageBeforeGc>used)
+# TYPE java_lang_GarbageCollector_LastGcInfo_memoryUsageBeforeGc_used untyped
+java_lang_GarbageCollector_LastGcInfo_memoryUsageBeforeGc_used{name="G1 Young Generation",key="G1 Survivor Space",} 1048576.0
+java_lang_GarbageCollector_LastGcInfo_memoryUsageBeforeGc_used{name="G1 Young Generation",key="Compressed Class Space",} 3153616.0
+java_lang_GarbageCollector_LastGcInfo_memoryUsageBeforeGc_used{name="G1 Young Generation",key="Metaspace",} 2.6771768E7
+java_lang_GarbageCollector_LastGcInfo_memoryUsageBeforeGc_used{name="G1 Young Generation",key="G1 Old Gen",} 5.1380272E7
+java_lang_GarbageCollector_LastGcInfo_memoryUsageBeforeGc_used{name="G1 Young Generation",key="G1 Eden Space",} 4194304.0
+java_lang_GarbageCollector_LastGcInfo_memoryUsageBeforeGc_used{name="G1 Young Generation",key="Code Cache",} 1.2610368E7
+# HELP java_lang_MemoryManager_Valid Valid (java.lang<type=MemoryManager, name=CodeCacheManager><>Valid)
+# TYPE java_lang_MemoryManager_Valid untyped
+java_lang_MemoryManager_Valid{name="CodeCacheManager",} 1.0
+java_lang_MemoryManager_Valid{name="Metaspace Manager",} 1.0
+# HELP java_lang_MemoryPool_Usage_init java.lang.management.MemoryUsage (java.lang<type=MemoryPool, name=Code Cache><Usage>init)
+# TYPE java_lang_MemoryPool_Usage_init untyped
+java_lang_MemoryPool_Usage_init{name="Code Cache",} 2555904.0
+java_lang_MemoryPool_Usage_init{name="G1 Survivor Space",} 0.0
+java_lang_MemoryPool_Usage_init{name="Metaspace",} 0.0
+java_lang_MemoryPool_Usage_init{name="G1 Old Gen",} 1.26877696E8
+java_lang_MemoryPool_Usage_init{name="Compressed Class Space",} 0.0
+java_lang_MemoryPool_Usage_init{name="G1 Eden Space",} 7340032.0
+# HELP org_apache_ZooKeeperService_ReplicatedServer_id1_PartOfEnsemble PartOfEnsemble (org.apache.ZooKeeperService<name0=ReplicatedServer_id1, name1=replica.1><>PartOfEnsemble)
+# TYPE org_apache_ZooKeeperService_ReplicatedServer_id1_PartOfEnsemble untyped
+org_apache_ZooKeeperService_ReplicatedServer_id1_PartOfEnsemble{name1="replica.1",} 1.0
+# HELP java_lang_Compilation_TotalCompilationTime TotalCompilationTime (java.lang<type=Compilation><>TotalCompilationTime)
+# TYPE java_lang_Compilation_TotalCompilationTime untyped
+java_lang_Compilation_TotalCompilationTime 8365.0
+# HELP java_lang_MemoryPool_UsageThresholdExceeded UsageThresholdExceeded (java.lang<type=MemoryPool, name=Code Cache><>UsageThresholdExceeded)
+# TYPE java_lang_MemoryPool_UsageThresholdExceeded untyped
+java_lang_MemoryPool_UsageThresholdExceeded{name="Code Cache",} 0.0
+java_lang_MemoryPool_UsageThresholdExceeded{name="Metaspace",} 0.0
+java_lang_MemoryPool_UsageThresholdExceeded{name="G1 Old Gen",} 0.0
+java_lang_MemoryPool_UsageThresholdExceeded{name="Compressed Class Space",} 0.0
+# HELP org_apache_ZooKeeperService_ReplicatedServer_id1_MaxLatency MaxLatency (org.apache.ZooKeeperService<name0=ReplicatedServer_id1, name1=replica.1, name2=Follower, name3=Connections, name4=10.5.0.247, name5=0x100051907340001><>MaxLatency)
+# TYPE org_apache_ZooKeeperService_ReplicatedServer_id1_MaxLatency untyped
+org_apache_ZooKeeperService_ReplicatedServer_id1_MaxLatency{name1="replica.1",name2="Follower",name3="Connections",name4="10.5.0.247",name5="0x100051907340001",} 22.0
+org_apache_ZooKeeperService_ReplicatedServer_id1_MaxLatency{name1="replica.1",name2="Follower",name3="Connections",name4="10.5.0.246",name5="0x100051907340000",} 25.0
+# HELP org_apache_ZooKeeperService_ReplicatedServer_id1_ElectionType ElectionType (org.apache.ZooKeeperService<name0=ReplicatedServer_id1, name1=replica.1><>ElectionType)
+# TYPE org_apache_ZooKeeperService_ReplicatedServer_id1_ElectionType untyped
+org_apache_ZooKeeperService_ReplicatedServer_id1_ElectionType{name1="replica.1",} 3.0
+# HELP org_apache_ZooKeeperService_ReplicatedServer_id1_QuorumSize QuorumSize (org.apache.ZooKeeperService<name0=ReplicatedServer_id1><>QuorumSize)
+# TYPE org_apache_ZooKeeperService_ReplicatedServer_id1_QuorumSize untyped
+org_apache_ZooKeeperService_ReplicatedServer_id1_QuorumSize 3.0
+# HELP org_apache_ZooKeeperService_ReplicatedServer_id1_PendingRevalidationCount PendingRevalidationCount (org.apache.ZooKeeperService<name0=ReplicatedServer_id1, name1=replica.1, name2=Follower><>PendingRevalidationCount)
+# TYPE org_apache_ZooKeeperService_ReplicatedServer_id1_PendingRevalidationCount untyped
+org_apache_ZooKeeperService_ReplicatedServer_id1_PendingRevalidationCount{name1="replica.1",name2="Follower",} 0.0
+# HELP org_apache_ZooKeeperService_ReplicatedServer_id1_AvgLatency AvgLatency (org.apache.ZooKeeperService<name0=ReplicatedServer_id1, name1=replica.1, name2=Follower, name3=Connections, name4=10.5.0.247, name5=0x100051907340001><>AvgLatency)
+# TYPE org_apache_ZooKeeperService_ReplicatedServer_id1_AvgLatency untyped
+org_apache_ZooKeeperService_ReplicatedServer_id1_AvgLatency{name1="replica.1",name2="Follower",name3="Connections",name4="10.5.0.247",name5="0x100051907340001",} 0.0
+org_apache_ZooKeeperService_ReplicatedServer_id1_AvgLatency{name1="replica.1",name2="Follower",name3="Connections",name4="10.5.0.246",name5="0x100051907340000",} 0.0
+# HELP java_lang_Compilation_CompilationTimeMonitoringSupported CompilationTimeMonitoringSupported (java.lang<type=Compilation><>CompilationTimeMonitoringSupported)
+# TYPE java_lang_Compilation_CompilationTimeMonitoringSupported untyped
+java_lang_Compilation_CompilationTimeMonitoringSupported 1.0
+# HELP org_apache_ZooKeeperService_ReplicatedServer_id1_MinClientResponseSize MinClientResponseSize (org.apache.ZooKeeperService<name0=ReplicatedServer_id1, name1=replica.1, name2=Follower><>MinClientResponseSize)
+# TYPE org_apache_ZooKeeperService_ReplicatedServer_id1_MinClientResponseSize untyped
+org_apache_ZooKeeperService_ReplicatedServer_id1_MinClientResponseSize{name1="replica.1",name2="Follower",} 16.0
+# HELP java_lang_GarbageCollector_LastGcInfo_startTime CompositeType for GC info for G1 Young Generation (java.lang<type=GarbageCollector, name=G1 Young Generation><LastGcInfo>startTime)
+# TYPE java_lang_GarbageCollector_LastGcInfo_startTime untyped
+java_lang_GarbageCollector_LastGcInfo_startTime{name="G1 Young Generation",} 6043297.0
+# HELP java_lang_OperatingSystem_AvailableProcessors AvailableProcessors (java.lang<type=OperatingSystem><>AvailableProcessors)
+# TYPE java_lang_OperatingSystem_AvailableProcessors untyped
+java_lang_OperatingSystem_AvailableProcessors 1.0
+# HELP java_lang_MemoryPool_CollectionUsageThresholdSupported CollectionUsageThresholdSupported (java.lang<type=MemoryPool, name=Code Cache><>CollectionUsageThresholdSupported)
+# TYPE java_lang_MemoryPool_CollectionUsageThresholdSupported untyped
+java_lang_MemoryPool_CollectionUsageThresholdSupported{name="Code Cache",} 0.0
+java_lang_MemoryPool_CollectionUsageThresholdSupported{name="G1 Survivor Space",} 1.0
+java_lang_MemoryPool_CollectionUsageThresholdSupported{name="Metaspace",} 0.0
+java_lang_MemoryPool_CollectionUsageThresholdSupported{name="G1 Old Gen",} 1.0
+java_lang_MemoryPool_CollectionUsageThresholdSupported{name="Compressed Class Space",} 0.0
+java_lang_MemoryPool_CollectionUsageThresholdSupported{name="G1 Eden Space",} 1.0
+# HELP java_lang_GarbageCollector_LastGcInfo_memoryUsageBeforeGc_max java.lang.management.MemoryUsage (java.lang<type=GarbageCollector, name=G1 Young Generation, key=G1 Survivor Space><LastGcInfo, memoryUsageBeforeGc>max)
+# TYPE java_lang_GarbageCollector_LastGcInfo_memoryUsageBeforeGc_max untyped
+java_lang_GarbageCollector_LastGcInfo_memoryUsageBeforeGc_max{name="G1 Young Generation",key="G1 Survivor Space",} -1.0
+java_lang_GarbageCollector_LastGcInfo_memoryUsageBeforeGc_max{name="G1 Young Generation",key="Compressed Class Space",} 1.073741824E9
+java_lang_GarbageCollector_LastGcInfo_memoryUsageBeforeGc_max{name="G1 Young Generation",key="Metaspace",} -1.0
+java_lang_GarbageCollector_LastGcInfo_memoryUsageBeforeGc_max{name="G1 Young Generation",key="G1 Old Gen",} 3.902799872E9
+java_lang_GarbageCollector_LastGcInfo_memoryUsageBeforeGc_max{name="G1 Young Generation",key="G1 Eden Space",} -1.0
+java_lang_GarbageCollector_LastGcInfo_memoryUsageBeforeGc_max{name="G1 Young Generation",key="Code Cache",} 2.5165824E8
+# HELP java_nio_BufferPool_MemoryUsed MemoryUsed (java.nio<type=BufferPool, name=direct><>MemoryUsed)
+# TYPE java_nio_BufferPool_MemoryUsed untyped
+java_nio_BufferPool_MemoryUsed{name="direct",} 149954.0
+java_nio_BufferPool_MemoryUsed{name="mapped",} 0.0
+# HELP java_nio_BufferPool_TotalCapacity TotalCapacity (java.nio<type=BufferPool, name=direct><>TotalCapacity)
+# TYPE java_nio_BufferPool_TotalCapacity untyped
+java_nio_BufferPool_TotalCapacity{name="direct",} 149953.0
+java_nio_BufferPool_TotalCapacity{name="mapped",} 0.0
+# HELP java_lang_Memory_HeapMemoryUsage_used java.lang.management.MemoryUsage (java.lang<type=Memory><HeapMemoryUsage>used)
+# TYPE java_lang_Memory_HeapMemoryUsage_used untyped
+java_lang_Memory_HeapMemoryUsage_used 5.8449712E7
+# HELP java_lang_MemoryPool_CollectionUsage_used java.lang.management.MemoryUsage (java.lang<type=MemoryPool, name=G1 Survivor Space><CollectionUsage>used)
+# TYPE java_lang_MemoryPool_CollectionUsage_used untyped
+java_lang_MemoryPool_CollectionUsage_used{name="G1 Survivor Space",} 1048576.0
+java_lang_MemoryPool_CollectionUsage_used{name="G1 Old Gen",} 5.1380272E7
+java_lang_MemoryPool_CollectionUsage_used{name="G1 Eden Space",} 0.0
+# HELP org_apache_ZooKeeperService_ReplicatedServer_id1_MinRequestLatency MinRequestLatency (org.apache.ZooKeeperService<name0=ReplicatedServer_id1, name1=replica.1, name2=Follower><>MinRequestLatency)
+# TYPE org_apache_ZooKeeperService_ReplicatedServer_id1_MinRequestLatency untyped
+org_apache_ZooKeeperService_ReplicatedServer_id1_MinRequestLatency{name1="replica.1",name2="Follower",} 0.0
+# HELP org_apache_ZooKeeperService_ReplicatedServer_id1_NumAliveConnections NumAliveConnections (org.apache.ZooKeeperService<name0=ReplicatedServer_id1, name1=replica.1, name2=Follower><>NumAliveConnections)
+# TYPE org_apache_ZooKeeperService_ReplicatedServer_id1_NumAliveConnections untyped
+org_apache_ZooKeeperService_ReplicatedServer_id1_NumAliveConnections{name1="replica.1",name2="Follower",} 2.0
+# HELP org_apache_ZooKeeperService_ReplicatedServer_id1_PacketsSent PacketsSent (org.apache.ZooKeeperService<name0=ReplicatedServer_id1, name1=replica.1, name2=Follower><>PacketsSent)
+# TYPE org_apache_ZooKeeperService_ReplicatedServer_id1_PacketsSent untyped
+org_apache_ZooKeeperService_ReplicatedServer_id1_PacketsSent{name1="replica.1",name2="Follower",} 5391.0
+org_apache_ZooKeeperService_ReplicatedServer_id1_PacketsSent{name1="replica.1",name2="Follower",name3="Connections",name4="10.5.0.247",name5="0x100051907340001",} 3093.0
+org_apache_ZooKeeperService_ReplicatedServer_id1_PacketsSent{name1="replica.1",name2="Follower",name3="Connections",name4="10.5.0.246",name5="0x100051907340000",} 1035.0
+# HELP java_lang_OperatingSystem_SystemCpuLoad SystemCpuLoad (java.lang<type=OperatingSystem><>SystemCpuLoad)
+# TYPE java_lang_OperatingSystem_SystemCpuLoad untyped
+java_lang_OperatingSystem_SystemCpuLoad 0.27890621930617215
+# HELP java_lang_Threading_ThreadAllocatedMemorySupported ThreadAllocatedMemorySupported (java.lang<type=Threading><>ThreadAllocatedMemorySupported)
+# TYPE java_lang_Threading_ThreadAllocatedMemorySupported untyped
+java_lang_Threading_ThreadAllocatedMemorySupported 1.0
+# HELP org_apache_ZooKeeperService_ReplicatedServer_id1_Tick Tick (org.apache.ZooKeeperService<name0=ReplicatedServer_id1, name1=replica.1><>Tick)
+# TYPE org_apache_ZooKeeperService_ReplicatedServer_id1_Tick untyped
+org_apache_ZooKeeperService_ReplicatedServer_id1_Tick{name1="replica.1",} 0.0
+# HELP org_apache_ZooKeeperService_ReplicatedServer_id1_ElectionTimeTaken ElectionTimeTaken (org.apache.ZooKeeperService<name0=ReplicatedServer_id1, name1=replica.1, name2=Follower><>ElectionTimeTaken)
+# TYPE org_apache_ZooKeeperService_ReplicatedServer_id1_ElectionTimeTaken untyped
+org_apache_ZooKeeperService_ReplicatedServer_id1_ElectionTimeTaken{name1="replica.1",name2="Follower",} 14.0
+# HELP java_lang_Threading_DaemonThreadCount DaemonThreadCount (java.lang<type=Threading><>DaemonThreadCount)
+# TYPE java_lang_Threading_DaemonThreadCount untyped
+java_lang_Threading_DaemonThreadCount 15.0
+# HELP java_lang_Threading_ThreadCpuTimeSupported ThreadCpuTimeSupported (java.lang<type=Threading><>ThreadCpuTimeSupported)
+# TYPE java_lang_Threading_ThreadCpuTimeSupported untyped
+java_lang_Threading_ThreadCpuTimeSupported 1.0
+# HELP java_lang_Threading_TotalStartedThreadCount TotalStartedThreadCount (java.lang<type=Threading><>TotalStartedThreadCount)
+# TYPE java_lang_Threading_TotalStartedThreadCount untyped
+java_lang_Threading_TotalStartedThreadCount 45.0
+# HELP java_lang_OperatingSystem_SystemLoadAverage SystemLoadAverage (java.lang<type=OperatingSystem><>SystemLoadAverage)
+# TYPE java_lang_OperatingSystem_SystemLoadAverage untyped
+java_lang_OperatingSystem_SystemLoadAverage 11.25
+# HELP org_apache_ZooKeeperService_ReplicatedServer_id1_AvgRequestLatency AvgRequestLatency (org.apache.ZooKeeperService<name0=ReplicatedServer_id1, name1=replica.1, name2=Follower><>AvgRequestLatency)
+# TYPE org_apache_ZooKeeperService_ReplicatedServer_id1_AvgRequestLatency untyped
+org_apache_ZooKeeperService_ReplicatedServer_id1_AvgRequestLatency{name1="replica.1",name2="Follower",} 0.0
+# HELP org_apache_ZooKeeperService_ReplicatedServer_id1_FsyncThresholdExceedCount FsyncThresholdExceedCount (org.apache.ZooKeeperService<name0=ReplicatedServer_id1, name1=replica.1, name2=Follower><>FsyncThresholdExceedCount)
+# TYPE org_apache_ZooKeeperService_ReplicatedServer_id1_FsyncThresholdExceedCount untyped
+org_apache_ZooKeeperService_ReplicatedServer_id1_FsyncThresholdExceedCount{name1="replica.1",name2="Follower",} 0.0
+# HELP org_apache_ZooKeeperService_ReplicatedServer_id1_LogDirSize LogDirSize (org.apache.ZooKeeperService<name0=ReplicatedServer_id1, name1=replica.1, name2=Follower><>LogDirSize)
+# TYPE org_apache_ZooKeeperService_ReplicatedServer_id1_LogDirSize untyped
+org_apache_ZooKeeperService_ReplicatedServer_id1_LogDirSize{name1="replica.1",name2="Follower",} 6.7109645E7
+# HELP java_lang_Threading_ObjectMonitorUsageSupported ObjectMonitorUsageSupported (java.lang<type=Threading><>ObjectMonitorUsageSupported)
+# TYPE java_lang_Threading_ObjectMonitorUsageSupported untyped
+java_lang_Threading_ObjectMonitorUsageSupported 1.0
+# HELP java_lang_GarbageCollector_LastGcInfo_duration CompositeType for GC info for G1 Young Generation (java.lang<type=GarbageCollector, name=G1 Young Generation><LastGcInfo>duration)
+# TYPE java_lang_GarbageCollector_LastGcInfo_duration untyped
+java_lang_GarbageCollector_LastGcInfo_duration{name="G1 Young Generation",} 12.0
+# HELP log4j_CONSOLE_follow Dynamic (log4j<appender=CONSOLE><>follow)
+# TYPE log4j_CONSOLE_follow untyped
+log4j_CONSOLE_follow 0.0
+# HELP java_lang_GarbageCollector_LastGcInfo_memoryUsageAfterGc_max java.lang.management.MemoryUsage (java.lang<type=GarbageCollector, name=G1 Young Generation, key=G1 Survivor Space><LastGcInfo, memoryUsageAfterGc>max)
+# TYPE java_lang_GarbageCollector_LastGcInfo_memoryUsageAfterGc_max untyped
+java_lang_GarbageCollector_LastGcInfo_memoryUsageAfterGc_max{name="G1 Young Generation",key="G1 Survivor Space",} -1.0
+java_lang_GarbageCollector_LastGcInfo_memoryUsageAfterGc_max{name="G1 Young Generation",key="Compressed Class Space",} 1.073741824E9
+java_lang_GarbageCollector_LastGcInfo_memoryUsageAfterGc_max{name="G1 Young Generation",key="Metaspace",} -1.0
+java_lang_GarbageCollector_LastGcInfo_memoryUsageAfterGc_max{name="G1 Young Generation",key="G1 Old Gen",} 3.902799872E9
+java_lang_GarbageCollector_LastGcInfo_memoryUsageAfterGc_max{name="G1 Young Generation",key="G1 Eden Space",} -1.0
+java_lang_GarbageCollector_LastGcInfo_memoryUsageAfterGc_max{name="G1 Young Generation",key="Code Cache",} 2.5165824E8
+# HELP java_lang_Threading_ThreadCpuTimeEnabled ThreadCpuTimeEnabled (java.lang<type=Threading><>ThreadCpuTimeEnabled)
+# TYPE java_lang_Threading_ThreadCpuTimeEnabled untyped
+java_lang_Threading_ThreadCpuTimeEnabled 1.0
+# HELP java_lang_OperatingSystem_OpenFileDescriptorCount OpenFileDescriptorCount (java.lang<type=OperatingSystem><>OpenFileDescriptorCount)
+# TYPE java_lang_OperatingSystem_OpenFileDescriptorCount untyped
+java_lang_OperatingSystem_OpenFileDescriptorCount 181.0
+# HELP jmx_scrape_duration_seconds Time this JMX scrape took, in seconds.
+# TYPE jmx_scrape_duration_seconds gauge
+jmx_scrape_duration_seconds 0.067816283
+# HELP jmx_scrape_error Non-zero if this scrape failed.
+# TYPE jmx_scrape_error gauge
+jmx_scrape_error 0.0
+# HELP jvm_gc_collection_seconds Time spent in a given JVM garbage collector in seconds.
+# TYPE jvm_gc_collection_seconds summary
+jvm_gc_collection_seconds_count{gc="G1 Young Generation",} 20.0
+jvm_gc_collection_seconds_sum{gc="G1 Young Generation",} 0.188
+jvm_gc_collection_seconds_count{gc="G1 Old Generation",} 0.0
+jvm_gc_collection_seconds_sum{gc="G1 Old Generation",} 0.0
+# HELP process_cpu_seconds_total Total user and system CPU time spent in seconds.
+# TYPE process_cpu_seconds_total counter
+process_cpu_seconds_total 31.85
+# HELP process_start_time_seconds Start time of the process since unix epoch in seconds.
+# TYPE process_start_time_seconds gauge
+process_start_time_seconds 1.633763938643E9
+# HELP process_open_fds Number of open file descriptors.
+# TYPE process_open_fds gauge
+process_open_fds 181.0
+# HELP process_max_fds Maximum number of open file descriptors.
+# TYPE process_max_fds gauge
+process_max_fds 1048576.0
+# HELP process_virtual_memory_bytes Virtual memory size in bytes.
+# TYPE process_virtual_memory_bytes gauge
+process_virtual_memory_bytes 9.006239744E9
+# HELP process_resident_memory_bytes Resident memory size in bytes.
+# TYPE process_resident_memory_bytes gauge
+process_resident_memory_bytes 2.23576064E8

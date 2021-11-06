@@ -1,14 +1,31 @@
-apiVersion: kafka.strimzi.io/v1beta1
+apiVersion: kafka.alauda.io/v1beta1
 kind: Kafka
 metadata:
   name: my-cluster
 spec:
   kafka:
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: In
+                  values:
+                    - 10.0.128.64
     version: 2.5.0
     replicas: 3
     listeners:
-      plain: {}
-      tls: {}
+      plain:
+        authentication:
+          # type: scram-sha-512
+          type: scram-plain
+      external:
+        type: nodeport
+        tls: false
+        authentication:
+          # type: scram-sha-512
+          type: scram-plain
     config:
       offsets.topic.replication.factor: 3
       transaction.state.log.replication.factor: 3
@@ -16,6 +33,12 @@ spec:
       log.message.format.version: "2.5"
     storage:
       type: ephemeral
+    authorization:
+      superUsers:
+        - admin
+        - ANONYMOUS
+        - alice
+      type: simple
   zookeeper:
     replicas: 3
     storage:

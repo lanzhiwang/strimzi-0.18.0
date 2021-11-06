@@ -1,14 +1,20 @@
 apiVersion: kafka.strimzi.io/v1beta1
 kind: Kafka
 metadata:
-  name: my-cluster
+  name: my-demo
 spec:
   kafka:
+    jmxOptions:
+      '-Xms': 8192m
+      '-Xmx': 8192m
     version: 2.5.0
     replicas: 3
     listeners:
       plain: {}
       tls: {}
+      external:
+        type: nodeport
+        tls: false
     readinessProbe:
       initialDelaySeconds: 15
       timeoutSeconds: 5
@@ -21,12 +27,7 @@ spec:
       transaction.state.log.min.isr: 2
       log.message.format.version: "2.5"
     storage:
-      type: jbod
-      volumes:
-      - id: 0
-        type: persistent-claim
-        size: 100Gi
-        deleteClaim: false
+      type: ephemeral
     metrics:
       # Inspired by config from Kafka 2.0.0 example rules:
       # https://github.com/prometheus/jmx_exporter/blob/master/example_configs/kafka-2_0_0.yml
@@ -125,6 +126,9 @@ spec:
         labels:
           quantile: "0.$4"
   zookeeper:
+    jmxOptions:
+      '-Xms': 4096m
+      '-Xmx': 4096m
     replicas: 3
     readinessProbe:
       initialDelaySeconds: 15
@@ -133,9 +137,7 @@ spec:
       initialDelaySeconds: 15
       timeoutSeconds: 5
     storage:
-      type: persistent-claim
-      size: 100Gi
-      deleteClaim: false
+      type: ephemeral
     metrics:
       # Inspired by Zookeeper rules
       # https://github.com/prometheus/jmx_exporter/blob/master/example_configs/zookeeper.yaml

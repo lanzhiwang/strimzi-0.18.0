@@ -1596,6 +1596,308 @@ spec:
 
 
 
+验证 topolvm
+
+
+
+```
+apiVersion: kafka.strimzi.io/v1beta1
+kind: Kafka
+metadata:
+  name: my-cluster
+  namespace: kafka
+spec:
+  entityOperator:
+    topicOperator: {}
+    userOperator: {}
+  kafka:
+    config:
+      log.message.format.version: '2.5'
+      offsets.topic.replication.factor: 3
+      transaction.state.log.min.isr: 2
+      transaction.state.log.replication.factor: 3
+    jmxOptions: {}
+    listeners:
+      external:
+        tls: false
+        type: nodeport
+      plain: {}
+      tls: {}
+    replicas: 3
+    storage:
+      class: topolvm
+      deleteClaim: true
+      size: 1Gi
+      type: persistent-claim
+    version: 2.5.0
+  zookeeper:
+    replicas: 3
+    storage:
+      class: topolvm
+      deleteClaim: true
+      size: 1Gi
+      type: persistent-claim
+
+---
+
+
+apiVersion: kafka.strimzi.io/v1beta1
+kind: KafkaTopic
+metadata:
+  name: my-topic
+  namespace: kafka
+spec:
+  config:
+    retention.ms: 604800000
+    segment.bytes: 1073741824
+  partitions: 3
+  replicas: 3
+
+
+
+---
+
+
+
+
+[root@dataservice-master ~]# kubectl -n kafka get pvc
+NAME                          STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+data-my-cluster-kafka-0       Bound    pvc-6531a0d6-6533-4096-bc53-c7cd1c49936a   1Gi        RWO            topolvm        151m
+data-my-cluster-kafka-1       Bound    pvc-76df066c-94a8-4b00-98bf-a304f1d26f7e   1Gi        RWO            topolvm        151m
+data-my-cluster-kafka-2       Bound    pvc-5d1755a9-0d92-409e-84b9-f924312697ef   1Gi        RWO            topolvm        151m
+data-my-cluster-zookeeper-0   Bound    pvc-aa66595f-ebbe-46d6-8e34-234ea726b891   1Gi        RWO            topolvm        151m
+data-my-cluster-zookeeper-1   Bound    pvc-ed03e40a-04e8-40dc-821f-982c3ab6649f   1Gi        RWO            topolvm        151m
+data-my-cluster-zookeeper-2   Bound    pvc-2b967b0e-a0b0-4d66-b68d-8d6a0caf1526   1Gi        RWO            topolvm        151m
+[root@dataservice-master ~]#
+
+
+
+pvc-6531a0d6-6533-4096-bc53-c7cd1c49936a
+pvc-76df066c-94a8-4b00-98bf-a304f1d26f7e
+pvc-5d1755a9-0d92-409e-84b9-f924312697ef
+pvc-aa66595f-ebbe-46d6-8e34-234ea726b891
+pvc-ed03e40a-04e8-40dc-821f-982c3ab6649f
+pvc-2b967b0e-a0b0-4d66-b68d-8d6a0caf1526
+
+[root@dataservice-master ~]# kubectl get pv pvc-6531a0d6-6533-4096-bc53-c7cd1c49936a pvc-76df066c-94a8-4b00-98bf-a304f1d26f7e pvc-5d1755a9-0d92-409e-84b9-f924312697ef pvc-aa66595f-ebbe-46d6-8e34-234ea726b891 pvc-ed03e40a-04e8-40dc-821f-982c3ab6649f pvc-2b967b0e-a0b0-4d66-b68d-8d6a0caf1526
+NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                               STORAGECLASS   REASON   AGE
+pvc-6531a0d6-6533-4096-bc53-c7cd1c49936a   1Gi        RWO            Delete           Bound    kafka/data-my-cluster-kafka-0       topolvm                 152m
+pvc-76df066c-94a8-4b00-98bf-a304f1d26f7e   1Gi        RWO            Delete           Bound    kafka/data-my-cluster-kafka-1       topolvm                 152m
+pvc-5d1755a9-0d92-409e-84b9-f924312697ef   1Gi        RWO            Delete           Bound    kafka/data-my-cluster-kafka-2       topolvm                 152m
+pvc-aa66595f-ebbe-46d6-8e34-234ea726b891   1Gi        RWO            Delete           Bound    kafka/data-my-cluster-zookeeper-0   topolvm                 153m
+pvc-ed03e40a-04e8-40dc-821f-982c3ab6649f   1Gi        RWO            Delete           Bound    kafka/data-my-cluster-zookeeper-1   topolvm                 153m
+pvc-2b967b0e-a0b0-4d66-b68d-8d6a0caf1526   1Gi        RWO            Delete           Bound    kafka/data-my-cluster-zookeeper-2   topolvm                 153m
+[root@dataservice-master ~]#
+
+
+kubectl patch pv pvc-2b967b0e-a0b0-4d66-b68d-8d6a0caf1526 --type='json' -p='[{"op": "replace", "path": "/spec/persistentVolumeReclaimPolicy", "value":Retain}]'
+
+[root@dataservice-master ~]# kubectl get pv pvc-6531a0d6-6533-4096-bc53-c7cd1c49936a pvc-76df066c-94a8-4b00-98bf-a304f1d26f7e pvc-5d1755a9-0d92-409e-84b9-f924312697ef pvc-aa66595f-ebbe-46d6-8e34-234ea726b891 pvc-ed03e40a-04e8-40dc-821f-982c3ab6649f pvc-2b967b0e-a0b0-4d66-b68d-8d6a0caf1526
+NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                               STORAGECLASS   REASON   AGE
+pvc-6531a0d6-6533-4096-bc53-c7cd1c49936a   1Gi        RWO            Retain           Bound    kafka/data-my-cluster-kafka-0       topolvm                 160m
+pvc-76df066c-94a8-4b00-98bf-a304f1d26f7e   1Gi        RWO            Retain           Bound    kafka/data-my-cluster-kafka-1       topolvm                 160m
+pvc-5d1755a9-0d92-409e-84b9-f924312697ef   1Gi        RWO            Retain           Bound    kafka/data-my-cluster-kafka-2       topolvm                 160m
+pvc-aa66595f-ebbe-46d6-8e34-234ea726b891   1Gi        RWO            Retain           Bound    kafka/data-my-cluster-zookeeper-0   topolvm                 161m
+pvc-ed03e40a-04e8-40dc-821f-982c3ab6649f   1Gi        RWO            Retain           Bound    kafka/data-my-cluster-zookeeper-1   topolvm                 161m
+pvc-2b967b0e-a0b0-4d66-b68d-8d6a0caf1526   1Gi        RWO            Retain           Bound    kafka/data-my-cluster-zookeeper-2   topolvm                 161m
+[root@dataservice-master ~]#
+[root@dataservice-master ~]#
+
+
+
+[root@dataservice-master ~]# kubectl -n kafka get pvc data-my-cluster-kafka-0 -o yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-my-cluster-kafka-0
+  namespace: kafka
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: topolvm
+  volumeMode: Filesystem
+  volumeName: pvc-6531a0d6-6533-4096-bc53-c7cd1c49936a
+
+[root@dataservice-master ~]# kubectl -n kafka get pvc data-my-cluster-kafka-1 -o yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-my-cluster-kafka-1
+  namespace: kafka
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: topolvm
+  volumeMode: Filesystem
+  volumeName: pvc-76df066c-94a8-4b00-98bf-a304f1d26f7e
+
+[root@dataservice-master ~]# kubectl -n kafka get pvc data-my-cluster-kafka-2 -o yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-my-cluster-kafka-2
+  namespace: kafka
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: topolvm
+  volumeMode: Filesystem
+  volumeName: pvc-5d1755a9-0d92-409e-84b9-f924312697ef
+
+
+[root@dataservice-master ~]# kubectl -n kafka get pvc data-my-cluster-zookeeper-0 -o yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-my-cluster-zookeeper-0
+  namespace: kafka
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: topolvm
+  volumeMode: Filesystem
+  volumeName: pvc-aa66595f-ebbe-46d6-8e34-234ea726b891
+
+
+[root@dataservice-master ~]# kubectl -n kafka get pvc data-my-cluster-zookeeper-1 -o yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-my-cluster-zookeeper-1
+  namespace: kafka
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: topolvm
+  volumeMode: Filesystem
+  volumeName: pvc-ed03e40a-04e8-40dc-821f-982c3ab6649f
+
+
+[root@dataservice-master ~]# kubectl -n kafka get pvc data-my-cluster-zookeeper-2 -o yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: data-my-cluster-zookeeper-2
+  namespace: kafka
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: topolvm
+  volumeMode: Filesystem
+  volumeName: pvc-2b967b0e-a0b0-4d66-b68d-8d6a0caf1526
+
+
+
+
+
+--bootstrap-server 10.0.132.141:31368
+
+
+kafka-topics.sh --bootstrap-server 10.0.132.141:31368 --list
+
+kafka-producer-perf-test.sh --num-records 500 --topic my-topic --throughput -1 --record-size 1000 --producer-props bootstrap.servers=10.0.132.141:31368
+
+kafka-console-producer.sh --bootstrap-server 10.0.132.141:31368 --topic my-topic
+
+kafka-console-consumer.sh --bootstrap-server 10.0.132.141:31368 --topic my-topic --from-beginning --group my-group
+
+kafka-consumer-groups.sh --bootstrap-server 10.0.132.141:31368 --describe --group my-group
+
+[root@dataservice-master ~]# kafka-consumer-groups.sh --bootstrap-server 10.0.132.141:31368 --describe --group my-group
+
+Consumer group 'my-group' has no active members.
+
+GROUP           TOPIC           PARTITION  CURRENT-OFFSET  LOG-END-OFFSET  LAG             CONSUMER-ID     HOST            CLIENT-ID
+my-group        my-topic        0          164             344             180             -               -               -
+my-group        my-topic        1          176             352             176             -               -               -
+my-group        my-topic        2          160             304             144             -               -               -
+[root@dataservice-master ~]#
+
+
+[root@dataservice-master ~]# kubectl -n kafka get kafkatopic
+NAME                                                          PARTITIONS   REPLICATION FACTOR
+consumer-offsets---84e7a678d08f4bd226872e5cdd4eb527fadc1c6a   50           3
+my-topic                                                      3            3
+
+
+[root@dataservice-master ~]# kubectl -n kafka get kafkatopic consumer-offsets---84e7a678d08f4bd226872e5cdd4eb527fadc1c6a -o yaml
+apiVersion: kafka.strimzi.io/v1beta1
+kind: KafkaTopic
+metadata:
+  name: consumer-offsets---84e7a678d08f4bd226872e5cdd4eb527fadc1c6a
+  namespace: kafka
+spec:
+  config:
+    cleanup.policy: compact
+    compression.type: producer
+    segment.bytes: "104857600"
+  partitions: 50
+  replicas: 3
+  topicName: __consumer_offsets
+
+
+[root@dataservice-master ~]# kubectl -n kafka get kafkatopic my-topic -o yaml
+apiVersion: kafka.strimzi.io/v1beta1
+kind: KafkaTopic
+metadata:
+  name: my-topic
+  namespace: kafka
+spec:
+  config:
+    retention.ms: 604800000
+    segment.bytes: 1073741824
+  partitions: 3
+  replicas: 3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```
+
 
 
 

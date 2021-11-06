@@ -26,6 +26,30 @@ gitlab
 devops https://acp-hk-build.alauda.cn/console-devops/workspace/tdsql/pipelines/all/tdsql-installer-chart-freeze
 
 
+
+
+
+本次福利体检请电话：4008100129直接人工客服，报自己身份证号码预约 即可！！开启时间3.10号大家可以周末电话约起来，，本次体检有效时间为：2021.3.10 -5.10 《时间为2个月》请大家安排好自己时间，前往体检！！过期作废噢 [爱心]
+
+
+
+https://www.infoq.cn/article/xzx77eee7ih1sdrkm6xj
+
+https://www.reddit.com/r/apachekafka/comments/a5mogm/any_tips_on_ssl_tls/
+
+https://blog.mimacom.com/apache-kafka-with-ssltls-performance/
+
+
+
+https://issues.apache.org/jira/browse/KAFKA-2431
+
+https://issues.apache.org/jira/browse/KAFKA-2517
+
+
+
+
+
+
 ## 相关账号
 
 邮箱账号：zhihu@alauda.io
@@ -52,6 +76,18 @@ rcvEkumeJLEk1NF8kkCK
 SwitchyOmega
 alauda/Tnriw2z267geivn5aLvk
 
+alauda/Lcyxw2z2y0gbbvn7mLvM
+
+
+
+git config --global http.proxy http://alauda:Lcyxw2z2y0gbbvn7mLvM@139.186.17.154:52975
+
+
+
+
+
+
+
 http 139.186.17.154:52975
 
 
@@ -59,6 +95,18 @@ http 139.186.17.154:52975
 Yuliang_Zhang
 
 bbx09osxozn00n4uvfgtunp9st9taozv
+
+
+
+annotations加上skip-sync: 'true'
+
+annotations:
+
+
+
+operator.name: ""?
+
+
 
 
 
@@ -76,6 +124,17 @@ ybfzna4qjmdl71t6rg0xpvp8immxpg6f
 
 
 
+
+
+alaudak8s  oko48xi2bb693ogreibc3xpbuesepo8x
+你组内同步下吧
+
+
+
+Yueqiang_Hou:wsea8zdumi46anu48lnen641pvz3fo2z
+
+
+
 docker login https://index.docker.io/v1/
 
 lanzhiwang
@@ -88,6 +147,34 @@ huzhi567233
 地址：https://harbor.alauda.cn/
 用户：admin
 密码：raOYiOXaDyGMlLhi
+
+
+
+http://testlink.alauda.cn
+
+开发自测统一用一个账号。账号：guest 密码：1qaz2wsx#EDC
+
+http://confluence.alauda.cn/display/~xxli/testlink
+
+
+
+10.0.130.54:60080/ait/cluster-transformer:v3.5-24-g282dc94
+
+build-harbor.alauda.cn/ait/cluster-transformer:v3.5.3
+
+
+
+tar -zcvf pass.tar.gz `git diff 198d68e712fa5913326055915c9fb3843bf84393 21625f5a06c7bef449a6d984ece184bcd6f27670 --name-only`
+
+
+
+
+
+https://build.alauda.cn/console-devops/workspace/middleware/pipelines/all/rds-operator-with-bundle/rds-operator-with-bundle-f64lq?isMultiBranch=0
+
+
+
+
 
 
 
@@ -109,17 +196,167 @@ huzhi567233
 int环境：
 地址：https://int.alauda.cn
 账号：admin@cpaas.io
-密码：w7TJg2THbnEqGdF6m
+密码：mai7zeeGoo0ahpi##
+
+sshpass -p 'xSc73WHD4uFBmV' ssh root@192.168.17.24
+
+
+
+Ocp 环境
+
+https://new-int.alauda.cn/console-bxliu-acp/admin/domain/list 
+
+ssh core@192.168.31.190
+
+086)yHh3qGCge!PM@M9sU2
+
+
+
+ssh -i ~/.ssh/lixiaoxiao.key -p 52022 xxli@118.24.213.153
+
+ssh root@129.28.166.252
+07Apples
+
+
+
+local-path-provisioner-service-account
+
+
+
+local-path-storage
+
+
+
+oc adm policy add-scc-to-user hostmount-anyuid -z local-path-provisioner-service-account -n local-path-storage
+
+
+
+
+
+alias j='sshpass -p 07Apples ssh root@129.28.166.252'
+
+./pull-tag-push.sh new-int.alauda.cn:60080 3rdparty/operators-index:v3.4-pr-319.3
+
+
+
+http://10.0.130.233:9000/minio/
+minioadmin
+minioadmin
+
+
+
+https://goproxy.cn,direct
+
+GOPROXY=https://goproxy.cn,direct
+
+GOPROXY="https://athens.alauda.cn"
+
+
+
+
+
+
+
+506073482@qq.com
+
+baotao295
+
+
+
+tcpdump -i lo -v -n -mm port 2181
+
+
+
+@胡志  学习下吧，你可以把productbaze中的kafka.install设置为false，这样就会把kafka的pod清理掉。然后到对应机器上清理/cpaas/data/kafka* /cpaas/data/zookeper目录，然后再把kafka.install设置为true，同时认证方式改成期望的，base operator就会自动去部署了
+
+
+
+kubectl get secret -n cpaas-system acp-config-secret -o yaml
+
+
+
+prometheus
+
+https://10.0.129.0/clusters/global/prometheus/graph
+
+https://10.0.129.0/clusters/global/grafana
+
+
+
+
+
+https://middleware.alauda.cn/clusters/global/prometheus/graph
+
+
+
+
+
+
+
+
+
+
+
+cat /usr/local/openresty/nginx/conf/policy.new | jq |grep global-alb2-8092-tcp -C10
+
+
+
+
+
+操作步骤：
+1、在页面上上删除集群
+2、在每台机器上运行清理脚本
+3、在页面上重新加入集群，需要注意填写一些信息，选择 OVN 网络模式
+
+
+
+集群地址
+10.0.129.27:6443
+
+
+
+
+
+其他的services可以解析吗，coredns 正常吗， 其他pod里面正常吗？ping下dns呢，在pod里
+
+
+
+
+
+
+
+    ■ Broker Capacity
+    ■ Jvm Options
+    ■ Java System Properties
+    ■ Liveness Probe
+    ■ Logging
+    ■ Readiness Probe
+    ■ Template
+    ■ Pod
+    ■ Tls Sidecar Container
+    ■ Kafka Exporter
+    ■ Maintenance Time Windows
 
 
 
 
 
 ```
+kubectl delete artifactversions -n cpaas-system `kubectl get artifactversions -A | awk -F ' ' '{print($2)}' | grep rds-operator | grep -v rds-operator.v3.6.16`
 
 
+kubectl get csv -A | grep rds | awk -F ' ' '{print $1}' | xargs -I {} kubectl -n {} delete csv rds-operator.v3.6.16
 
 
+kubectl get rdstopic -A | grep -v NAMESPACE |  awk -F ' ' '{print "kubectl -n " $1 " delete rdstopic " $2}' | xargs -t -I {} kubectl {}
+
+kubectl get pods -A | grep my-cluster | awk -F ' ' '{printf("%s delete pods %s\n", $1, $2)}' | xargs -n 4 -t kubectl -n
+
+
+https://docs.docker.com/registry/spec/api/
+[root@dataservice-master ~]# curl -X GET http://192.168.131.207:60080/v2/middleware/kafka/release/0.18.0/operator-bundle/tags/list
+{"name":"middleware/kafka/release/0.18.0/operator-bundle","tags":["tdsql-2156.2110081551","tdsql-2156.2110081734","v3.5.0","v3.5.1","v3.5.2","v3.5.3","v3.5.4","v3.5.5","v3.5.6","v3.5.7","v3.5.8","v3.6-0-gcc7b17b5","v3.6-1-g0cb4dc53","v3.6-2-gc09b1815","v3.6-21-g64dec4a5","v3.6-3-g7d80f519","v3.6-42-gddc3dc41c","v3.6-48-gf479acaed","v3.6.0","v3.6.1","v3.6.2","v3.6.3","v3.7-1-g4698e8388","v3.7-10-g5e430e9a3","v3.7-6-g3b605ae6a"]}
+[root@dataservice-master ~]#
 
 
 
@@ -165,6 +402,11 @@ strimzi/test-client:build-kafka-2.5.0 strimzi/test-client:latest strimzi/kafka:b
 
 
 helm install mystrimzi ./ --debug --dry-run
+helm install --set Cluster=my-kafka mystrimzi ./ --debug --dry-run
+
+
+
+
 
 helm --set image.repository=192.168.34.233:60080/tdsql --set zookeeper.image.repository=192.168.34.233:60080/tdsql --set kafka.image.repository=192.168.34.233:60080/tdsql --set kafkaConnect.image.repository=192.168.34.233:60080/tdsql --set kafkaConnects2i.image.repository=192.168.34.233:60080/tdsql --set topicOperator.image.repository=192.168.34.233:60080/tdsql --set userOperator.image.repository=192.168.34.233:60080/tdsql --set kafkaInit.image.repository=192.168.34.233:60080/tdsql --set tlsSidecarKafka.image.repository=192.168.34.233:60080/tdsql --set tlsSidecarEntityOperator.image.repository=192.168.34.233:60080/tdsql --set kafkaMirrorMaker.image.repository=192.168.34.233:60080/tdsql --set kafkaBridge.image.repository=192.168.34.233:60080/tdsql --set kafkaExporter.image.repository=192.168.34.233:60080/tdsql --set jmxTrans.image.repository=192.168.34.233:60080/tdsql --set kafkaMirrorMaker2.image.repository=192.168.34.233:60080/tdsql --set cruiseControl.image.repository=192.168.34.233:60080/tdsql --set tlsSidecarCruiseControl.image.repository=192.168.34.233:60080/tdsql install mystrimzi ./ --debug --dry-run
 
@@ -565,6 +807,9 @@ remote.origin.fetch=+refs/heads/*:refs/remotes/origin/*
 branch.main.remote=origin
 branch.main.merge=refs/heads/main
 
+git config --global http.proxy http://127.0.0.1:1087
+git config --global https.proxy https://127.0.0.1:1087
+
 $ git config --global http.proxy http://alauda:Tnriw2z267geivn5aLvk@139.186.17.154:52975
 $ git config --global --list
 http.proxy=http://alauda:Tnriw2z267geivn5aLvk@139.186.17.154:52975
@@ -777,7 +1022,7 @@ Host global-init
 2. 每隔1分钟执行一次刷新操作
 3. 每次刷新的时候，在stdout打印下列资源的信息：
     deployment, statefulset, secret, configmap, pod, service, endpoint
-每种信息需要打印name, namespace, kind, status以及其他你认为适合的信息
+    每种信息需要打印name, namespace, kind, status以及其他你认为适合的信息
 4. 编写chart来部署这个operator
 5. 设置流水线来支持这个项目的CI
 
