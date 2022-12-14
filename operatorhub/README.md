@@ -81,24 +81,51 @@ kubectl rollout status -w deployment/packageserver --namespace="${namespace}"
 
 ###### https://github.com/operator-framework/operator-lifecycle-manager/releases/download/0.16.1/crds.yaml
 
-| CustomResourceDefinition |
-| ------------------------ |
-| CatalogSource            |
-| ClusterServiceVersion    |
-| InstallPlan              |
-| OperatorGroup            |
-| Operator                 |
-| Subscription             |
-
+* CatalogSource
+* ClusterServiceVersion
+* InstallPlan
+* OperatorGroup
+* Operator
+* Subscription
 
 ###### https://github.com/operator-framework/operator-lifecycle-manager/releases/download/0.16.1/olm.yaml
 
+**namespace**
 
-| Namespace | ServiceAccount              | ClusterRole                                  | ClusterRoleBinding       | Deployment       | OperatorGroup    | ClusterServiceVersion | CatalogSource         |
-| --------- | --------------------------- | -------------------------------------------- | ------------------------ | ---------------- | ---------------- | --------------------- | --------------------- |
-| olm       | olm-operator-serviceaccount | system:controller:operator-lifecycle-manager | olm-operator-binding-olm | olm-operator     | global-operators | packageserver         | operatorhubio-catalog |
-| operators |                             | aggregate-olm-edit                           |                          | catalog-operator | olm-operators    |                       |                       |
-|           |                             | aggregate-olm-view                           |                          |                  |                  |                       |                       |
+* olm
+* operators
+
+**serviceaccount**
+
+* olm-operator-serviceaccount
+
+**clusterrole**
+
+* system:controller:operator-lifecycle-manager
+* aggregate-olm-edit
+* aggregate-olm-view
+
+**clusterrolebinding**
+
+* olm-operator-binding-olm
+
+**deployment**
+
+* olm-operator
+* catalog-operator
+
+**operatorgroup**
+
+* global-operators
+* olm-operators
+
+**clusterserviceversion**
+
+* packageserver
+
+**catalogsource**
+
+* operatorhubio-catalog
 
 ###### https://operatorhub.io/install/stable/strimzi-kafka-operator.yaml
 
@@ -124,3 +151,6 @@ spec:
 | CatalogSource         | catsrc | Catalog       | 用于定义应用的 CSVs，CRDs，或是安装包的仓库                  |
 | Subscription          | sub    | Catalog       | 通过跟踪安装包中的 channel 保证 CSVs 的版本更新              |
 | OperatorGroup         | og     | OLM           | 用于 Operators 安装过程中的多租配置，可以定义一组目标 namespaces 指定创建 Operators 所需的 RBAC 等资源配置 |
+
+
+

@@ -1,4 +1,4 @@
-# strimzi KafkaConnect 与 ßKafkaConnectS2I 区别
+# strimzi KafkaConnect 与 KafkaConnectS2I 区别
 
 
 

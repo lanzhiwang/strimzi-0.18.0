@@ -283,6 +283,51 @@ spec:
     config.storage.topic: connect-cluster-configs
     status.storage.topic: connect-cluster-status
 
+apiVersion: kafka.strimzi.io/v1beta1
+kind: KafkaConnect
+metadata:
+  name: my-connect-cluster
+spec:
+  replicas: The number of pods in the Kafka Connect group. | integer
+  version: The Kafka Connect version. Defaults to 2.5.0. 
+           Consult the user documentation to understand the process required to 
+           upgrade or downgrade the version.
+  image: The docker image for the pods.
+  bootstrapServers: Bootstrap servers to connect to. 
+                    This should be given as a comma separated list of <hostname>:<port> pairs.
+  tls: TLS configuration.
+  authentication: Authentication configuration for Kafka Connect. 
+                  The type depends on the value of the authentication.type property within the given object, 
+                  which must be one of [tls, scram-sha-512, plain, oauth].
+  config: The Kafka Connect configuration. Properties with the following prefixes cannot be set: 
+          ssl., 
+          sasl., 
+          security., 
+          listeners, 
+          plugin.path, 
+          rest., 
+          bootstrap.servers, 
+          consumer.interceptor.classes, 
+          producer.interceptor.classes 
+          (with the exception of: 
+          ssl.endpoint.identification.algorithm, 
+          ssl.cipher.suites, 
+          ssl.protocol, 
+          ssl.enabled.protocols).
+  resources: The maximum limits for CPU and memory resources and the requested initial resources.
+  livenessProbe: Pod liveness checking.
+  readinessProbe: Pod readiness checking.
+  jvmOptions: JVM Options for pods.
+  affinity:
+  tolerations:
+  logging:
+  metrics:
+  tracing:
+  template: Template for Kafka Connect and Kafka Connect S2I resources. 
+            The template allows users to specify how the Deployment, Pods and Service are generated.
+  externalConfiguration: Pass data from Secrets or ConfigMaps to the Kafka Connect 
+                         pods and use them to configure connectors.
+
 ```
 
 验证：
