@@ -111,6 +111,8 @@ $ kind delete cluster
 # https://minikube.sigs.k8s.io/docs/
 $ minikube start --image-mirror-country='cn' --iso-url='https://kubernetes.oss-cn-hangzhou.aliyuncs.com/minikube/iso/minikube-v1.14.0.iso' --driver='hyperkit' --memory='4g'
 
+$ minikube start --image-mirror-country='cn' --iso-url='https://kubernetes.oss-cn-hangzhou.aliyuncs.com/minikube/iso/minikube-v1.25.2.iso' --driver='hyperkit' --memory='4g'
+
 #
 
 

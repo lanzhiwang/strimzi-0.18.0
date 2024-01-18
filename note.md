@@ -67,39 +67,45 @@ wget -e "https_proxy=192.168.156.66:7890" https://github.com/alauda/jenkins-dock
 
 kubectl get artifact -A
 
-kubectl artifact createVersion --artifact operatorhub-kafka-operator  --tag="middleware-8575.2209052112" --namespace cpaas-system
+kubectl artifact createVersion --artifact operatorhub-kafka-operator  --tag="merge-github-3982.2309012144" --namespace cpaas-system
 
-kubectl delete artifactversions -n cpaas-system `kubectl get artifactversions -A | awk -F ' ' '{print($2)}' | grep operatorhub-kafka-operator | grep -v operatorhub-kafka-operator.middleware-8575.2209052112`
-
-kubectl delete pods -n cpaas-system -l app=catalog-operator
-
-
-kubectl artifact createVersion --artifact operatorhub-rocketmq-operator --tag="middleware-11624.2212131938" --namespace cpaas-system
-
-kubectl delete artifactversions -n cpaas-system `kubectl get artifactversions -A | awk -F ' ' '{print($2)}' | grep operatorhub-rocketmq-operator | grep -v operatorhub-rocketmq-operator.middleware-11624.2212131938`
+kubectl delete artifactversions -n cpaas-system `kubectl get artifactversions -A | awk -F ' ' '{print($2)}' | grep operatorhub-kafka-operator | grep -v operatorhub-kafka-operator.merge-github-3982.2309012144`
 
 kubectl delete pods -n cpaas-system -l app=catalog-operator
 
 
-kubectl artifact createVersion --artifact operatorhub-rabbitmq-operator --tag="middleware-11140.2212062026" --namespace cpaas-system
+kubectl artifact createVersion --artifact operatorhub-rocketmq-operator --tag="v3.14.5-hotfix.79.1.g0cc705f8-fix-middleware-19173" --namespace cpaas-system
 
-kubectl delete artifactversions -n cpaas-system `kubectl get artifactversions -A | awk -F ' ' '{print($2)}' | grep operatorhub-rabbitmq-operator | grep -v operatorhub-rabbitmq-operator.middleware-11140.2212062026`
+kubectl delete artifactversions -n cpaas-system `kubectl get artifactversions -A | awk -F ' ' '{print($2)}' | grep operatorhub-rocketmq-operator | grep -v operatorhub-rocketmq-operator.v3.14.5-hotfix.79.1.g0cc705f8-fix-middleware-19173`
+
+kubectl delete pods -n cpaas-system -l app=catalog-operator
+
+
+kubectl artifact createVersion --artifact operatorhub-rabbitmq-operator --tag="v3.14.0-fix.96.5.g454e6d98-middleware-18441" --namespace cpaas-system
+
+kubectl delete artifactversions -n cpaas-system `kubectl get artifactversions -A | awk -F ' ' '{print($2)}' | grep operatorhub-rabbitmq-operator | grep -v operatorhub-rabbitmq-operator.v3.14.0-fix.96.5.g454e6d98-middleware-18441`
 
 kubectl delete pods -n cpaas-system -l app=catalog-operator
 
 kubectl get csv -A | grep rabbitmq-cluster-operator | awk -F ' ' '{printf("kubectl -n %s delete csv %s\n", $1, $2)}' | xargs -t -I {} bash -c "{}"
 
+df -h
+du -h --max-depth=1 /
 
 
+kubectl artifact createVersion --artifact operatorhub-rds-operator --tag="v3.14.0-fix.533.1.gf89a9e7f-middleware-17386-other" --namespace cpaas-system
 
-
-kubectl artifact createVersion --artifact operatorhub-rocketmq-operator --tag="v3.11-19-g3d9369a" --namespace cpaas-system
-
-kubectl delete artifactversions -n cpaas-system `kubectl get artifactversions -A | awk -F ' ' '{print($2)}' | grep operatorhub-rocketmq-operator | grep -v operatorhub-rocketmq-operator.v3.11-19-g3d9369a`
+kubectl delete artifactversions -n cpaas-system `kubectl get artifactversions -A | awk -F ' ' '{print($2)}' | grep operatorhub-rds-operator | grep -v operatorhub-rds-operator.v3.14.0-fix.533.1.gf89a9e7f-middleware-17386-other`
 
 kubectl delete pods -n cpaas-system -l app=catalog-operator
 
 
+
+kubectl artifact createVersion --artifact operatorhub-redis-operator --tag="v3.8.31" --namespace cpaas-system
+
+kubectl delete artifactversions -n cpaas-system `kubectl get artifactversions -A | awk -F ' ' '{print($2)}' | grep operatorhub-redis-operator | grep -v operatorhub-redis-operator.v3.8.31`
+
+kubectl delete pods -n cpaas-system -l app=catalog-operator
 
 
 
@@ -166,8 +172,7 @@ $ git config --global --list
 $ cat /Users/huzhi/.gitconfig
 
 
-git config user.email "hzhilamp@163.com"
-git config user.name "lanzhiwang"
+git config user.email "hzhilamp@163.com" && git config user.name "lanzhiwang"
 
 git config user.name "胡志" && git config user.email "zhihu@alauda.io"
 
@@ -179,6 +184,57 @@ tc qdisc add dev eth0 root netem delay 1ms 1000ms 90%
 tc qdisc del dev eth0 root netem delay 1ms 1000ms 90%
 
 tc qdisc list dev eth0
+
+
+
+
+
+
+$ wget https://github.com/chartmuseum/helm-push/releases/download/v0.10.2/helm-push_0.10.2_linux_amd64.tar.gz
+
+$helm env | grep HELM_PLUGINS
+HELM_PLUGINS="/root/.local/share/helm/plugins"
+
+$ helm env | grep HELM_PLUGINS | awk -F= '{print $2}' | sed 's/"//g'
+/root/.local/share/helm/plugins
+
+$ mkdir -p $(helm env | grep HELM_PLUGINS | awk -F= '{print $2}' | sed 's/"//g')/helm-push
+
+$ tar xf helm-push_0.10.2_linux_amd64.tar.gz -C $(helm env | grep HELM_PLUGINS | awk -F= '{print $2}' | sed 's/"//g')/helm-push
+
+$ ll $(helm env | grep HELM_PLUGINS | awk -F= '{print $2}' | sed 's/"//g')/helm-push
+总用量 16
+drwxr-xr-x 2 root root    26 8月   9 11:00 bin
+-rw-r--r-- 1 1001  123 11357 6月   5 03:22 LICENSE
+-rw-r--r-- 1 1001  123   407 6月   5 03:22 plugin.yaml
+
+$ ll $(helm env | grep HELM_PLUGINS | awk -F= '{print $2}' | sed 's/"//g')/helm-push/bin
+总用量 36624
+-rwxr-xr-x 1 1001 123 37502976 6月   5 03:26 helm-cm-push
+
+$ helm plugin list
+NAME    VERSION DESCRIPTION
+cm-push 0.10.1  Push chart package to ChartMuseum
+
+$ helm repo add --username admin --password Harbor12345 --ca-file /etc/docker/certs.d/core.harbor.domain/ca.crt harbor https://core.harbor.domain/chartrepo/library
+
+$ helm cm-push --ca-file /etc/docker/certs.d/core.harbor.domain/ca.crt acserver-0.1.0.tgz harbor
+
+
+
+$ helm pull oci://build-harbor.alauda.cn/middleware/mlops/gpu-operator-chart --version v0.0.0-default.31.ga63f98d0-learn-v23.3.2 --untar --username Zhi_Hu --password sjEwslurNujZWTFzhf3VVsXhIKHMwxrp --insecure-skip-tls-verify
+Warning: chart media type application/tar+gzip is deprecated
+Pulled: build-harbor.alauda.cn/middleware/mlops/gpu-operator-chart:v0.0.0-default.31.ga63f98d0-learn-v23.3.2
+Digest: sha256:cdc9d9f6d576410be0e68d8d5772baa913c3d7c1c1ba9ef7c1944385d1b07e40
+
+$ ll
+总用量 0
+drwxr-xr-x 5 root root 174 8月  11 03:24 gpu-operator
+drwxr-xr-x 2 root root   6 8月  11 03:24 gpu-operator-chart
+
+
+
+
 
 
 

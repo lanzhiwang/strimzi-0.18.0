@@ -541,7 +541,7 @@ sasl.mechanism=SCRAM-SHA-512
 EOF
 
 # 创建 pod 作为生产者和消费者客户端
-$ kubectl -n operators run kafka-test -ti --image=172.16.3.34:60080/tdsql/kafka/release/0.18.0/kafka:0.18.0-kafka-2.5.0-v3.4.0 --rm=true --restart=Never bash
+$ kubectl -n operators run kafka-test -ti --image=172.16.3.34:60080/tdsql/kafka/release/0.18.0/kafka:0.18.0-kafka-2.5.0-v3.4.0 --image-pull-policy='IfNotPresent' --rm=true --restart=Never bash
 
 # 将相关文件复制到 pod 中
 $ kubectl -n operators cp client.properties kafka-test:/home/kafka/
